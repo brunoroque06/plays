@@ -1,2 +1,2 @@
 prepare: 
-	ln -fs ${HOME}/Projects/brunoroque06/geneticalgorithm ${HOME}/go/src/github.com/brunoroque06
+	ln -fs ${PWD}/geneticalgorithm ${HOME}/go/src/github.com/brunoroque06
