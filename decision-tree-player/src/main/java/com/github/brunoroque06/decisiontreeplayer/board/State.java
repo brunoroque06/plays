@@ -20,15 +20,11 @@ public class State {
     return state == PossibleState.OToPlay;
   }
 
-  void nextState() {
-    state = state == PossibleState.XToPlay ? PossibleState.OToPlay : PossibleState.XToPlay;
-  }
-
   void restart() {
     state = PossibleState.XToPlay;
   }
 
-  Piece estimatePieceToPlay() {
+  Piece whichPieceToPlay() {
     return state == PossibleState.XToPlay ? Piece.X : Piece.O;
   }
 
@@ -44,12 +40,6 @@ public class State {
     return state == PossibleState.Drawn;
   }
 
-  public boolean isGameWonOrDrawn() {
-    return state == PossibleState.OWon
-        || state == PossibleState.XWon
-        || state == PossibleState.Drawn;
-  }
-
   void update(final Board board) {
     this.board = board;
 
@@ -60,6 +50,16 @@ public class State {
     if (!isGameWonOrDrawn()) {
       nextState();
     }
+  }
+
+  void nextState() {
+    state = state == PossibleState.XToPlay ? PossibleState.OToPlay : PossibleState.XToPlay;
+  }
+
+  public boolean isGameWonOrDrawn() {
+    return state == PossibleState.OWon
+        || state == PossibleState.XWon
+        || state == PossibleState.Drawn;
   }
 
   private void checkIfGameIsWon() {

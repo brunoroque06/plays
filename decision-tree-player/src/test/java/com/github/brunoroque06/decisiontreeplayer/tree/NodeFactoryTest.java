@@ -21,9 +21,9 @@ class NodeFactoryTest {
 
   @Test
   void RootNodeInstantiation() {
-    final Board boardMock = mock(Board.class);
-    when(boardMock.isBoardEmpty()).thenReturn(false);
-    final Node root = nodeFactory.instantiateRoot(boardMock);
+    final var board = mock(Board.class);
+    when(board.isBoardEmpty()).thenReturn(false);
+    final var root = nodeFactory.instantiateRoot(board);
 
     assertFalse(root.isBoardEmpty());
     assertEquals(0, root.getMinimax());
@@ -33,12 +33,12 @@ class NodeFactoryTest {
 
   @Test
   void NoteInstantiation() {
-    final Board boardMock = mock(Board.class);
-    when(boardMock.isBoardEmpty()).thenReturn(false);
-    final Square move = new Square(0, 0);
-    final Node root = nodeFactory.instantiateRoot(boardMock);
+    final var board = mock(Board.class);
+    when(board.isBoardEmpty()).thenReturn(false);
+    final var move = new Square(0, 0);
+    final var root = nodeFactory.instantiateRoot(board);
 
-    final Node node = nodeFactory.instantiateNode(boardMock, move, root);
+    final var node = nodeFactory.instantiateNode(board, move, root);
 
     assertFalse(node.isBoardEmpty());
     assertEquals(0, node.getMinimax());

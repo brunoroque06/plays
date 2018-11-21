@@ -14,22 +14,21 @@ import org.junit.jupiter.api.Test;
 class GameTest {
   @Test
   void GivenDrawOrWin_ThenGameFinished() {
-    final Board boardMock = mock(Board.class);
-    final State stateMock = mock(State.class);
-    when(stateMock.isGameDrawn()).thenReturn(true);
-    when(stateMock.isGameWonOrDrawn()).thenReturn(true);
-    when(boardMock.getStatus()).thenReturn(stateMock);
-    when(boardMock.cloneBoard()).thenReturn(boardMock);
+    final var state = mock(State.class);
+    when(state.isGameWonOrDrawn()).thenReturn(true);
+    when(state.isGameDrawn()).thenReturn(true);
+    final var board = mock(Board.class);
+    when(board.getStatus()).thenReturn(state);
+    when(board.cloneBoard()).thenReturn(board);
 
-    final Game game = new Game(boardMock, mock(Player.class), mock(Player.class));
+    final var game = new Game(board, mock(Player.class), mock(Player.class));
 
     assertTrue(game.process().getStatus().isGameDrawn());
   }
 
   @Test
   void CorrectBoardReset() {
-    final Game game =
-        new Game(new Board(3, 3, new State()), mock(Player.class), mock(Player.class));
+    final var game = new Game(new Board(3, 3, new State()), mock(Player.class), mock(Player.class));
 
     game.resetGame();
 

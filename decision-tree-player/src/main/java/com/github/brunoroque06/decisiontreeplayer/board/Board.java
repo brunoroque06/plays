@@ -17,6 +17,12 @@ public class Board {
     emptyBoard();
   }
 
+  private void emptyBoard() {
+    for (var i = 0; i < board.length; i++) {
+      board[i] = Piece.Default;
+    }
+  }
+
   int getRows() {
     return row;
   }
@@ -34,19 +40,16 @@ public class Board {
     state.restart();
   }
 
-  private void emptyBoard() {
-    for (int i = 0; i < board.length; i++) {
-      board[i] = Piece.Default;
-    }
+  public void playPieceAndUpdateState(final Square square) {
+    final var pieceToPlay = state.whichPieceToPlay();
+    playPiece(square, pieceToPlay);
+    updateStatus();
   }
 
-  public Piece getPiece(final int row, final int col) {
-    return getPiece(new Square(row, col));
-  }
-
-  Piece getPiece(final Square square) {
-    final int index = squareToIndex(square);
-    return checkIndexValidity(index) ? board[index] : Piece.Default;
+  public void playPiece(final Square square, final Piece piece) {
+    final var index = squareToIndex(square);
+    canPieceBePlaced(index);
+    board[index] = piece;
   }
 
   int squareToIndex(final Square square) {
@@ -60,22 +63,6 @@ public class Board {
         && square.getCol() < col;
   }
 
-  private boolean checkIndexValidity(final int index) {
-    return index >= 0 && index < board.length;
-  }
-
-  public void playPieceAndUpdateState(final Square square) {
-    final Piece pieceToPlay = state.estimatePieceToPlay();
-    playPiece(square, pieceToPlay);
-    updateStatus();
-  }
-
-  public void playPiece(final Square square, final Piece piece) {
-    final int index = squareToIndex(square);
-    canPieceBePlaced(index);
-    board[index] = piece;
-  }
-
   private void canPieceBePlaced(final int index) throws IndexOutOfBoundsException {
     if (!board[index].isDefault()) {
       throw new IndexOutOfBoundsException();
@@ -87,12 +74,16 @@ public class Board {
   }
 
   public boolean isBoardEmpty() {
-    for (final Piece piece : board) {
+    for (final var piece : board) {
       if (!isSquareEmpty(piece)) {
         return false;
       }
     }
     return true;
+  }
+
+  private boolean isSquareEmpty(final Piece piece) {
+    return piece == Piece.Default;
   }
 
   boolean isBoardFull() {
@@ -107,11 +98,11 @@ public class Board {
   }
 
   public Board cloneBoard() {
-    final Board newBoard = new Board(this.getRows(), this.getCols(), state.cloneState());
+    final Board newBoard = new Board(getRows(), getCols(), state.cloneState());
 
     for (int r = 0; r < newBoard.getRows(); r++) {
       for (int c = 0; c < newBoard.getCols(); c++) {
-        newBoard.playPiece(new Square(r, c), this.getPiece(r, c));
+        newBoard.playPiece(new Square(r, c), getPiece(r, c));
       }
     }
     return newBoard;
@@ -130,7 +121,16 @@ public class Board {
     return squares;
   }
 
-  private boolean isSquareEmpty(final Piece piece) {
-    return piece == Piece.Default;
+  public Piece getPiece(final int row, final int col) {
+    return getPiece(new Square(row, col));
+  }
+
+  Piece getPiece(final Square square) {
+    final var index = squareToIndex(square);
+    return checkIndexValidity(index) ? board[index] : Piece.Default;
+  }
+
+  private boolean checkIndexValidity(final int index) {
+    return index >= 0 && index < board.length;
   }
 }

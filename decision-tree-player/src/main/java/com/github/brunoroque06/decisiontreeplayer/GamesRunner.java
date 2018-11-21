@@ -19,8 +19,8 @@ class GamesRunner {
     return gameBoards;
   }
 
-  void runGames() {
-    for (int i = 0; i < numberOfGames; i++) {
+  void run() {
+    for (var i = 0; i < numberOfGames; i++) {
       game.resetGame();
       gameBoards.add(game.process());
     }

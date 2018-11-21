@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Test;
 class NodeTest {
   @Test
   void RootNodeConstructor() {
-    final Board boardMock = mock(Board.class);
+    final var board = mock(Board.class);
 
-    final Node root = new Node(boardMock);
+    final var root = new Node(board);
 
     assertNull(root.getMove());
     assertEquals(0, root.getMinimax());
@@ -23,41 +23,41 @@ class NodeTest {
 
   @Test
   void GivenXToPlay_WhenXHasWon_ThenMinimaxOf1() {
-    final Board boardMock = mock(Board.class);
-    final State stateMock = mock(State.class);
-    when(stateMock.hasXWon()).thenReturn(true);
-    when(stateMock.isXTurn()).thenReturn(true);
-    when(boardMock.getStatus()).thenReturn(stateMock);
-    final Node node = new Node(boardMock);
+    final var board = mock(Board.class);
+    final var state = mock(State.class);
+    when(state.hasXWon()).thenReturn(true);
+    when(state.isXTurn()).thenReturn(true);
+    when(board.getStatus()).thenReturn(state);
+    final var node = new Node(board);
 
-    node.estimateMinimax(stateMock);
+    node.estimateMinimax(state);
 
     assertEquals(1, node.getMinimax());
   }
 
   @Test
   void GivenOToPlay_WhenOHasWon_ThenMinimaxOf1() {
-    final Board boardMock = mock(Board.class);
-    final State stateMock = mock(State.class);
-    when(stateMock.hasOWon()).thenReturn(true);
-    when(stateMock.isOTurn()).thenReturn(true);
-    when(boardMock.getStatus()).thenReturn(stateMock);
-    final Node node = new Node(boardMock);
+    final var board = mock(Board.class);
+    final var state = mock(State.class);
+    when(state.hasOWon()).thenReturn(true);
+    when(state.isOTurn()).thenReturn(true);
+    when(board.getStatus()).thenReturn(state);
+    final var node = new Node(board);
 
-    node.estimateMinimax(stateMock);
+    node.estimateMinimax(state);
 
     assertEquals(1, node.getMinimax());
   }
 
   @Test
   void GivenXToPlay_WhenOHasWon_ThenMinimaxOfMinus1() {
-    final Board boardMock = mock(Board.class);
-    final State nodeStateMock = mock(State.class);
-    when(nodeStateMock.hasOWon()).thenReturn(true);
-    when(boardMock.getStatus()).thenReturn(nodeStateMock);
-    final Node node = new Node(boardMock);
+    final var board = mock(Board.class);
+    final var state = mock(State.class);
+    when(state.hasOWon()).thenReturn(true);
+    when(board.getStatus()).thenReturn(state);
+    final var node = new Node(board);
 
-    final State rootStateMock = mock(State.class);
+    final var rootStateMock = mock(State.class);
     when(rootStateMock.isXTurn()).thenReturn(true);
 
     node.estimateMinimax(rootStateMock);
@@ -67,13 +67,13 @@ class NodeTest {
 
   @Test
   void GivenOToPlay_WhenXHasWon_ThenMinimaxOfMinus1() {
-    final Board boardMock = mock(Board.class);
-    final State nodeStateMock = mock(State.class);
-    when(nodeStateMock.hasXWon()).thenReturn(true);
-    when(boardMock.getStatus()).thenReturn(nodeStateMock);
-    final Node node = new Node(boardMock);
+    final var board = mock(Board.class);
+    final var state = mock(State.class);
+    when(state.hasXWon()).thenReturn(true);
+    when(board.getStatus()).thenReturn(state);
+    final var node = new Node(board);
 
-    final State rootStateMock = mock(State.class);
+    final var rootStateMock = mock(State.class);
     when(rootStateMock.isOTurn()).thenReturn(true);
 
     node.estimateMinimax(rootStateMock);
@@ -83,39 +83,39 @@ class NodeTest {
 
   @Test
   void MinimaxOf0WhenTheGameIsDrawn() {
-    final Board boardMock = mock(Board.class);
-    final State stateMock = mock(State.class);
-    when(stateMock.isGameDrawn()).thenReturn(true);
-    when(boardMock.getStatus()).thenReturn(stateMock);
-    final Node node = new Node(boardMock);
+    final var board = mock(Board.class);
+    final var state = mock(State.class);
+    when(state.isGameDrawn()).thenReturn(true);
+    when(board.getStatus()).thenReturn(state);
+    final var node = new Node(board);
 
-    node.estimateMinimax(stateMock);
+    node.estimateMinimax(state);
 
     assertEquals(0, node.getMinimax());
   }
 
   @Test
   void WhenXToPlay_ThenMinimaxOf0() {
-    final Board boardMock = mock(Board.class);
-    final State stateMock = mock(State.class);
-    when(stateMock.isXTurn()).thenReturn(true);
-    when(boardMock.getStatus()).thenReturn(stateMock);
-    final Node node = new Node(boardMock);
+    final var board = mock(Board.class);
+    final var state = mock(State.class);
+    when(state.isXTurn()).thenReturn(true);
+    when(board.getStatus()).thenReturn(state);
+    final var node = new Node(board);
 
-    node.estimateMinimax(stateMock);
+    node.estimateMinimax(state);
 
     assertEquals(0, node.getMinimax());
   }
 
   @Test
   void WhenOToPlay_ThenMinimaxOf0() {
-    final Board boardMock = mock(Board.class);
-    final State stateMock = mock(State.class);
-    when(stateMock.isOTurn()).thenReturn(true);
-    when(boardMock.getStatus()).thenReturn(stateMock);
-    final Node node = new Node(boardMock);
+    final var board = mock(Board.class);
+    final var state = mock(State.class);
+    when(state.isOTurn()).thenReturn(true);
+    when(board.getStatus()).thenReturn(state);
+    final var node = new Node(board);
 
-    node.estimateMinimax(stateMock);
+    node.estimateMinimax(state);
 
     assertEquals(0, node.getMinimax());
   }

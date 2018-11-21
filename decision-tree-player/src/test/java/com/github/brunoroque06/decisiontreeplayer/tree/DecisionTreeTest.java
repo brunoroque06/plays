@@ -31,7 +31,7 @@ class DecisionTreeTest {
     board3x3.playPiece(new Square(2, 1), Piece.O);
     board3x3.playPiece(new Square(2, 2), Piece.Default);
 
-    final Square square = new DecisionTree(nodeFactory).estimateBestMove(board3x3, 2);
+    final var square = new DecisionTree(nodeFactory).estimateBestMove(board3x3, 2);
 
     assertEquals(1, square.getRow());
     assertEquals(1, square.getCol());
@@ -49,7 +49,7 @@ class DecisionTreeTest {
     board3x3.playPiece(new Square(2, 1), Piece.X);
     board3x3.playPiece(new Square(2, 2), Piece.O);
 
-    final Square square = new DecisionTree(nodeFactory).estimateBestMove(board3x3, 3);
+    final var square = new DecisionTree(nodeFactory).estimateBestMove(board3x3, 3);
 
     assertEquals(1, square.getRow());
     assertEquals(1, square.getCol());
@@ -67,7 +67,7 @@ class DecisionTreeTest {
     board3x3.playPiece(new Square(2, 1), Piece.Default);
     board3x3.playPiece(new Square(2, 2), Piece.Default);
 
-    final Square square = new DecisionTree(nodeFactory).estimateBestMove(board3x3, 5);
+    final var square = new DecisionTree(nodeFactory).estimateBestMove(board3x3, 5);
 
     assertEquals(1, square.getRow());
     assertEquals(1, square.getCol());
@@ -85,7 +85,7 @@ class DecisionTreeTest {
     board3x3.playPiece(new Square(2, 1), Piece.Default);
     board3x3.playPiece(new Square(2, 2), Piece.Default);
 
-    final Square square = new DecisionTree(nodeFactory).estimateBestMove(board3x3, 5);
+    final var square = new DecisionTree(nodeFactory).estimateBestMove(board3x3, 5);
 
     assertEquals(1, square.getRow());
     assertEquals(1, square.getCol());
@@ -103,7 +103,7 @@ class DecisionTreeTest {
     board3x3.playPiece(new Square(2, 1), Piece.O);
     board3x3.playPiece(new Square(2, 2), Piece.X);
 
-    final Square square = new DecisionTree(nodeFactory).estimateBestMove(board3x3, 3);
+    final var square = new DecisionTree(nodeFactory).estimateBestMove(board3x3, 3);
 
     assertEquals(0, square.getRow());
     assertEquals(1, square.getCol());
@@ -121,13 +121,13 @@ class DecisionTreeTest {
     board3x3.playPiece(new Square(2, 1), Piece.Default);
     board3x3.playPiece(new Square(2, 2), Piece.X);
 
-    final Square firstMove = new DecisionTree(nodeFactory).estimateBestMove(board3x3, 3);
+    final var firstMove = new DecisionTree(nodeFactory).estimateBestMove(board3x3, 3);
     board3x3.playPieceAndUpdateState(firstMove);
 
     assertEquals(0, firstMove.getRow());
     assertEquals(2, firstMove.getCol());
 
-    final Square secondMove = new DecisionTree(nodeFactory).estimateBestMove(board3x3, 3);
+    final var secondMove = new DecisionTree(nodeFactory).estimateBestMove(board3x3, 3);
 
     assertEquals(2, secondMove.getRow());
     assertEquals(1, secondMove.getCol());

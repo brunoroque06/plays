@@ -12,12 +12,12 @@ import org.junit.jupiter.api.Test;
 class DecisionTreePlayerTest {
   @Test
   void CorrectMoveReturned() {
-    final DecisionTree decisionTree = mock(DecisionTree.class);
-    final Board board = mock(Board.class);
-    final int depthToCalculate = 2;
+    final var decisionTree = mock(DecisionTree.class);
+    final var board = mock(Board.class);
+    final var depthToCalculate = 2;
     when(decisionTree.estimateBestMove(board, depthToCalculate)).thenReturn(new Square(1, 1));
 
-    final Square square = new DecisionTreePlayer(decisionTree, depthToCalculate).chooseMove(board);
+    final var square = new DecisionTreePlayer(decisionTree, depthToCalculate).chooseMove(board);
 
     assertEquals(1, square.getRow());
     assertEquals(1, square.getCol());

@@ -14,18 +14,18 @@ class Node {
   private int minimax;
   private int depth;
 
-  Node(final Board board) {
-    this.board = board;
-    minimax = 0;
-    depth = 0;
-    leaves = new ArrayList<>();
-  }
-
   Node(final Board board, final Square move, final Node parent) {
     this(board);
     this.move = move;
     depth = parent.getDepth() + 1;
     parent.addLeave(this);
+  }
+
+  Node(final Board board) {
+    this.board = board;
+    minimax = 0;
+    depth = 0;
+    leaves = new ArrayList<>();
   }
 
   private void addLeave(final Node node) {
@@ -44,16 +44,16 @@ class Node {
     return board.estimateEmptySquares();
   }
 
-  int getMinimax() {
-    return minimax;
-  }
-
   Node getBestLeaf() {
     return leaves.stream().filter(e -> e.getMinimax() == minimax).findFirst().orElse(null);
   }
 
+  int getMinimax() {
+    return minimax;
+  }
+
   void estimateMinimax(final State rootState) {
-    int evaluation = -1;
+    var evaluation = -1;
     if (isGameWon(rootState)) {
       evaluation = 1;
     } else if (isGameStillBeingPlayed()) {
@@ -63,23 +63,27 @@ class Node {
   }
 
   private boolean isGameWon(final State rootState) {
-    final State nodeState = board.getStatus();
+    final var nodeState = board.getStatus();
     return nodeState.hasXWon() && rootState.isXTurn() || nodeState.hasOWon() && rootState.isOTurn();
   }
 
   private boolean isGameStillBeingPlayed() {
-    final State nodeState = board.getStatus();
+    final var nodeState = board.getStatus();
     return nodeState.isGameDrawn() || nodeState.isXTurn() || nodeState.isOTurn();
   }
 
   void updateMinimax() {
-    final List<Integer> leafsEvaluation = new ArrayList<>();
+    final var leafsEvaluation = new ArrayList<Integer>();
 
-    for (final Node leaf : leaves) {
+    for (final var leaf : leaves) {
       leafsEvaluation.add(leaf.getMinimax());
     }
 
     minimax = isDepthEven() ? Collections.max(leafsEvaluation) : Collections.min(leafsEvaluation);
+  }
+
+  private boolean isDepthEven() {
+    return depth % 2 == 0;
   }
 
   Board cloneBoard() {
@@ -88,10 +92,6 @@ class Node {
 
   boolean isGameWonOrDrawn() {
     return board.getStatus().isGameWonOrDrawn();
-  }
-
-  private boolean isDepthEven() {
-    return depth % 2 == 0;
   }
 
   boolean isBoardEmpty() {

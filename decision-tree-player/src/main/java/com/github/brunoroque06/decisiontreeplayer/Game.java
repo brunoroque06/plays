@@ -1,7 +1,6 @@
 package com.github.brunoroque06.decisiontreeplayer;
 
 import com.github.brunoroque06.decisiontreeplayer.board.Board;
-import com.github.brunoroque06.decisiontreeplayer.board.Square;
 import com.github.brunoroque06.decisiontreeplayer.players.Player;
 
 class Game {
@@ -21,7 +20,7 @@ class Game {
 
   Board process() {
     while (!board.getStatus().isGameWonOrDrawn()) {
-      final Player playerToPlay = isPlayerXToPlay() ? playerX : playerO;
+      final var playerToPlay = isPlayerXToPlay() ? playerX : playerO;
       makePlayerPlayMove(playerToPlay);
     }
     return board.cloneBoard();
@@ -32,7 +31,7 @@ class Game {
   }
 
   private void makePlayerPlayMove(final Player player) {
-    final Square move = player.chooseMove(board);
+    final var move = player.chooseMove(board);
     board.playPieceAndUpdateState(move);
   }
 

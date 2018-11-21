@@ -7,24 +7,23 @@ import static org.mockito.Mockito.when;
 
 import com.github.brunoroque06.decisiontreeplayer.board.Board;
 import com.github.brunoroque06.decisiontreeplayer.board.State;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class GamesRunnerTest {
   @Test
   void GamesAndScoresAreCorrect() {
-    final State stateMock = mock(State.class);
-    when(stateMock.isGameDrawn()).thenReturn(true);
-    final Board boardMock = mock(Board.class);
-    when(boardMock.getStatus()).thenReturn(stateMock);
-    final Game gameMock = mock(Game.class);
-    when(gameMock.process()).thenReturn(boardMock);
-    final int numberOfGames = 3;
+    final var state = mock(State.class);
+    when(state.isGameDrawn()).thenReturn(true);
+    final var board = mock(Board.class);
+    when(board.getStatus()).thenReturn(state);
+    final var game = mock(Game.class);
+    when(game.process()).thenReturn(board);
+    final var numberOfGames = 3;
 
-    final GamesRunner gamesRunner = new GamesRunner(gameMock, numberOfGames);
+    final var gamesRunner = new GamesRunner(game, numberOfGames);
 
-    gamesRunner.runGames();
-    final List<Board> gameResults = gamesRunner.getGameResults();
+    gamesRunner.run();
+    final var gameResults = gamesRunner.getGameResults();
 
     assertEquals(numberOfGames, gameResults.size());
     assertTrue(gameResults.get(0).getStatus().isGameDrawn());

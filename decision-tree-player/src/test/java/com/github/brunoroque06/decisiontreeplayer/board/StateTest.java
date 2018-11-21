@@ -173,8 +173,8 @@ class StateTest {
 
   @Test
   void Clone() {
-    final State state = new State();
-    final State newState = state.cloneState();
+    final var state = new State();
+    final var newState = state.cloneState();
 
     assertNotEquals(state, newState);
     assertEquals(state.isXTurn(), newState.isXTurn());

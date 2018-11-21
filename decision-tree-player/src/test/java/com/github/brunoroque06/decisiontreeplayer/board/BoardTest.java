@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,19 +18,19 @@ class BoardTest {
 
   @BeforeEach
   void setUp() {
-    final State stateMock = mock(State.class);
-    when(stateMock.isOTurn()).thenReturn(true);
+    final var state = mock(State.class);
+    when(state.isOTurn()).thenReturn(true);
 
-    board1x1 = new Board(1, 1, stateMock);
-    board2x2 = new Board(2, 2, stateMock);
-    board3x2 = new Board(3, 2, stateMock);
-    board3x3 = new Board(3, 3, stateMock);
+    board1x1 = new Board(1, 1, state);
+    board2x2 = new Board(2, 2, state);
+    board3x2 = new Board(3, 2, state);
+    board3x3 = new Board(3, 3, state);
   }
 
   @Test
   void Given3x2Board_ThenPosition3() {
-    final Square square = new Square(1, 1);
-    final int arrayIndex = board3x2.squareToIndex(square);
+    final var square = new Square(1, 1);
+    final var arrayIndex = board3x2.squareToIndex(square);
 
     assertEquals(3, arrayIndex);
   }
@@ -46,26 +45,26 @@ class BoardTest {
 
   @Test
   void GivenNegativeRow_ThenDefaultPiece() {
-    final Piece piece = board3x2.getPiece(new Square(-1, 0));
+    final var piece = board3x2.getPiece(new Square(-1, 0));
     assertEquals(Piece.Default, piece);
   }
 
   @Test
   void GivenNegativeCol_ThenDefaultPiece() {
-    final Piece piece = board3x2.getPiece(new Square(0, -1));
+    final var piece = board3x2.getPiece(new Square(0, -1));
     assertEquals(Piece.Default, piece);
   }
 
   @Test
   void GivenNumberHigherThanBoardSize_ThenDefaultPiece() {
-    final Piece piece = board3x2.getPiece(new Square(2, 2));
+    final var piece = board3x2.getPiece(new Square(2, 2));
     assertEquals(Piece.Default, piece);
   }
 
   @Test
   void AfterAMoveTheCorrectSquareIsUpdated() {
-    final Piece pieceToPlace = Piece.X;
-    final Square squareToPlace = new Square(1, 1);
+    final var pieceToPlace = Piece.X;
+    final var squareToPlace = new Square(1, 1);
 
     board2x2.playPiece(squareToPlace, pieceToPlace);
 
@@ -79,20 +78,20 @@ class BoardTest {
   }
 
   @Test
-  void FullBoard() {
+  void GivenBoard2x2WithXPieces_WhenIsBoardFull_ThenTrue() {
     board2x2.playPiece(new Square(0, 0), Piece.X);
     board2x2.playPiece(new Square(0, 1), Piece.X);
     board2x2.playPiece(new Square(1, 0), Piece.X);
     board2x2.playPiece(new Square(1, 1), Piece.X);
 
-    final boolean isBoardFull = board2x2.isBoardFull();
+    final var isBoardFull = board2x2.isBoardFull();
 
     assertTrue(isBoardFull);
   }
 
   @Test
   void GivenPlayPiece_WhenSquareIsOccupied_ThenException() {
-    final Square square = new Square(0, 0);
+    final var square = new Square(0, 0);
 
     board1x1.playPiece(square, Piece.X);
 
@@ -107,7 +106,7 @@ class BoardTest {
     board2x2.playPiece(new Square(1, 0), Piece.Default);
     board2x2.playPiece(new Square(1, 1), Piece.X);
 
-    final Board newBoard = board2x2.cloneBoard();
+    final var newBoard = board2x2.cloneBoard();
 
     assertEquals(2, newBoard.getCols());
     assertEquals(2, newBoard.getRows());
@@ -125,7 +124,7 @@ class BoardTest {
     board3x3.playPiece(new Square(1, 2), Piece.O);
     board3x3.playPiece(new Square(2, 2), Piece.O);
 
-    final List<Square> squares = board3x3.estimateEmptySquares();
+    final var squares = board3x3.estimateEmptySquares();
 
     assertEquals(4, squares.size());
     assertEquals(1, squares.get(0).getRow());
@@ -140,10 +139,10 @@ class BoardTest {
 
   @Test
   void StateClone() {
-    final State stateMock = mock(State.class);
-    final Board board = new Board(1, 1, stateMock);
+    final var state = mock(State.class);
+    final var board = new Board(1, 1, state);
 
-    final Board newBoard = board.cloneBoard();
+    final var newBoard = board.cloneBoard();
 
     assertNotEquals(board.getStatus(), newBoard.getStatus());
   }
