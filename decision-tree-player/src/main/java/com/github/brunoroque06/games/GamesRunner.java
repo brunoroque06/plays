@@ -1,28 +1,24 @@
 package com.github.brunoroque06.games;
 
-import com.github.brunoroque06.games.board.Board;
+import com.github.brunoroque06.games.game.GameResult;
 import java.util.ArrayList;
 import java.util.List;
 
 class GamesRunner {
-  private final Game game;
+  private final GameHandler gameHandler;
   private final int numberOfGames;
-  private final List<Board> gameBoards;
+  private final List<GameResult> gameBoards;
 
-  GamesRunner(final Game game, final int numberOfGames) {
-    this.game = game;
+  GamesRunner(final GameHandler gameHandler, final int numberOfGames) {
+    this.gameHandler = gameHandler;
     this.numberOfGames = numberOfGames;
     gameBoards = new ArrayList<>();
   }
 
-  List<Board> getGameResults() {
-    return gameBoards;
-  }
-
   void run() {
     for (var i = 0; i < numberOfGames; i++) {
-      game.resetGame();
-      gameBoards.add(game.process());
+      gameHandler.resetGame();
+      gameBoards.add(gameHandler.playGame());
     }
     printStatistics();
   }
@@ -30,10 +26,9 @@ class GamesRunner {
   private void printStatistics() {
     System.out.println("# Results Statistics:");
     System.out.println(
-        "X Won: " + gameBoards.stream().filter(e -> e.getStatus().hasXWon()).count());
+        "White Won: " + gameBoards.stream().filter(e -> e == GameResult.WHITE_WON).count());
     System.out.println(
-        "O Won: " + gameBoards.stream().filter(e -> e.getStatus().hasOWon()).count());
-    System.out.println(
-        "Drawn: " + gameBoards.stream().filter(e -> e.getStatus().isGameDrawn()).count());
+        "Black Won: " + gameBoards.stream().filter(e -> e == GameResult.BLACK_WON).count());
+    System.out.println("Drawn: " + gameBoards.stream().filter(e -> e == GameResult.DRAW).count());
   }
 }

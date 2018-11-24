@@ -1,10 +1,11 @@
 package com.github.brunoroque06.games.players;
 
 import com.github.brunoroque06.games.board.Board;
-import com.github.brunoroque06.games.board.Square;
+import com.github.brunoroque06.games.board.Coordinate;
+import com.github.brunoroque06.games.board.Piece;
 import java.util.Random;
 
-public class DummyPlayer implements Player {
+public class DummyPlayer<T extends Piece> implements Player<T> {
 
   private final Random random;
 
@@ -13,8 +14,8 @@ public class DummyPlayer implements Player {
   }
 
   @Override
-  public Square chooseMove(final Board board) {
-    final var squares = board.estimateEmptySquares();
+  public Coordinate chooseMove(final Board<T> board) {
+    final var squares = board.getEmptyCoordinates();
     final var randomIndex = random.nextInt(squares.size());
     return squares.get(randomIndex);
   }

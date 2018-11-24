@@ -1,11 +1,12 @@
 package com.github.brunoroque06.games;
 
 import com.github.brunoroque06.games.board.Board;
-import com.github.brunoroque06.games.board.State;
-import com.github.brunoroque06.games.players.DecisionTreePlayer;
 import com.github.brunoroque06.games.players.DummyPlayer;
-import com.github.brunoroque06.games.tree.DecisionTree;
-import com.github.brunoroque06.games.tree.NodeFactory;
+import com.github.brunoroque06.games.players.tree.DecisionTreePlayer;
+import com.github.brunoroque06.games.players.tree.LeafsFactory;
+import com.github.brunoroque06.games.players.tree.Tree;
+import com.github.brunoroque06.games.tictactoe.TicTacToeGame;
+import com.github.brunoroque06.games.tictactoe.TicTacToePieceFactory;
 import java.util.Random;
 
 class Main {
@@ -13,12 +14,15 @@ class Main {
     final var numberOfGamesToPlay = 100;
     final var depth = 6;
 
-    final var game =
-        new Game(
-            new Board(3, 3, new State()),
-            new DummyPlayer(new Random()),
-            new DecisionTreePlayer(new DecisionTree(new NodeFactory()), depth));
+    final var board = new Board<>(3, 3, new TicTacToePieceFactory());
+    final var gameHandler =
+        new GameHandler<>(
+            board,
+            new DummyPlayer<>(new Random()),
+            new DecisionTreePlayer<>(new Tree<>(new LeafsFactory<>(), new TicTacToeGame()), depth),
+            new TicTacToeGame());
 
-    new GamesRunner(game, numberOfGamesToPlay).run();
+    System.out.println(gameHandler.playGame());
+    new GamesRunner(gameHandler, numberOfGamesToPlay).run();
   }
 }
