@@ -1,7 +1,7 @@
-package com.github.brunoroque06.decisiontreeplayer.tree;
+package com.github.brunoroque06.games.tree;
 
-import com.github.brunoroque06.decisiontreeplayer.board.Board;
-import com.github.brunoroque06.decisiontreeplayer.board.Square;
+import com.github.brunoroque06.games.board.Board;
+import com.github.brunoroque06.games.board.Square;
 
 public class DecisionTree {
   private final NodeFactory nodeFactory;

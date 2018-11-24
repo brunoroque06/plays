@@ -1,8 +1,8 @@
-package com.github.brunoroque06.decisiontreeplayer.players;
+package com.github.brunoroque06.games.players;
 
-import com.github.brunoroque06.decisiontreeplayer.board.Board;
-import com.github.brunoroque06.decisiontreeplayer.board.Square;
-import com.github.brunoroque06.decisiontreeplayer.tree.DecisionTree;
+import com.github.brunoroque06.games.board.Board;
+import com.github.brunoroque06.games.board.Square;
+import com.github.brunoroque06.games.tree.DecisionTree;
 
 public class DecisionTreePlayer implements Player {
   private final DecisionTree decisionTree;

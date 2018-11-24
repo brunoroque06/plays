@@ -1,12 +1,12 @@
-package com.github.brunoroque06.decisiontreeplayer.board;
+package com.github.brunoroque06.games.board;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -32,7 +32,7 @@ class BoardTest {
     final var square = new Square(1, 1);
     final var arrayIndex = board3x2.squareToIndex(square);
 
-    assertEquals(3, arrayIndex);
+    Assertions.assertEquals(3, arrayIndex);
   }
 
   @Test
@@ -86,7 +86,7 @@ class BoardTest {
 
     final var isBoardFull = board2x2.isBoardFull();
 
-    assertTrue(isBoardFull);
+    Assertions.assertTrue(isBoardFull);
   }
 
   @Test

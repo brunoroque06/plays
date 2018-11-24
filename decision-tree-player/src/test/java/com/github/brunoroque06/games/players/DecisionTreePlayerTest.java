@@ -1,12 +1,12 @@
-package com.github.brunoroque06.decisiontreeplayer.players;
+package com.github.brunoroque06.games.players;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.github.brunoroque06.decisiontreeplayer.board.Board;
-import com.github.brunoroque06.decisiontreeplayer.board.Square;
-import com.github.brunoroque06.decisiontreeplayer.tree.DecisionTree;
+import com.github.brunoroque06.games.board.Board;
+import com.github.brunoroque06.games.board.Square;
+import com.github.brunoroque06.games.tree.DecisionTree;
 import org.junit.jupiter.api.Test;
 
 class DecisionTreePlayerTest {

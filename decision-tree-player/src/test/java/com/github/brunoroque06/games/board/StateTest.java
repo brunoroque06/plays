@@ -1,4 +1,4 @@
-package com.github.brunoroque06.decisiontreeplayer.board;
+package com.github.brunoroque06.games.board;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;

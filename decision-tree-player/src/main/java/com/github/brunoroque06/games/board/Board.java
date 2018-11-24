@@ -1,4 +1,4 @@
-package com.github.brunoroque06.decisiontreeplayer.board;
+package com.github.brunoroque06.games.board;
 
 import java.util.ArrayList;
 import java.util.List;

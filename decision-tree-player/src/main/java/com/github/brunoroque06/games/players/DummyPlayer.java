@@ -1,7 +1,7 @@
-package com.github.brunoroque06.decisiontreeplayer.players;
+package com.github.brunoroque06.games.players;
 
-import com.github.brunoroque06.decisiontreeplayer.board.Board;
-import com.github.brunoroque06.decisiontreeplayer.board.Square;
+import com.github.brunoroque06.games.board.Board;
+import com.github.brunoroque06.games.board.Square;
 import java.util.Random;
 
 public class DummyPlayer implements Player {

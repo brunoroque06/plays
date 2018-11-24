@@ -1,11 +1,11 @@
-package com.github.brunoroque06.decisiontreeplayer.players;
+package com.github.brunoroque06.games.players;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.github.brunoroque06.decisiontreeplayer.board.Board;
-import com.github.brunoroque06.decisiontreeplayer.board.Square;
+import com.github.brunoroque06.games.board.Board;
+import com.github.brunoroque06.games.board.Square;
 import java.util.Arrays;
 import java.util.Random;
 import org.junit.jupiter.api.Test;

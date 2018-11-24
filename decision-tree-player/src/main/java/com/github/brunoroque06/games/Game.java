@@ -1,7 +1,7 @@
-package com.github.brunoroque06.decisiontreeplayer;
+package com.github.brunoroque06.games;
 
-import com.github.brunoroque06.decisiontreeplayer.board.Board;
-import com.github.brunoroque06.decisiontreeplayer.players.Player;
+import com.github.brunoroque06.games.board.Board;
+import com.github.brunoroque06.games.players.Player;
 
 class Game {
   private final Board board;
