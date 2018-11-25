@@ -1,6 +1,6 @@
 package com.github.brunoroque06.games.board;
 
-class Square<T> {
+class Square<T extends Piece> {
 
   private final Coordinate coordinate;
   private final PieceFactory<T> pieceFactory;

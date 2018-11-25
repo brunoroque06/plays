@@ -2,7 +2,7 @@
 
 This project consists of a tic-tac-toe decision tree player (`DecisionTreePlayer`). In order to assess which move (branch) leads to the best position, the minimax decision rule is used. This rule states that a player should always make the best move possible, and that he should except his opponent to do the same.
 
-When creating the decision tree, recursion was used for both leaves instantiation and for the estimation of the minimax index of each (parent) node. In order to correctly estimate minimax indexes, a breadth first search (BFS) bottom up is performed.
+When creating the decision tree, recursion was used for both leafs instantiation and for the estimation of the minimax index of each (parent) leaf. In order to correctly estimate minimax indexes, a breadth first search (BFS) bottom up is performed.
 
 ## Results
 
