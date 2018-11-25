@@ -25,14 +25,14 @@ Inputs are the following:
 ## Outputs
 
 ```bash
-2018/11/18 03:42:41 Generation:    0 | MaxFitness: 0.195 | BestGenes: ipnedTn.suntftj,vq,mrxatevn kcfdqda.bxcz.
-2018/11/18 03:42:41 Generation:   25 | MaxFitness: 0.610 | BestGenes: io e,Ton gTt tn,ve,zthateis tkeaquastiin.
-2018/11/18 03:42:41 Generation:   50 | MaxFitness: 0.732 | BestGenes: io beTon not tj te,athatzis tkeaquastirn.
-2018/11/18 03:42:41 Generation:   75 | MaxFitness: 0.805 | BestGenes: do beqor not to te,zthatais tde quastiln.
-2018/11/18 03:42:41 Generation:  100 | MaxFitness: 0.854 | BestGenes: do beqor not to Te, thatsis tde quqstion.
-2018/11/18 03:42:41 Generation:  125 | MaxFitness: 0.902 | BestGenes: po bevor not to se, thatxis the question.
-2018/11/18 03:42:41 Generation:  150 | MaxFitness: 0.976 | BestGenes: To be or not to be, thatmis the question.
-2018/11/18 03:42:41 Generation:  175 | MaxFitness: 0.976 | BestGenes: To be or not to be, thatcis the question.
-2018/11/18 03:42:41 Generation:  194 | MaxFitness: 1.000 | BestGenes: To be or not to be, that is the question.
-2018/11/18 03:42:41 Elapsed time: 69.034305ms
+Generation #    0 | MaxFitness: 0.20 | BestGenes: dllkvnnxx,u, th .epltTdqdmTothubjjuoalovn
+Generation #   25 | MaxFitness: 0.51 | BestGenes: lgllpz.,pnoj td beh thattnTothe.queftaons
+Generation #   50 | MaxFitness: 0.78 | BestGenes: Tt cpu., noT to be, thattisuthe question.
+Generation #   75 | MaxFitness: 0.88 | BestGenes: Tt bp or noo to be, thatmisuthe question.
+Generation #  100 | MaxFitness: 0.93 | BestGenes: To be or noo to be, thatmisuthe question.
+Generation #  125 | MaxFitness: 0.95 | BestGenes: To be or no  to be, thatmis the question.
+Generation #  150 | MaxFitness: 0.98 | BestGenes: To be or not to be, thatmis the question.
+Generation #  175 | MaxFitness: 0.98 | BestGenes: To be or not to be, thatmis the question.
+Generation #  192 | MaxFitness: 1.00 | BestGenes: To be or not to be, that is the question.
+Elapsed time: 72.40605ms
 ```
