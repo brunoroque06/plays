@@ -19,13 +19,13 @@ class Main {
 
     final var board = new Board<>(3, 3, new TicTacToePieceFactory());
     final var ticTacToeGame = new TicTacToeGame(new CoordinateFactory());
-    final var gameHandler =
+    final var gameArbiter =
         new GameArbiter<>(
             board,
             new DummyPlayer<>(new Random()),
             new DecisionTreePlayer<>(new Tree<>(new LeafsFactory<>(), ticTacToeGame), depth),
             ticTacToeGame);
 
-    new GamesRunner(gameHandler, numberOfGamesToPlay).run();
+    new GamesRunner(gameArbiter, numberOfGamesToPlay).run();
   }
 }

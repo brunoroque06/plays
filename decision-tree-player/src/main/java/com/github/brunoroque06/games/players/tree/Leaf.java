@@ -35,10 +35,18 @@ class Leaf<T extends Piece> {
   void updateEvaluation() {
     if (board.getToMove().isWhite()) {
       evaluation =
-          leafs.stream().map(Leaf::getEvaluation).max(Comparator.comparing(Float::valueOf)).get();
+          leafs
+              .stream()
+              .map(Leaf::getEvaluation)
+              .max(Comparator.comparing(Float::valueOf))
+              .orElse(0F);
     } else {
       evaluation =
-          leafs.stream().map(Leaf::getEvaluation).min(Comparator.comparing(Float::valueOf)).get();
+          leafs
+              .stream()
+              .map(Leaf::getEvaluation)
+              .min(Comparator.comparing(Float::valueOf))
+              .orElse(0F);
     }
   }
 
@@ -52,8 +60,8 @@ class Leaf<T extends Piece> {
 
   Coordinate findBestLeaf() {
     if (board.getToMove().isWhite()) {
-      return leafs.stream().reduce((p, a) -> p.evaluation > a.evaluation ? p : a).get().move;
+      return leafs.stream().reduce((p, c) -> p.evaluation > c.evaluation ? p : c).get().move;
     }
-    return leafs.stream().reduce((p, a) -> p.evaluation > a.evaluation ? a : p).get().move;
+    return leafs.stream().reduce((p, c) -> p.evaluation > c.evaluation ? c : p).get().move;
   }
 }
