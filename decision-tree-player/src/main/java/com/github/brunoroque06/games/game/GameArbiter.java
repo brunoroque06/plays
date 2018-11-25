@@ -1,18 +1,16 @@
-package com.github.brunoroque06.games;
+package com.github.brunoroque06.games.game;
 
 import com.github.brunoroque06.games.board.Board;
 import com.github.brunoroque06.games.board.Piece;
-import com.github.brunoroque06.games.game.Game;
-import com.github.brunoroque06.games.game.GameResult;
 import com.github.brunoroque06.games.players.Player;
 
-class GameHandler<T extends Piece> {
+public class GameArbiter<T extends Piece> {
   private final Board<T> board;
   private final Player<T> whitePlayer;
   private final Player<T> blackPlayer;
   private final Game<T> game;
 
-  GameHandler(
+  public GameArbiter(
       final Board<T> board,
       final Player<T> whitePlayer,
       final Player<T> blackPlayer,
@@ -23,7 +21,7 @@ class GameHandler<T extends Piece> {
     this.game = game;
   }
 
-  GameResult playGame() {
+  GameResult play() {
     while (!game.isOver(board)) {
       makeWhiteMove();
       if (game.isOver(board)) {

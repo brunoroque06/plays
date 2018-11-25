@@ -1,4 +1,4 @@
-package com.github.brunoroque06.games;
+package com.github.brunoroque06.games.game;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -9,12 +9,10 @@ import static org.mockito.Mockito.when;
 
 import com.github.brunoroque06.games.board.Board;
 import com.github.brunoroque06.games.board.Coordinate;
-import com.github.brunoroque06.games.game.Game;
-import com.github.brunoroque06.games.game.GameResult;
 import com.github.brunoroque06.games.players.Player;
 import org.junit.jupiter.api.Test;
 
-class GameHandlerTest {
+class GameArbiterTest {
 
   @Test
   void GivenGameNeeds2TurnsToFinish_WhenPlayGame() {
@@ -32,9 +30,9 @@ class GameHandlerTest {
     when(game.isOver(any())).thenReturn(false, false, false, true);
     when(game.getResult(any())).thenReturn(GameResult.WHITE_WON);
 
-    final var gameHandler = new GameHandler<>(board, whitePlayer, blackPlayer, game);
+    final var gameHandler = new GameArbiter<>(board, whitePlayer, blackPlayer, game);
 
-    assertThat(gameHandler.playGame()).isEqualTo(GameResult.WHITE_WON);
+    assertThat(gameHandler.play()).isEqualTo(GameResult.WHITE_WON);
     verify(whitePlayer, times(2)).chooseMove(board);
     verify(board, times(2)).playMove(whiteCoordinate);
     verify(blackPlayer, times(1)).chooseMove(board);

@@ -1,24 +1,23 @@
-package com.github.brunoroque06.games;
+package com.github.brunoroque06.games.game;
 
-import com.github.brunoroque06.games.game.GameResult;
 import java.util.ArrayList;
 import java.util.List;
 
-class GamesRunner {
-  private final GameHandler gameHandler;
+public class GamesRunner {
+  private final GameArbiter gameArbiter;
   private final int numberOfGames;
   private final List<GameResult> gameBoards;
 
-  GamesRunner(final GameHandler gameHandler, final int numberOfGames) {
-    this.gameHandler = gameHandler;
+  public GamesRunner(final GameArbiter gameArbiter, final int numberOfGames) {
+    this.gameArbiter = gameArbiter;
     this.numberOfGames = numberOfGames;
     gameBoards = new ArrayList<>();
   }
 
-  void run() {
+  public void run() {
     for (var i = 0; i < numberOfGames; i++) {
-      gameHandler.resetGame();
-      gameBoards.add(gameHandler.playGame());
+      gameArbiter.resetGame();
+      gameBoards.add(gameArbiter.play());
     }
     printStatistics();
   }
