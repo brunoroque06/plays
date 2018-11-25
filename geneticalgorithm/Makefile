@@ -3,9 +3,6 @@ all: run
 prepare: 
 	ln -fs ${PWD} ${HOME}/go/src/github.com/brunoroque06
 
-build:
-	go build ./...
-
 run:
 	go run main.go
 
@@ -15,4 +12,4 @@ test:
 format:
 	gofmt -s -w .
 
-.PHONY: all prepare build run test format
+.PHONY: all prepare run test format
