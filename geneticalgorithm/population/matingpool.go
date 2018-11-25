@@ -14,10 +14,9 @@ type (
 func NewMatingPool(ratedPopulation *RatedPopulation) (*MatingPool, error) {
 	if len(ratedPopulation.RatedIndividuals) == 0 {
 		return nil, errors.New("population must have at least 1 individual")
-	} else {
-		pool := estimatePool(ratedPopulation)
-		return &MatingPool{pool}, nil
 	}
+	pool := estimatePool(ratedPopulation)
+	return &MatingPool{pool}, nil
 }
 
 func estimatePool(ratedPopulation *RatedPopulation) []int {

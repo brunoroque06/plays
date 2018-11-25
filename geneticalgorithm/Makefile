@@ -10,6 +10,6 @@ run:
 	go run main.go
 
 test:
-	go test -covermode=count ./...
+	go test ./...
 
 .PHONY: all build format run test
