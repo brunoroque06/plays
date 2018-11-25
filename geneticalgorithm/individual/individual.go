@@ -29,19 +29,27 @@ func (individual *Individual) EstimateFitness(target []rune) (float32, error) {
 	if len(individual.Genes) != len(target) {
 		return -1, errors.New("genes have different lengths")
 	}
+	return individual.estimateFitness(target), nil
+}
+
+func (individual *Individual) estimateFitness(target []rune) float32 {
 	score := 0
 	for i := 0; i < len(target); i++ {
 		if target[i] == individual.Genes[i] {
 			score++
 		}
 	}
-	return float32(score) / float32(len(target)), nil
+	return float32(score) / float32(len(target))
 }
 
 func Crossover(parentX *Individual, parentY *Individual, randomBool random.BoolType) (*Individual, error) {
 	if len(parentX.Genes) != len(parentY.Genes) {
-		return &Individual{nil}, errors.New("parents do not have the same genes length")
+		return nil, errors.New("parents do not have the same genes length")
 	}
+	return &Individual{crossoverGenes(parentX, parentY, randomBool)}, nil
+}
+
+func crossoverGenes(parentX *Individual, parentY *Individual, randomBool random.BoolType) []rune {
 	childGenes := make([]rune, len(parentX.Genes))
 	copy(childGenes, parentX.Genes)
 	for i := 0; i < len(parentX.Genes); i++ {
@@ -49,7 +57,7 @@ func Crossover(parentX *Individual, parentY *Individual, randomBool random.BoolT
 			childGenes[i] = parentY.Genes[i]
 		}
 	}
-	return &Individual{childGenes}, nil
+	return childGenes
 }
 
 func (individual *Individual) Mutate(rate float32, randomInt random.IntType, randomGene random.RuneType, runesPool []rune) *Individual {

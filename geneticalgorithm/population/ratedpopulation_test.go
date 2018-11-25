@@ -74,7 +74,7 @@ func TestNextGenerationToNeedAtLeastTwoIndividuals(t *testing.T) {
 	randomBool := func(int random.IntType) bool { return true }
 	randomInt := func(maxValue int) int { return 1 }
 
-	_, err := ratedPopulation.CreateNextGeneration(0, 0, crossover, randomBool, randomInt)
+	_, err := ratedPopulation.CreateNextGeneration(0, 0, crossover, randomBool, randomInt, []rune(""))
 
 	assert.NotNil(t, err)
 }
@@ -89,7 +89,7 @@ func TestNextGenerationToConsistOfHalfChildrenFromTheBestCoupleAndHalfFromWorst(
 	randomBool := func(int random.IntType) bool { return true }
 	randomInt := func(maxValue int) int { return 1 }
 
-	population, error := ratedPopulation.CreateNextGeneration(0.5, 0, crossover, randomBool, randomInt)
+	population, error := ratedPopulation.CreateNextGeneration(0.5, 0, crossover, randomBool, randomInt, []rune(""))
 
 	assert.Equal(t, 4, len(population.individuals))
 	assert.Equal(t, bestCoupleChildGenes, population.individuals[0].Genes)

@@ -11,12 +11,12 @@ type (
 	}
 )
 
-func NewMatingPool(ratedPopulation *RatedPopulation) (MatingPool, error) {
+func NewMatingPool(ratedPopulation *RatedPopulation) (*MatingPool, error) {
 	if len(ratedPopulation.RatedIndividuals) == 0 {
-		return MatingPool{}, errors.New("population must have at least 1 individual")
+		return nil, errors.New("population must have at least 1 individual")
 	} else {
 		pool := estimatePool(ratedPopulation)
-		return MatingPool{pool}, nil
+		return &MatingPool{pool}, nil
 	}
 }
 
@@ -35,6 +35,6 @@ func estimateNumberOfTimes(fitness float32, fitnessSum float32, numberOfIndividu
 	return int(fitness / fitnessSum * float32(numberOfIndividuals) * 2)
 }
 
-func (matingPool *MatingPool) getValue() int {
-	return matingPool.individualsByFitness[random.Int(len(matingPool.individualsByFitness)-1)]
+func (matingPool *MatingPool) getRandomIndividual(random random.IntType) int {
+	return matingPool.individualsByFitness[random(len(matingPool.individualsByFitness)-1)]
 }

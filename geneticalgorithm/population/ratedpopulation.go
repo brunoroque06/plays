@@ -13,15 +13,12 @@ type RatedPopulation struct {
 	RatedIndividuals []*individual.RatedIndividual
 }
 
-func (ratedPopulation RatedPopulation) findBestCouple() (int, int, error) {
-	best := -1
-	secondBest := -1
-	var err error = nil
+func (ratedPopulation *RatedPopulation) findBestCouple() (int, int, error) {
 	if len(ratedPopulation.RatedIndividuals) == 0 {
-		err = errors.New("population has no individuals")
+		return -1, -1, errors.New("population has no individuals")
 	} else {
-		best = 0
-		secondBest = len(ratedPopulation.RatedIndividuals) - 1
+		best := 0
+		secondBest := len(ratedPopulation.RatedIndividuals) - 1
 		for i, ratedIndividual := range ratedPopulation.RatedIndividuals {
 			if ratedPopulation.RatedIndividuals[best].Fitness < ratedIndividual.Fitness {
 				secondBest = best
@@ -30,17 +27,16 @@ func (ratedPopulation RatedPopulation) findBestCouple() (int, int, error) {
 				secondBest = i
 			}
 		}
+		return best, secondBest, nil
 	}
-	return best, secondBest, err
 }
 
-func (ratedPopulation *RatedPopulation) CreateNextGeneration(elitism float32, mutationRate float32, crossover individual.CrossoverType, randomBool random.BoolType, randomInt random.IntType, runesPool []rune) (Population, error) {
-	var err error = nil
+func (ratedPopulation *RatedPopulation) CreateNextGeneration(elitism float32, mutationRate float32, crossover individual.CrossoverType, randomBool random.BoolType, randomInt random.IntType, runesPool []rune) (*Population, error) {
 	matingPool, matingPoolError := NewMatingPool(ratedPopulation)
-	nextGenerationIndividuals := make([]*individual.Individual, len(ratedPopulation.RatedIndividuals))
 	if len(ratedPopulation.RatedIndividuals) < 2 || matingPoolError != nil {
-		err = errors.New("next generation could not be created")
+		return nil, errors.New("next generation could not be created")
 	} else {
+		nextGenerationIndividuals := make([]*individual.Individual, len(ratedPopulation.RatedIndividuals))
 		numberElitismChilds := int(float32(len(ratedPopulation.RatedIndividuals)) * elitism)
 		best, secondBest, _ := ratedPopulation.findBestCouple()
 
@@ -48,12 +44,12 @@ func (ratedPopulation *RatedPopulation) CreateNextGeneration(elitism float32, mu
 			if i < numberElitismChilds {
 				nextGenerationIndividuals[i], _ = crossover(ratedPopulation.RatedIndividuals[best].Individual, ratedPopulation.RatedIndividuals[secondBest].Individual, randomBool)
 			} else {
-				parentX := matingPool.getValue()
-				parentY := matingPool.getValue()
+				parentX := matingPool.getRandomIndividual(randomInt)
+				parentY := matingPool.getRandomIndividual(randomInt)
 				nextGenerationIndividuals[i], _ = crossover(ratedPopulation.RatedIndividuals[parentX].Individual, ratedPopulation.RatedIndividuals[parentY].Individual, randomBool)
 			}
 			nextGenerationIndividuals[i].Mutate(mutationRate, randomInt, random.Rune, runesPool)
 		}
+		return &Population{nextGenerationIndividuals}, nil
 	}
-	return Population{nextGenerationIndividuals}, err
 }

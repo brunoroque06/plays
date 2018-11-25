@@ -93,8 +93,8 @@ func Test_GivenCrossover_WhenChildChanges_ThenParentsRemainUntouched(t *testing.
 	parentX := Individual{[]rune("abc")}
 	parentY := Individual{[]rune("def")}
 
-	child, _ := Crossover(&parentX, &parentY, func(int random.IntType) bool { return true })
-	child.Genes[0] = rune('z')
+	genes := crossoverGenes(&parentX, &parentY, func(int random.IntType) bool { return true })
+	genes[0] = rune('z')
 
 	assert.Equal(t, []rune("abc"), parentX.Genes)
 	assert.Equal(t, []rune("def"), parentY.Genes)

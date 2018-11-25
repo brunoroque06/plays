@@ -14,7 +14,7 @@ func Test_GivenPopulationHasNoIndividuals_WhenCreatingMatingPool_ThenError(t *te
 	assert.NotNil(t, err)
 }
 
-func TestMatingPoolCreation(t *testing.T) {
+func Test_Given4Individuals_WhenCreateMatingPool_ThenTheyAreInsertedProportionally(t *testing.T) {
 	ratedIndividuals := []*individual.RatedIndividual{{&individual.Individual{}, 0.25}, {&individual.Individual{}, 0.50}, {&individual.Individual{}, 0.25}, {&individual.Individual{}, 0.75}}
 	ratedPopulation := NewRatedPopulation(ratedIndividuals)
 
@@ -22,4 +22,16 @@ func TestMatingPoolCreation(t *testing.T) {
 
 	assert.Equal(t, []int{0, 1, 1, 2, 3, 3, 3}, pool.individualsByFitness)
 	assert.Nil(t, err)
+}
+
+func TestGetRandomIndividual(t *testing.T) {
+	ratedIndividuals := []*individual.RatedIndividual{{&individual.Individual{}, 0.50}, {&individual.Individual{}, 0.25}}
+	ratedPopulation := NewRatedPopulation(ratedIndividuals)
+
+	pool, _ := NewMatingPool(ratedPopulation)
+
+	randomInt := func(maxValue int) int { return 1 }
+	ind := pool.getRandomIndividual(randomInt)
+
+	assert.Equal(t, 0, ind)
 }
