@@ -1,2 +1,6 @@
 prepare: 
-	ln -fs ${PWD}/geneticalgorithm ${HOME}/go/src/github.com/brunoroque06
+	(cd geneticalgorithm/; make prepare)
+
+test: 
+	(cd decision-tree-player/; make test)
+	(cd geneticalgorithm/; make test)
