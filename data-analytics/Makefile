@@ -1,7 +1,7 @@
 prepare: 
-	pip3 install jupyter numpy pandas --upgrade
+	pip3 install jupyter jupyterlab numpy pandas --upgrade
 
 run: 
-	jupyter notebook PokemonWalls.ipynb
+	jupyter lab PokemonWalls.ipynb
 
 .PHONY: prepare run
