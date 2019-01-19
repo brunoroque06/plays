@@ -1,7 +1,14 @@
+# Haskell
+.ghc*
+dist*/
+
+# Java
 *.iml
 .gradle/
 .idea/
-.ipynb_checkpoints
-__pycache__
 build/
 out/
+
+# Python
+.ipynb_checkpoints
+__pycache__
