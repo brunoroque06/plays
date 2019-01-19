@@ -4,7 +4,7 @@ This project consists of a genetic algorithm (heuristic, stochastic algorithm) t
 
 ## Algorithm Description
 
-The first generation is obtained by randomising every individual, where each individual is characterized by its genes ([]rune).
+The first generation is obtained by randomising every individual, where each individual is characterized by its genes.
 
 Then for each individual its fitness is estimated, through comparison of its genes with the "target string".
 
