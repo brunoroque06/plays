@@ -1,23 +1,12 @@
 module Points where
 
-import Control.Arrow (Arrow, (***), arr)
-import System.Random (newStdGen, randoms)
+import System.Random (getStdGen, randomRs)
 
-type Point a = (a, a)
+randomList :: Double -> Double -> IO [Double]
+randomList min max = getStdGen >>= return . randomRs (min, max)
 
-chunk2 :: [a] -> [(a, a)]
-chunk2 [] = []
-chunk2 [_] = error "list of uneven length"
-chunk2 (x:y:r) = (x, y) : chunk2 r
+type Point = (Double, Double)
 
-both :: Arrow arr => arr a b -> arr (a, a) (b, b)
-both f = f *** f
-
-unsplit :: Arrow arr => (a -> b -> c) -> arr (a, b) c
-unsplit = arr . uncurry
-
-randomFloats :: IO [Float]
-randomFloats = randoms <$> newStdGen
-
-randomPoints :: IO [Point Float]
-randomPoints = chunk2 <$> randomFloats
+createPoints :: [Double] -> [Point]
+createPoints [] = []
+createPoints coords = (coords !! 0, coords !! 1) : createPoints (drop 2 coords)

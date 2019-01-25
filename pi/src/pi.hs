@@ -1,18 +1,19 @@
 module Pi where
 
-import Control.Arrow ((<<<))
-import Data.List (genericLength)
 import Points
 
-isInUnitCircle :: (Floating a, Ord a) => Point a -> Bool
-isInUnitCircle (x, y) = x' + y' < 0.25
-  where x' = (x - 0.5) ** 2
-        y' = (y - 0.5) ** 2
+estimatePi :: [Point] -> Double
+estimatePi points = 4 * pointsIn' / totalPoints'
+  where pointsIn' = fromIntegral(sum (numberOfPointsIn points))
+        totalPoints' = fromIntegral(length points) 
 
-lengthRatio :: (Fractional c) => [b] -> [b] -> c
-lengthRatio = curry (unsplit (/) <<< both genericLength)
+numberOfPointsIn :: [Point] -> [Int]
+numberOfPointsIn points = map isPointInsideCircle points
 
-approximatePi :: [Point Float] -> Float
-approximatePi points = circleRatio * 4.0
-  where circlePoints = filter isInUnitCircle points
-        circleRatio = circlePoints `lengthRatio` points
+isPointInsideCircle :: Point -> Int
+isPointInsideCircle (x, y) = mapBool pythagoras'
+  where pythagoras' = sqrt(x ** 2 + y ** 2) <= 1
+
+mapBool :: Bool -> Int
+mapBool bool | bool == False = 0
+             | otherwise = 1
