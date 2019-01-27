@@ -5,7 +5,7 @@ Given a square containing a circle, with a radius of half the size of the square
 ```math
 π * r ^ 2    Pin             Ar * Pin
 --------- = ------ => π = --------------
-    Ar      Ptotal        Ptotal * r ^ 2
+    Ar      Ptotal        r ^ 2 * Ptotal
 ```
 
 where:
