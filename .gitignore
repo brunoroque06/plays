@@ -9,6 +9,9 @@ dist*/
 build/
 out/
 
+# Npm
+node_modules/
+
 # Python
 .ipynb_checkpoints
 __pycache__

@@ -1,0 +1,13 @@
+{
+  "name": "io.github.brunoroque06.blockchain",
+  "version": "1.0.0",
+  "author": "BrunoRoque06",
+  "main": "index.js",
+  "scripts": {
+    "run": "node src/index.js",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^24.0.0"
+  }
+}
