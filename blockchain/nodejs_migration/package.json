@@ -7,7 +7,10 @@
     "run": "node src/index.js",
     "test": "jest"
   },
+  "dependencies": {
+    "rxjs": "6.4.0"
+  },
   "devDependencies": {
-    "jest": "^24.0.0"
+    "jest": "24.1.0"
   }
 }
