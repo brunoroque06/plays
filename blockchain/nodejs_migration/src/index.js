@@ -1,24 +1,27 @@
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-async function animate() {
-  for (let i = 0; i < 10; i++) {
-    console.log(`Hello async: ${i}`);
-    await sleep(100);
-  }
-}
-
-// animate();
-
-const Fifo = require("./fifo");
-const unconfirmedData = new Fifo();
-
-const BroadcastedBlocks = require("./broadcasted-blocks");
-const broadcastedBlocks = new BroadcastedBlocks();
-
+const Blockchain = require("./blockchain");
+const Blocks = require("./blocks");
 const Miner = require("./miner");
-const miner = new Miner(unconfirmedData, broadcastedBlocks);
+const ProofOfWork = require("./proof-of-work");
+const Rx = require("rxjs");
 
-unconfirmedData.add("data");
-unconfirmedData.add(18);
+const bufferSize = 16;
+const unconfirmedData = new Rx.ReplaySubject(bufferSize);
+const broadcastedBlocks = new Rx.ReplaySubject(bufferSize);
+
+const proofOfWork = ProofOfWork.prove(3, 100);
+
+const gimli = new Miner(
+  "Gimli",
+  new Blockchain(),
+  unconfirmedData,
+  Blocks.createNextHashedBlock,
+  proofOfWork,
+  Blocks.isHashedBlockValid,
+  broadcastedBlocks
+);
+
+gimli.mine();
+
+unconfirmedData.next("I");
+unconfirmedData.next("am");
+unconfirmedData.next("mining");

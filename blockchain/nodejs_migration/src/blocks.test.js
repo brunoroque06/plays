@@ -1,33 +1,40 @@
 const Blocks = require("./blocks");
+const hash = require("object-hash");
 
 test("Genesis block creation", () => {
-  const genesis = Blocks.createGenesisBlock();
+  const genesis = Blocks.createGenesisHashedBlock();
 
-  expect(genesis.index).toEqual(0);
-  expect(genesis.previousHash).toEqual(undefined);
-  expect(genesis.data).toEqual("Genesis");
-  expect(genesis.nonce).toEqual(0);
+  expect(genesis.block.index).toEqual(0);
+  expect(genesis.block.previousHash).toEqual(undefined);
+  expect(genesis.block.data).toEqual("Genesis");
+  expect(genesis.block.nonce).toEqual(0);
+  expect(genesis.hash).not.toBeUndefined();
 });
 
-test("Next block creation", () => {
+test("Given a block, when creating next hashed block, then it is populated correctly", () => {
   const previousBlock = {
     index: 0,
     hash: "hash"
   };
   const data = "I am data";
-  const block = Blocks.createNextBlock(previousBlock, data);
+  const hashedBlock = Blocks.createNextHashedBlock(previousBlock, data);
 
-  expect(block.index).toEqual(1);
-  expect(block.previousHash).toEqual(previousBlock.hash);
-  expect(block.data).toEqual(data);
-  expect(block.nonce).toEqual(0);
+  expect(hashedBlock.block.index).toEqual(1);
+  expect(hashedBlock.block.previousHash).toEqual(previousBlock.hash);
+  expect(hashedBlock.block.data).toEqual(data);
+  expect(hashedBlock.block.nonce >= 0).toBeTruthy();
+  expect(hashedBlock.hash).not.toBeUndefined();
 });
 
-test("Hash block", () => {
-  const block = { data: "I am a block" };
+test("Given hash is not consistent with block, when validating hashed block, then false", () => {
+  const hashedBlock = { block: { data: 0 }, hash: "123" };
+  const isHashedBlockValid = Blocks.isHashedBlockValid(hashedBlock);
+  expect(isHashedBlockValid).toBeFalsy();
+});
 
-  const hashedBlock = Blocks.hashBlock(block);
-
-  expect(hashedBlock.block).toEqual(block);
-  expect(hashedBlock.hash).not.toEqual(undefined);
+test("Given hash is consistent with block, when validating hashed block, then true", () => {
+  const block = { data: 0 };
+  const hashedBlock = { block, hash: hash(block) };
+  const isHashedBlockValid = Blocks.isHashedBlockValid(hashedBlock);
+  expect(isHashedBlockValid).toBeTruthy();
 });

@@ -1,4 +1,4 @@
-exports.hashEvaluator = (digits, maxValue) => hash => {
+exports.prove = (digits, maxValue) => hash => {
   if (hash.length < digits) {
     return false;
   }
