@@ -1,4 +1,4 @@
-const BroadcastedBlocks = require("./network");
+const BroadcastedBlocks = require("./broadcasted-blocks");
 
 test("Messages are delivered in order", done => {
   const blocks = new BroadcastedBlocks();

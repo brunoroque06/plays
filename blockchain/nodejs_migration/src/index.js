@@ -14,5 +14,11 @@ async function animate() {
 const Fifo = require("./fifo");
 const unconfirmedData = new Fifo();
 
+const BroadcastedBlocks = require("./broadcasted-blocks");
+const broadcastedBlocks = new BroadcastedBlocks();
+
 const Miner = require("./miner");
-const miner = new Miner(unconfirmedData);
+const miner = new Miner(unconfirmedData, broadcastedBlocks);
+
+unconfirmedData.add("data");
+unconfirmedData.add(18);

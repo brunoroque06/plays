@@ -1,8 +1,8 @@
 const Rx = require("rxjs");
 
 module.exports = class BroadcastedBlocks {
-  constructor() {
-    this.blocks = new Rx.ReplaySubject(32);
+  constructor(bufferSize = 32) {
+    this.blocks = new Rx.ReplaySubject(bufferSize);
   }
 
   broadcast(block) {
