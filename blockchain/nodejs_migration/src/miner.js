@@ -1,3 +1,5 @@
+minerLogger = require("./miner-logger");
+
 module.exports = class Miner {
   constructor(
     id,
@@ -22,11 +24,11 @@ module.exports = class Miner {
 
   mine() {
     if (!this.unconfirmedDataSubscription) {
-      console.info(`${this.id} starting to mine...`);
+      minerLogger.mining(this.id);
       this.subscribeUnconfirmedData();
       this.subscribeBroadcastedBlocks();
     } else {
-      console.warn(`${this.id} is already mining!`);
+      minerLogger.mining(this.id);
     }
   }
 
@@ -41,7 +43,9 @@ module.exports = class Miner {
       const lastBlock = this.blockchain.getLast();
       const nextHashedBlock = this.createNextHashedBlock(lastBlock, data);
       if (this.proofOfWork(nextHashedBlock.hash)) {
+        this.blockchain.push(nextHashedBlock);
         this.broadcastedBlocks.next(nextHashedBlock);
+        minerLogger.minedBlock(this.id, this.blockchain);
       } else {
         this.processUnconfirmedData(data);
       }
@@ -55,9 +59,7 @@ module.exports = class Miner {
   }
 
   processBroadcastedBlocks(hashedBlock) {
-    console.info(
-      `${this.id} received the following block: ${JSON.stringify(hashedBlock)}`
-    );
+    minerLogger.receivedHashedBlock(this.id, hashedBlock);
     if (
       !this.blockchain.doesBlockExist(hashedBlock.block.data) &
       this.isHashedBlockValid(hashedBlock)
@@ -67,7 +69,7 @@ module.exports = class Miner {
   }
 
   retire() {
-    console.info(`Miner ${this.id} retiring!`);
+    minerLogger.retiring(this.id);
     this.unconfirmedDataSubscription.unsubscribe();
     this.unconfirmedDataSubscription = undefined;
     this.broadcastedBlocksSubscription.unsubscribe();

@@ -19,4 +19,8 @@ module.exports = class Blockchain {
     );
     return index > -1;
   }
+
+  getBlocksData() {
+    return this.hashedBlocks.map(hashedBlock => hashedBlock.block.data);
+  }
 };
