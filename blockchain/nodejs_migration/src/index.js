@@ -5,10 +5,10 @@ const ProofOfWork = require("./proof-of-work");
 const Rx = require("rxjs");
 
 const bufferSize = 16;
-const unconfirmedData = new Rx.ReplaySubject(bufferSize);
+const unconfirmedData = Rx.of("I", "am", "mining", Rx.asyncScheduler);
 const broadcastedBlocks = new Rx.ReplaySubject(bufferSize);
 
-const proofOfWork = ProofOfWork.prove(3, 100);
+const proofOfWork = ProofOfWork.prove(4);
 
 const gimli = new Miner(
   "Gimli",
@@ -20,8 +20,15 @@ const gimli = new Miner(
   broadcastedBlocks
 );
 
-gimli.mine();
+const thorin = new Miner(
+  "Thorin",
+  new Blockchain(),
+  unconfirmedData,
+  Blocks.createNextHashedBlock,
+  proofOfWork,
+  Blocks.isHashedBlockValid,
+  broadcastedBlocks
+);
 
-unconfirmedData.next("I");
-unconfirmedData.next("am");
-unconfirmedData.next("mining");
+gimli.mine();
+thorin.mine();

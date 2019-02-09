@@ -27,7 +27,8 @@ test("Given data is not in Blockchain, when miner receives it, then miner create
   const lastBlock = { data: "" };
   const blockchain = {
     doesBlockExist: _ => false,
-    getLast: () => lastBlock
+    getLast: () => lastBlock,
+    push: () => {}
   };
   const unconfirmedData = new Rx.ReplaySubject(1);
   const nextHashedBlock = { data: "" };

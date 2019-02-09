@@ -1,4 +1,5 @@
-minerLogger = require("./miner-logger");
+const minerLogger = require("./miner-logger");
+const RxOperators = require("rxjs/operators");
 
 module.exports = class Miner {
   constructor(
@@ -25,30 +26,33 @@ module.exports = class Miner {
   mine() {
     if (!this.unconfirmedDataSubscription) {
       minerLogger.mining(this.id);
-      this.subscribeUnconfirmedData();
       this.subscribeBroadcastedBlocks();
+      this.subscribeUnconfirmedData();
     } else {
       minerLogger.mining(this.id);
     }
   }
 
   subscribeUnconfirmedData() {
-    this.unconfirmedDataSubscription = this.unconfirmedData.subscribe(data =>
-      this.processUnconfirmedData(data)
-    );
+    this.unconfirmedDataSubscription = this.unconfirmedData
+      .pipe(RxOperators.concatMap(data => this.processUnconfirmedData(data)))
+      .subscribe();
   }
 
-  processUnconfirmedData(data) {
-    if (!this.blockchain.doesBlockExist(data)) {
-      const lastBlock = this.blockchain.getLast();
-      const nextHashedBlock = this.createNextHashedBlock(lastBlock, data);
-      if (this.proofOfWork(nextHashedBlock.hash)) {
-        this.blockchain.push(nextHashedBlock);
-        this.broadcastedBlocks.next(nextHashedBlock);
-        minerLogger.minedBlock(this.id, this.blockchain);
-      } else {
-        this.processUnconfirmedData(data);
-      }
+  async processUnconfirmedData(data) {
+    console.log(`${this.id} got ${data}`);
+    const lastBlock = this.blockchain.getLast();
+    while (!this.blockchain.doesBlockExist(data)) {
+      this.tryToMineNextBlock(lastBlock, data);
+    }
+  }
+
+  tryToMineNextBlock(lastBlock, data) {
+    const nextHashedBlock = this.createNextHashedBlock(lastBlock, data);
+    if (this.proofOfWork(nextHashedBlock.hash)) {
+      this.blockchain.push(nextHashedBlock);
+      this.broadcastedBlocks.next(nextHashedBlock);
+      minerLogger.minedBlock(this.id, this.blockchain);
     }
   }
 
@@ -59,12 +63,12 @@ module.exports = class Miner {
   }
 
   processBroadcastedBlocks(hashedBlock) {
-    minerLogger.receivedHashedBlock(this.id, hashedBlock);
     if (
       !this.blockchain.doesBlockExist(hashedBlock.block.data) &
       this.isHashedBlockValid(hashedBlock)
     ) {
       this.blockchain.push(hashedBlock);
+      minerLogger.receivedHashedBlock(this.id, this.blockchain);
     }
   }
 

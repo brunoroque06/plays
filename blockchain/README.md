@@ -6,8 +6,8 @@ Routine:
 
 - Data (digitally signed) is sent to the `Unconfirmed Data`;
 - A miner takes an unconfirmed data entry;
-- Miner solves a "Proof of Work" problem, in this project a simple `Left(Hash(block, nonce), 3) < 100`. Function used for Bitcoin takes around ~10 minutes/block to find a correct value for `nonce` property;
+- Miner solves a `Proof of Work`; in this project a simple `hash.substring(0, 4) === "0000"`. Function used by Bitcoin takes around ~10 minute/block (~17 zeros!) to find a correct value for `nonce` property;
 - Miner broadcasts block;
 - Other miners receive the block, confirm the integrity of the block (hash validation), and add it to their Blockchain;
 - If the block is not validated (hash), miners won't add it to their Blockchain and won't broadcast it;
-- In case of forks in the chain, the longest chain should be kept, and the other blocks sent back to the Unconfirmed Data.
+- In case of forks in the chain, the longest chain should be kept, and the other blocks sent back to the `Unconfirmed Data`.
