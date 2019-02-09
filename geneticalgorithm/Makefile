@@ -1,6 +1,3 @@
-.PHONY: all
-all: run
-
 .PHONY: prepare
 prepare: 
 	ln -fs ${PWD} ${HOME}/go/src/github.com/brunoroque06

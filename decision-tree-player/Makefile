@@ -1,6 +1,3 @@
-.PHONY: all
-all: run
-
 .PHONY: run
 run:
 	gradle run
