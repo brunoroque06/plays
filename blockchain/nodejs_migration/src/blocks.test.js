@@ -1,7 +1,7 @@
-const blocks = require("./blocks");
+const Blocks = require("./blocks");
 
 test("Genesis block creation", () => {
-  const genesis = blocks.createGenesisBlock();
+  const genesis = Blocks.createGenesisBlock();
 
   expect(genesis.index).toEqual(0);
   expect(genesis.previousHash).toEqual(undefined);
@@ -15,7 +15,7 @@ test("Next block creation", () => {
     hash: "hash"
   };
   const data = "I am data";
-  const block = blocks.createNextBlock(previousBlock, data);
+  const block = Blocks.createNextBlock(previousBlock, data);
 
   expect(block.index).toEqual(1);
   expect(block.previousHash).toEqual(previousBlock.hash);
@@ -26,7 +26,7 @@ test("Next block creation", () => {
 test("Hash block", () => {
   const block = { data: "I am a block" };
 
-  const hashedBlock = blocks.hashBlock(block);
+  const hashedBlock = Blocks.hashBlock(block);
 
   expect(hashedBlock.block).toEqual(block);
   expect(hashedBlock.hash).not.toEqual(undefined);
