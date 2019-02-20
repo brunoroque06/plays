@@ -1,3 +1,3 @@
-# Monorepository
+# λ
 
-:panda_face:
+:dog:
