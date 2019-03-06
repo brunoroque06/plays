@@ -5,17 +5,17 @@ plugins {
 
 mainClassName = 'com.github.brunoroque06.games.Main'
 
-sourceCompatibility = 10
+sourceCompatibility = 11
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testCompile "org.assertj:assertj-core:3.11.1"
-    testCompile "org.junit.jupiter:junit-jupiter-api:5.3.1"
-    testCompile "org.mockito:mockito-core:2.23.0"
-    testRuntime "org.junit.jupiter:junit-jupiter-engine:5.3.1"
+    testImplementation "org.assertj:assertj-core:3.11.1"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.3.1"
+    testImplementation "org.mockito:mockito-core:2.23.0"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.3.1"
 }
 
 test {
