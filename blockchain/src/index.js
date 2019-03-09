@@ -1,5 +1,5 @@
 const Blockchain = require("./blockchain");
-const Blocks = require("./blocks");
+const Block = require("./block");
 const Miner = require("./miner");
 const ProofOfWork = require("./proof-of-work");
 const Rx = require("rxjs");
@@ -14,9 +14,9 @@ const gimli = new Miner(
   "Gimli",
   new Blockchain(),
   unconfirmedData,
-  Blocks.createNextHashedBlock,
+  Block.createNextHashedBlock,
   proofOfWork,
-  Blocks.isHashedBlockValid,
+  Block.isHashedBlockValid,
   broadcastedBlocks
 );
 
@@ -24,11 +24,13 @@ const thorin = new Miner(
   "Thorin",
   new Blockchain(),
   unconfirmedData,
-  Blocks.createNextHashedBlock,
+  Block.createNextHashedBlock,
   proofOfWork,
-  Blocks.isHashedBlockValid,
+  Block.isHashedBlockValid,
   broadcastedBlocks
 );
 
 gimli.mine();
 thorin.mine();
+
+thorin.retire();

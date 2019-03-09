@@ -1,8 +1,8 @@
-const Blocks = require("./blocks");
+const Block = require("./block");
 const hash = require("object-hash");
 
 test("Genesis block creation", () => {
-  const genesis = Blocks.createGenesisHashedBlock();
+  const genesis = Block.createGenesisHashedBlock();
 
   expect(genesis.block.index).toEqual(0);
   expect(genesis.block.previousHash).toEqual(undefined);
@@ -17,7 +17,7 @@ test("Given a block, when creating next hashed block, then it is populated corre
     hash: "hash"
   };
   const data = "I am data";
-  const hashedBlock = Blocks.createNextHashedBlock(previousBlock, data);
+  const hashedBlock = Block.createNextHashedBlock(previousBlock, data);
 
   expect(hashedBlock.block.index).toEqual(1);
   expect(hashedBlock.block.previousHash).toEqual(previousBlock.hash);
@@ -28,13 +28,13 @@ test("Given a block, when creating next hashed block, then it is populated corre
 
 test("Given hash is not consistent with block, when validating hashed block, then false", () => {
   const hashedBlock = { block: { data: 0 }, hash: "123" };
-  const isHashedBlockValid = Blocks.isHashedBlockValid(hashedBlock);
+  const isHashedBlockValid = Block.isHashedBlockValid(hashedBlock);
   expect(isHashedBlockValid).toBeFalsy();
 });
 
 test("Given hash is consistent with block, when validating hashed block, then true", () => {
   const block = { data: 0 };
   const hashedBlock = { block, hash: hash(block) };
-  const isHashedBlockValid = Blocks.isHashedBlockValid(hashedBlock);
+  const isHashedBlockValid = Block.isHashedBlockValid(hashedBlock);
   expect(isHashedBlockValid).toBeTruthy();
 });

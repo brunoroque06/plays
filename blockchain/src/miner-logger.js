@@ -1,4 +1,4 @@
-exports.mining = id => console.info(`${id} starting to mine...`);
+exports.mining = id => console.info(`${id} started mining...`);
 
 exports.alreadyMining = id => console.warn(`${id} is already mining!`);
 
@@ -8,4 +8,4 @@ exports.minedBlock = (id, blockchain) =>
 exports.receivedHashedBlock = (id, blockchain) =>
   console.info(`${id} received/added block: [${blockchain.getBlocksData()}]`);
 
-exports.retiring = id => console.info(`${id} retiring!`);
+exports.retiring = id => console.info(`${id} retired!`);

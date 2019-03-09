@@ -40,7 +40,6 @@ module.exports = class Miner {
   }
 
   async processUnconfirmedData(data) {
-    console.log(`${this.id} got ${data}`);
     const lastBlock = this.blockchain.getLast();
     while (!this.blockchain.doesBlockExist(data)) {
       this.tryToMineNextBlock(lastBlock, data);

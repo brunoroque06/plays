@@ -1,8 +1,8 @@
-const Blocks = require("./blocks");
+const Block = require("./block");
 
 module.exports = class Blockchain {
   constructor() {
-    this.hashedBlocks = [Blocks.createGenesisHashedBlock()];
+    this.hashedBlocks = [Block.createGenesisHashedBlock()];
   }
 
   push(hashedBlock) {
