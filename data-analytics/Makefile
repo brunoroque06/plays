@@ -1,7 +1,7 @@
 .PHONY: prepare
 prepare: 
-	pip3 install jupyter jupyterlab numpy pandas --upgrade
+	virtualenv venv; source venv/bin/activate; pip3 install -r requirements.txt; deactivate
 
 .PHONY: run
 run: 
-	jupyter lab PokemonWalls.ipynb
+	source venv/bin/activate; jupyter lab PokemonWalls.ipynb
