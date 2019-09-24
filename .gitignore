@@ -9,7 +9,7 @@ dist*/
 build/
 out/
 
-# Npm
+# Node
 node_modules/
 
 # Python
