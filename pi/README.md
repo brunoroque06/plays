@@ -15,4 +15,4 @@ where:
 - `Pin`, number of points inside the circle;
 - `Ptotal`, total number of points.
 
-The points above mentioned are randomly placed in the square. The precision of the estimation increases as the number of points increase.
+The points above mentioned are randomly placed in the square. The precision of the estimation increases as the number of points increases.
