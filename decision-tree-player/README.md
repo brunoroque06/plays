@@ -22,7 +22,7 @@ Consider the following initial position:
 &nbsp; | **X**  | &nbsp;
 &nbsp; | &nbsp; | &nbsp;
 
-If the player with the `O` pieces does not play in one of the 4 corners, he will lose for the following position for example:
+If the player with the `O` pieces does not play in one of the 4 corners, he will lose to the following position for example:
 
 **X** | **X** | **O**
 :---: | :---: | :---:
