@@ -1,20 +1,14 @@
 {
   "name": "com.github.brunoroque06.blockchain",
   "version": "1.0.0",
-  "author": "BrunoRoque06",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/BrunoRoque06/lambda"
-  },
-  "license": "MIT",
+  "private": true,
   "scripts": {
     "run": "node src/index.js",
     "test": "jest --silent"
   },
   "dependencies": {
-    "object-hash": "2.0.0",
-    "rxjs": "6.5.3"
+    "object-hash": "2.0.1",
+    "rxjs": "6.5.4"
   },
   "devDependencies": {
     "jest": "24.9.0"
