@@ -1,11 +1,11 @@
 .PHONY: prepare
 prepare:
-	npm install
+	yarn install
 
 .PHONY: run
 run:
-	npm run run
+	yarn run
 
 .PHONY: test
 test:
-	npm run test
+	yarn test
