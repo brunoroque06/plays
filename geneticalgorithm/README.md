@@ -19,14 +19,13 @@ Fitness is again estimated, and the next generation is created. This process is 
 ## Output
 
 ```bash
-Generation #    0 | MaxFitness: 0.20 | BestGenes: dllkvnnxx,u, th .epltTdqdmTothubjjuoalovn
-Generation #   25 | MaxFitness: 0.51 | BestGenes: lgllpz.,pnoj td beh thattnTothe.queftaons
-Generation #   50 | MaxFitness: 0.78 | BestGenes: Tt cpu., noT to be, thattisuthe question.
-Generation #   75 | MaxFitness: 0.88 | BestGenes: Tt bp or noo to be, thatmisuthe question.
-Generation #  100 | MaxFitness: 0.93 | BestGenes: To be or noo to be, thatmisuthe question.
-Generation #  125 | MaxFitness: 0.95 | BestGenes: To be or no  to be, thatmis the question.
-Generation #  150 | MaxFitness: 0.98 | BestGenes: To be or not to be, thatmis the question.
-Generation #  175 | MaxFitness: 0.98 | BestGenes: To be or not to be, thatmis the question.
-Generation #  192 | MaxFitness: 1.00 | BestGenes: To be or not to be, that is the question.
-Elapsed time: 72.40605ms
+Generation:    0 | MaxFitness: 0.17 | BestGenes: epbzzxztknrvmth ectftmgearTrhce effTfa.nq
+Generation:   25 | MaxFitness: 0.54 | BestGenes: Tplbztojknovbto reg,tsatifsghhe epestions
+Generation:   50 | MaxFitness: 0.71 | BestGenes: To,betox notlto je utsat lsqhhe questions
+Generation:   75 | MaxFitness: 0.76 | BestGenes: Tocbetox notkto je  tsat lsqthe questions
+Generation:  100 | MaxFitness: 0.88 | BestGenes: Toxbe or not to je  that lscthe question.
+Generation:  125 | MaxFitness: 0.95 | BestGenes: Toxbe or not to beh that is the question.
+Generation:  150 | MaxFitness: 0.98 | BestGenes: To be or not to beb that is the question.
+Generation:  166 | MaxFitness: 1.00 | BestGenes: To be or not to be, that is the question.
+Elapsed time: 70.583113ms
 ```

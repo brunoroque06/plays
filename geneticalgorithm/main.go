@@ -33,5 +33,5 @@ func main() {
 }
 
 func printStatistics(generationNumber int, maxFitness float32, bestGenes string) {
-	log.Printf("Generation # %4d | MaxFitness: %.2f | BestGenes: %v", generationNumber, maxFitness, bestGenes)
+	log.Printf("Generation: %4d | MaxFitness: %.2f | BestGenes: %v", generationNumber, maxFitness, bestGenes)
 }
