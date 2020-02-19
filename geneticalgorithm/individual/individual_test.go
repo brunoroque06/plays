@@ -1,9 +1,9 @@
 package individual
 
 import (
-	"github.com/brunoroque06/geneticalgorithm/random"
 	"testing"
 
+	"github.com/brunoroque06/geneticalgorithm/random"
 	"github.com/stretchr/testify/assert"
 )
 

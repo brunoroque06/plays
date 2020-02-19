@@ -2,6 +2,7 @@ package individual
 
 import (
 	"errors"
+
 	"github.com/brunoroque06/geneticalgorithm/random"
 )
 

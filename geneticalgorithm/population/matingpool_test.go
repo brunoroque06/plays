@@ -1,9 +1,10 @@
 package population
 
 import (
+	"testing"
+
 	"github.com/brunoroque06/geneticalgorithm/individual"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func Test_GivenPopulationHasNoIndividuals_WhenCreatingMatingPool_ThenError(t *testing.T) {
