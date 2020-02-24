@@ -1,7 +1,6 @@
 .PHONY: prepare
 prepare:
 	make -C blockchain prepare
-	make -C geneticalgorithm prepare
 
 .PHONY: test
 test:
