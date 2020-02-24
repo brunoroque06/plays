@@ -1,6 +1,6 @@
 .PHONY: prepare
 prepare: 
-	ln -fs ${PWD} ${HOME}/go/src/github.com/brunoroque06
+	go mod init github.com/brunoroque06/geneticalgorithm
 
 .PHONY: run
 run:
@@ -13,3 +13,7 @@ test:
 .PHONY: format
 format:
 	gofmt -s -w .
+
+.PHONY: lint
+lint:
+	golint -set_exit_status ./...
