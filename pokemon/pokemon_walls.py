@@ -12,7 +12,7 @@ print(POKEMONS.loc[197].to_frame().T)
 POKEMONS["Effective HP"] = pokemon_utilities.effective_hp(POKEMONS["HP"])
 POKEMONS.sort_values("Effective HP", ascending=False).filter(regex="Name|HP").head()
 
-# %% Types Factors and Damages
+# %% Type Factors and Damage
 for ptype in TYPES.iloc[:, 1:]:
     POKEMONS[ptype] = pokemon_utilities.calculate_type_damage_factors(
         TYPES, ptype, POKEMONS["Type 1"], POKEMONS["Type 2"]
@@ -24,7 +24,7 @@ for ptype in TYPES.iloc[:, 1:]:
         POKEMONS["Sp. Def"], POKEMONS[ptype]
     )
 
-# %% Average Damages
+# %% Average Damage
 POKEMONS["Ph. Average Damage"] = POKEMONS.filter(like="Ph. Damage").mean(axis=1)
 POKEMONS["Sp. Average Damage"] = POKEMONS.filter(like="Sp. Damage").mean(axis=1)
 POKEMONS["Mix. Average Damage"] = POKEMONS.filter(like="Damage").mean(axis=1)
