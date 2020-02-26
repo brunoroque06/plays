@@ -1,56 +1,57 @@
 # %% Pokemon Walls
 import pandas as pd
+
 import pokemon_utilities
 
-pokemons = pd.read_csv("pokemons.csv").set_index("#")
-types_chart = pd.read_csv("types-chart.csv").set_index("Attack")
+POKEMONS = pd.read_csv("pokemons.csv").set_index("#")
+TYPES = pd.read_csv("types-chart.csv").set_index("Attack")
 
-pokemons.loc[197].to_frame().T
+print(POKEMONS.loc[197].to_frame().T)
 
 # %% Effective HP
-pokemons["Effective HP"] = pokemon_utilities.effective_hp(pokemons["HP"])
-pokemons.sort_values("Effective HP", ascending=False).filter(regex="Name|HP").head()
+POKEMONS["Effective HP"] = pokemon_utilities.effective_hp(POKEMONS["HP"])
+POKEMONS.sort_values("Effective HP", ascending=False).filter(regex="Name|HP").head()
 
 # %% Types Factors and Damages
-for type in types_chart.iloc[:, 1:]:
-    pokemons[type] = pokemon_utilities.calculate_type_damage_factors(
-        types_chart, type, pokemons["Type 1"], pokemons["Type 2"]
+for ptype in TYPES.iloc[:, 1:]:
+    POKEMONS[ptype] = pokemon_utilities.calculate_type_damage_factors(
+        TYPES, ptype, POKEMONS["Type 1"], POKEMONS["Type 2"]
     )
-    pokemons[type + " Ph. Damage"] = pokemon_utilities.calculate_damages(
-        pokemons["Defense"], pokemons[type]
+    POKEMONS[ptype + " Ph. Damage"] = pokemon_utilities.calculate_damages(
+        POKEMONS["Defense"], POKEMONS[ptype]
     )
-    pokemons[type + " Sp. Damage"] = pokemon_utilities.calculate_damages(
-        pokemons["Sp. Def"], pokemons[type]
+    POKEMONS[ptype + " Sp. Damage"] = pokemon_utilities.calculate_damages(
+        POKEMONS["Sp. Def"], POKEMONS[ptype]
     )
 
 # %% Average Damages
-pokemons["Ph. Average Damage"] = pokemons.filter(like="Ph. Damage").mean(axis=1)
-pokemons["Sp. Average Damage"] = pokemons.filter(like="Sp. Damage").mean(axis=1)
-pokemons["Mix. Average Damage"] = pokemons.filter(like="Damage").mean(axis=1)
+POKEMONS["Ph. Average Damage"] = POKEMONS.filter(like="Ph. Damage").mean(axis=1)
+POKEMONS["Sp. Average Damage"] = POKEMONS.filter(like="Sp. Damage").mean(axis=1)
+POKEMONS["Mix. Average Damage"] = POKEMONS.filter(like="Damage").mean(axis=1)
 
 # %% Physical Walls
-pokemons.sort_values("Ph. Average Damage").filter(regex="Name|Ph. Average").head()
-pokemons["Ph. Attacks Sustained"] = (
-    pokemons["Effective HP"] / pokemons["Ph. Average Damage"]
+POKEMONS.sort_values("Ph. Average Damage").filter(regex="Name|Ph. Average").head()
+POKEMONS["Ph. Attacks Sustained"] = (
+    POKEMONS["Effective HP"] / POKEMONS["Ph. Average Damage"]
 )
-pokemons.sort_values("Ph. Attacks Sustained", ascending=False).filter(
+POKEMONS.sort_values("Ph. Attacks Sustained", ascending=False).filter(
     regex="Name|Ph. Attacks"
 ).head()
 
 # %% Special Walls
-pokemons.sort_values("Sp. Average Damage").filter(regex="Name|Sp. Average").head()
-pokemons["Sp. Attacks Sustained"] = (
-    pokemons["Effective HP"] / pokemons["Sp. Average Damage"]
+POKEMONS.sort_values("Sp. Average Damage").filter(regex="Name|Sp. Average").head()
+POKEMONS["Sp. Attacks Sustained"] = (
+    POKEMONS["Effective HP"] / POKEMONS["Sp. Average Damage"]
 )
-pokemons.sort_values("Sp. Attacks Sustained", ascending=False).filter(
+POKEMONS.sort_values("Sp. Attacks Sustained", ascending=False).filter(
     regex="Name|Sp. Attacks"
 ).head()
 
 # %% Mixed Walls
-pokemons.sort_values("Mix. Average Damage").filter(regex="Name|Average Damage").head()
-pokemons["Mix. Attacks Sustained"] = (
-    pokemons["Effective HP"] / pokemons["Mix. Average Damage"]
+POKEMONS.sort_values("Mix. Average Damage").filter(regex="Name|Average Damage").head()
+POKEMONS["Mix. Attacks Sustained"] = (
+    POKEMONS["Effective HP"] / POKEMONS["Mix. Average Damage"]
 )
-pokemons.sort_values("Mix. Attacks Sustained", ascending=False).filter(
+POKEMONS.sort_values("Mix. Attacks Sustained", ascending=False).filter(
     regex="Name|Mix. Attacks"
 ).head()
