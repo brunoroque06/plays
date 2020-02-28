@@ -16,7 +16,7 @@ func Test_GivenPopulationHasNoIndividuals_WhenCreatingMatingPool_ThenError(t *te
 }
 
 func Test_Given4Individuals_WhenCreateMatingPool_ThenTheyAreInsertedProportionally(t *testing.T) {
-	ratedIndividuals := []*individual.RatedIndividual{{&individual.Individual{}, 0.25}, {&individual.Individual{}, 0.50}, {&individual.Individual{}, 0.25}, {&individual.Individual{}, 0.75}}
+	ratedIndividuals := []*individual.RatedIndividual{{Individual: &individual.Individual{}, Fitness: 0.25}, {Individual: &individual.Individual{}, Fitness: 0.50}, {Individual: &individual.Individual{}, Fitness: 0.25}, {Individual: &individual.Individual{}, Fitness: 0.75}}
 	ratedPopulation := NewRatedPopulation(ratedIndividuals)
 
 	pool, err := NewMatingPool(ratedPopulation)
@@ -26,7 +26,7 @@ func Test_Given4Individuals_WhenCreateMatingPool_ThenTheyAreInsertedProportional
 }
 
 func TestGetRandomIndividual(t *testing.T) {
-	ratedIndividuals := []*individual.RatedIndividual{{&individual.Individual{}, 0.50}, {&individual.Individual{}, 0.25}}
+	ratedIndividuals := []*individual.RatedIndividual{{Individual: &individual.Individual{}, Fitness: 0.50}, {Individual: &individual.Individual{}, Fitness: 0.25}}
 	ratedPopulation := NewRatedPopulation(ratedIndividuals)
 
 	pool, _ := NewMatingPool(ratedPopulation)

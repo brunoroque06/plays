@@ -8,7 +8,7 @@ import (
 )
 
 func Test_GivenPopulationWith1Gene_WhenRatingAgainst2Genes_ThenError(t *testing.T) {
-	individuals := []*individual.Individual{{[]rune("a")}}
+	individuals := []*individual.Individual{{Genes: []rune("a")}}
 	population := NewPopulation(individuals)
 	target := []rune("ab")
 
@@ -18,8 +18,8 @@ func Test_GivenPopulationWith1Gene_WhenRatingAgainst2Genes_ThenError(t *testing.
 }
 
 func TestRatingPopulation(t *testing.T) {
-	bestIndividual := individual.Individual{[]rune("abcd")}
-	ind := individual.Individual{[]rune("efgh")}
+	bestIndividual := individual.Individual{Genes: []rune("abcd")}
+	ind := individual.Individual{Genes: []rune("efgh")}
 	individuals := []*individual.Individual{&bestIndividual, &ind}
 	population := NewPopulation(individuals)
 	target := []rune("abch")

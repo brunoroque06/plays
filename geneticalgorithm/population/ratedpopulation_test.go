@@ -24,7 +24,7 @@ func NewRatedPopulation(ratedIndividuals []*individual.RatedIndividual) *RatedPo
 
 func TestRandomPopulationCreation(t *testing.T) {
 	bestGenes := []rune("b")
-	ratedIndividuals := []*individual.RatedIndividual{{&individual.Individual{[]rune("a")}, 0.25}, {&individual.Individual{bestGenes}, 0.75}, {&individual.Individual{[]rune("c")}, 0.60}}
+	ratedIndividuals := []*individual.RatedIndividual{{Individual: &individual.Individual{Genes: []rune("a")}, Fitness: 0.25}, {Individual: &individual.Individual{Genes: bestGenes}, Fitness: 0.75}, {Individual: &individual.Individual{Genes: []rune("c")}, Fitness: 0.60}}
 
 	ratedPopulation := NewRatedPopulation(ratedIndividuals)
 
@@ -45,7 +45,7 @@ func Test_GivenNoIndividuals_WhenFindBestCouple_ThenError(t *testing.T) {
 }
 
 func Test_GivenIndividualsWithDifferentFitnessValues_WhenFindBestCouple_ThenFindTheBestTwo(t *testing.T) {
-	ratedIndividuals := []*individual.RatedIndividual{{&individual.Individual{}, 0.50}, {&individual.Individual{}, 0.25}, {&individual.Individual{}, 0.75}, {&individual.Individual{}, 0.60}}
+	ratedIndividuals := []*individual.RatedIndividual{{Individual: &individual.Individual{}, Fitness: 0.50}, {Individual: &individual.Individual{}, Fitness: 0.25}, {Individual: &individual.Individual{}, Fitness: 0.75}, {Individual: &individual.Individual{}, Fitness: 0.60}}
 	ratedPopulation := NewRatedPopulation(ratedIndividuals)
 
 	best, secondBest, err := ratedPopulation.findBestCouple()
@@ -56,7 +56,7 @@ func Test_GivenIndividualsWithDifferentFitnessValues_WhenFindBestCouple_ThenFind
 }
 
 func Test_GivenIndividualsWithEqualFitnessValues_WhenFindBestCouple_ThenFirstAndLast(t *testing.T) {
-	ratedIndividuals := []*individual.RatedIndividual{{&individual.Individual{}, 0.50}, {&individual.Individual{}, 0.50}, {&individual.Individual{}, 0.50}}
+	ratedIndividuals := []*individual.RatedIndividual{{Individual: &individual.Individual{}, Fitness: 0.50}, {Individual: &individual.Individual{}, Fitness: 0.50}, {Individual: &individual.Individual{}, Fitness: 0.50}}
 	ratedPopulation := NewRatedPopulation(ratedIndividuals)
 
 	best, secondBest, err := ratedPopulation.findBestCouple()
@@ -80,7 +80,7 @@ func TestNextGenerationToNeedAtLeastTwoIndividuals(t *testing.T) {
 }
 
 func TestNextGenerationToConsistOfHalfChildrenFromTheBestCoupleAndHalfFromWorst(t *testing.T) {
-	ratedIndividuals := []*individual.RatedIndividual{{&individual.Individual{}, 0.50}, {&individual.Individual{}, 0.25}, {&individual.Individual{}, 0.75}, {&individual.Individual{}, 0.60}}
+	ratedIndividuals := []*individual.RatedIndividual{{Individual: &individual.Individual{}, Fitness: 0.50}, {Individual: &individual.Individual{}, Fitness: 0.25}, {Individual: &individual.Individual{}, Fitness: 0.75}, {Individual: &individual.Individual{}, Fitness: 0.60}}
 	ratedPopulation := NewRatedPopulation(ratedIndividuals)
 	bestCoupleChildGenes := []rune("best-genes")
 	crossover := func(parentX *individual.Individual, parentY *individual.Individual, randomBool random.BoolType) (*individual.Individual, error) {
