@@ -1,3 +1,7 @@
+# Dotnet
+bin/
+obj/
+
 # Haskell
 .ghc*
 dist*/
@@ -9,7 +13,7 @@ dist*/
 build/
 out/
 
-# Node
+# Node.js
 node_modules/
 
 # Python
@@ -19,4 +23,3 @@ venv/
 
 # VSCode
 .vscode/
-
