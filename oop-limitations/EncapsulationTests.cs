@@ -7,9 +7,8 @@ namespace oop_limitations
         [Test]
         public void ShouldBeSafe()
         {
-            var core = new Kernel();
-            core.Secret = 22;
-            
+            var core = new Kernel { Secret = 22 };
+
             var shell = new Shell(core);
             Assert.AreEqual(22, shell.Kernel.Secret, 0);
 

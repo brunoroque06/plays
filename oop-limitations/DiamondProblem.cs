@@ -30,8 +30,14 @@ namespace oop_limitations
 
     public class SmartPhoneContainAndDelegate // Black Box -> White Box
     {
-        private Phone _phone;
-        private Computer _computer;
+        private readonly Phone _phone;
+        private readonly Computer _computer;
+
+        public SmartPhoneContainAndDelegate(Phone phone, Computer computer)
+        {
+            _phone = phone;
+            _computer = computer;
+        }
 
         public void Power()
         {

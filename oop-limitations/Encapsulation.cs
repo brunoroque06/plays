@@ -4,7 +4,7 @@ namespace oop_limitations
     {
         public int Secret { get; set; }
     }
-    
+
     public class Shell
     {
         public Kernel Kernel { get; }
