@@ -6,3 +6,4 @@ prepare:
 test:
 	make -C blockchain test
 	make -C geneticalgorithm test
+	make -C oop-limitations test
