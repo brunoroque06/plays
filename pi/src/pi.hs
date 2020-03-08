@@ -1,19 +1,19 @@
 module Pi where
 
-import Points
+import System.Random
+import Data.List (foldl')
 
-estimatePi :: [Point] -> Double
-estimatePi points = 4 * pointsIn' / totalPoints'
-  where pointsIn' = fromIntegral(sum (numberOfPointsIn points))
-        totalPoints' = fromIntegral(length points) 
+isPointInsideCircle :: [(Double, Double)] -> (Int, Int)
+isPointInsideCircle = foldl' pythagoras (0, 0)
 
-numberOfPointsIn :: [Point] -> [Int]
-numberOfPointsIn points = map isPointInsideCircle points
+pythagoras :: (Int, Int) -> (Double, Double) -> (Int, Int)
+pythagoras (ins, total) (x, y) = (ins + if x ** 2 + y ** 2 <= 1 then 1 else 0, total + 1)
 
-isPointInsideCircle :: Point -> Int
-isPointInsideCircle (x, y) = mapBool pythagoras'
-  where pythagoras' = sqrt(x ** 2 + y ** 2) <= 1
+calculateRatio :: (Int, Int) -> Double
+calculateRatio (ins, total) = (4 * fromIntegral ins / fromIntegral total)
 
-mapBool :: Bool -> Int
-mapBool bool | bool == False = 0
-             | otherwise = 1
+display:: (Int, Int) -> String
+display (heads, coins) = "π = " ++ (show $ 4.0 * fromIntegral heads / fromIntegral coins)
+
+createPoint :: [Double] -> [(Double, Double)]
+createPoint (a : b : r) = (a, b) : createPoint r

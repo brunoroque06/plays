@@ -9,4 +9,4 @@ executable pi
   hs-source-dirs: exe
   hs-source-dirs: src/
   main-is: Main.hs
-  other-modules: Pi, Points
+  other-modules: Pi

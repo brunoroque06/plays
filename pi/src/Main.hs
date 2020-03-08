@@ -1,16 +1,12 @@
 module Main where
 
 import Pi
-import Points
+import System.Environment
+import System.Random
 
 main :: IO ()
 main = do
-  putStrLn "Running Monte Carlo's method to estimate π. Number of points:"
-  numPoints <- readLn
-  putStrLn "Generating coordinates..."
-  randomNumbers <- randomList 0 1
-  let coordinates = take (numPoints * 2) $ randomNumbers
-  putStrLn "Creating Points..."
-  let points = createPoints coordinates
-  putStrLn "Estimating π..."
-  print $ estimatePi points
+  gen <- newStdGen
+  args <- getArgs
+  let numPoints = if (length args) == 0 then 1000 else read . head $ args :: Int
+  print . calculateRatio . isPointInsideCircle . take numPoints . createPoint $ randoms gen
