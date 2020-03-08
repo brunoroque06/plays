@@ -3,8 +3,7 @@ bin/
 obj/
 
 # Haskell
-.ghc*
-dist*/
+dist-newstyle/
 
 # Java
 *.iml
