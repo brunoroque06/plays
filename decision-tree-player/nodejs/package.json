@@ -3,6 +3,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
+    "run": "node index.js",
     "test": "jest --silent"
   },
   "devDependencies": {
