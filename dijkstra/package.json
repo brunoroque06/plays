@@ -1,5 +1,5 @@
 {
-  "name": "com.github.brunoroque06.decision-tree-player",
+  "name": "com.github.brunoroque06.dijkstra",
   "main": "index.js",
   "private": true,
   "scripts": {
