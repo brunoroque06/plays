@@ -18,7 +18,7 @@ Fitness is again estimated, and the next generation is created. This process is 
 
 ## Output
 
-```bash
+```shell
 Generation:    0 | MaxFitness: 0.17 | BestGenes: epbzzxztknrvmth ectftmgearTrhce effTfa.nq
 Generation:   25 | MaxFitness: 0.54 | BestGenes: Tplbztojknovbto reg,tsatifsghhe epestions
 Generation:   50 | MaxFitness: 0.71 | BestGenes: To,betox notlto je utsat lsqhhe questions
