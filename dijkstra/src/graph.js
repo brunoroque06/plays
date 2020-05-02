@@ -1,5 +1,10 @@
+function createNode(id, edges) {
+  return { id, edges };
+}
+
 function generateConnectedGraph() {
-  return [];
+  const root = createNode(0, []);
+  return { root, numberNodes: 1, numberEdges: 0 };
 }
 
 module.exports = {
