@@ -1,14 +1,26 @@
 const R = require('ramda');
 
-function calculateNumberEdges(nVer, density) {
+function calculateNumberEdges(nVertices, density) {
   return Math.round(
-    nVer - 1 + (density / 100) * ((nVer * (nVer - 1)) / 2 - (nVer - 1)),
+    nVertices -
+      1 +
+      (density / 100) * ((nVertices * (nVertices - 1)) / 2 - (nVertices - 1)),
   );
 }
 
-function createNode(id) {
-  return { id, edges: [] };
+function createEdgePool(nVertices) {
+  const higherIdEdges = (id) =>
+    R.pipe(R.range(R.__, nVertices), R.map(R.pair(id)))(id + 1);
+  return R.chain(higherIdEdges, R.range(0, nVertices));
 }
+
+// const generateEdges = R.curry((getRandomInt, nVertices, nEdges) => {
+//   return [];
+// });
+
+// function createNode(id) {
+//   return { id, edges: [] };
+// }
 
 // function createEdge(id, cost) {
 //   return { id, cost };
@@ -31,20 +43,23 @@ function createNode(id) {
 //   };
 // }
 
-function createGraph(nodes) {
-  return { nodes, root: nodes[0] };
-}
+// function createGraph(nodes) {
+//   return { nodes, root: nodes[0] };
+// }
+// const createEdges = R.curry((getRandomInt, nVertices, nEdges) => {});
 
-function generateConnectedGraph(getRandomInt) {
-  return (numNodes, maxEdgeCost) =>
-    R.pipe(
-      R.range(0, numNodes).map((i) => createNode(i)),
-      // connectNodes(getRandomInt, maxEdgeCost),
-      createGraph,
-    );
-}
+// function createGraph(getRandomInt) {
+//   return (nVertices, density, maxEdgeCost) =>
+//     R.pipe(
+//       R.always(calculateNumberEdges(nVertices, density)),
+//       createEdges(getRandomInt, nVertices),
+//       R.range(0, nVertices).map((i) => createNode(i)),
+//       // connectNodes(getRandomInt, maxEdgeCost),
+//       // createGraph,
+//     );
+// }
 
 module.exports = {
   calculateNumberEdges,
-  generateConnectedGraph,
+  createEdgePool,
 };

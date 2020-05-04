@@ -17,6 +17,7 @@
     "eslint-plugin-fp": "^2.3.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jest": "^23.8.2",
+    "eslint-plugin-ramda": "^2.5.1",
     "jest": "^25.5.4"
   }
 }

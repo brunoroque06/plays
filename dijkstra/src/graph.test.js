@@ -7,13 +7,13 @@ test('number of edges', () => {
   expect(graph.calculateNumberEdges(4, 100)).toBe(6);
 });
 
-// test('create graph with 1 node', () => {
-//   const g = graph.generateConnectedGraph(1, 0);
+test('create edge pool with 3 vertices', () => {
+  const edges = graph.createEdgePool(3);
 
-//   expect(g.root.id).toBe(0);
-//   expect(g.root.edges).toEqual([]);
-//   expect(g.nodes.length).toBe(1);
-// });
+  expect(edges[0]).toEqual([0, 1]);
+  expect(edges[1]).toEqual([0, 2]);
+  expect(edges[2]).toEqual([1, 2]);
+});
 
 // test('create graph with 2 nodes', () => {
 //   const g = graph.generateConnectedGraph(2, 0);
