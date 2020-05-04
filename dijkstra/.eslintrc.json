@@ -6,7 +6,8 @@
   "extends": [
     "airbnb-base",
     "plugin:fp/recommended",
-    "plugin:jest/recommended"
+    "plugin:jest/recommended",
+    "prettier"
   ],
   "rules": {
     "complexity": ["warn", 5],
