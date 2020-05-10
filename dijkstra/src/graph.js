@@ -9,11 +9,11 @@ function calculateNumberEdges(nVertices, density) {
 }
 
 function createEdgePool(nVertices) {
-  const higherIdEdges = (id) =>
-    R.pipe(R.range(R.__, nVertices), R.map(R.pair(id)))(id + 1);
-  return R.chain(higherIdEdges, R.range(0, nVertices));
+  const lowerEdges = (id) => R.pipe(R.range(0), R.map(R.pair(id)))(id);
+  return R.chain(lowerEdges, R.range(1, nVertices));
 }
 
+function pickEdges(nVertices, nEdges, pool) {}
 // const generateEdges = R.curry((getRandomInt, nVertices, nEdges) => {
 //   return [];
 // });
