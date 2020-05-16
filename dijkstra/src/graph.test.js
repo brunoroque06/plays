@@ -9,13 +9,21 @@ test('number of edges', () => {
 
 test('create edge pool', () => {
   const edges = graph.createEdgePool(4);
-
   expect(edges[0]).toEqual([1, 0]);
   expect(edges[1]).toEqual([2, 0]);
   expect(edges[2]).toEqual([2, 1]);
   expect(edges[3]).toEqual([3, 0]);
   expect(edges[4]).toEqual([3, 1]);
   expect(edges[5]).toEqual([3, 2]);
+});
+
+test('create edges', () => {
+  const edges = graph.createEdges(4);
+  expect(edges[0]).toEqual([[1, 0]]);
+  expect(edges[1]).toEqual([
+    [2, 0],
+    [2, 1],
+  ]);
 });
 
 // test('create graph with 2 nodes', () => {

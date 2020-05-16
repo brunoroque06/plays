@@ -13,6 +13,10 @@ function createEdgePool(nVertices) {
   return R.chain(lowerEdges, R.range(1, nVertices));
 }
 
+function createEdges(nVertices) {
+  return R.pipe(createEdgePool, R.groupWith(R.eqBy(R.head)))(nVertices);
+}
+
 function pickEdges(nVertices, nEdges, pool) {}
 // const generateEdges = R.curry((getRandomInt, nVertices, nEdges) => {
 //   return [];
@@ -62,4 +66,5 @@ function pickEdges(nVertices, nEdges, pool) {}
 module.exports = {
   calculateNumberEdges,
   createEdgePool,
+  createEdges,
 };
