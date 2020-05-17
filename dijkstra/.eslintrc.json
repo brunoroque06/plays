@@ -30,7 +30,8 @@
       "files": ["*.test.js"],
       "rules": {
         "fp/no-nil": "off",
-        "fp/no-unused-expression": "off"
+        "fp/no-unused-expression": "off",
+        "max-lines-per-function": "off"
       }
     }
   ]
