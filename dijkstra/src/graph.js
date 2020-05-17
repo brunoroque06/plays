@@ -72,8 +72,12 @@ const createVertices = R.pipe(
   R.map(R.assoc('edges', [])),
 );
 
+const createVertex = R.curry((id, edges) => {
+  return { id, edges };
+});
+
 const mapToGraph = R.curry((nVertices, edges) => {
-  const getTarget = R.curry((id, eds) => {
+  const getTargets = R.curry((id, eds) => {
     return R.map((e) => {
       return {
         id: R.when(R.equals(id), R.always(e.source))(e.target),
@@ -82,13 +86,14 @@ const mapToGraph = R.curry((nVertices, edges) => {
     })(eds);
   });
 
-  const getEdges = R.curry((eds, id) =>
+  const mapToVertex = R.curry((eds, id) =>
     R.pipe(
       R.filter((e) => R.equals(e.source, id) || R.equals(e.target, id)),
-      getTarget(id),
+      getTargets(id),
+      createVertex(id),
     )(eds),
   );
-  return R.pipe(R.range(0), R.map(getEdges(edges)))(nVertices);
+  return R.pipe(R.range(0), R.map(mapToVertex(edges)))(nVertices);
 });
 
 // const mapToGraph = R.curry((nVertices, weightedEdges) => {
