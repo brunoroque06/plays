@@ -13,11 +13,29 @@ function createEdgePool(nVertices) {
   return R.chain(lowerEdges, R.range(1, nVertices));
 }
 
-function createEdges(nVertices) {
-  return R.pipe(createEdgePool, R.groupWith(R.eqBy(R.head)))(nVertices);
+const pickEdge = R.curry((getInt, pool) => {
+  const idx = getInt(0, pool.length - 1);
+  return { edge: pool[idx], pool: R.remove(idx, 1, pool) };
+});
+
+function joinEdges(edges) {
+  return R.pipe(
+    R.assoc('edges', R.pluck('edge', edges)),
+    R.assoc('pool', R.pluck('pool', edges)),
+  )({});
 }
 
-function pickEdges(nVertices, nEdges, pool) {}
+function createEdges(getInt, nVertices, nEdges) {
+  return R.pipe(
+    createEdgePool,
+    R.groupWith(R.eqBy(R.head)),
+    R.map(pickEdge(getInt)),
+    joinEdges,
+    R.prop('edges'),
+  )(nVertices);
+}
+
+// function pickEdges(nVertices, nEdges, pool) {}
 // const generateEdges = R.curry((getRandomInt, nVertices, nEdges) => {
 //   return [];
 // });

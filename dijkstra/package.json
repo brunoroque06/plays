@@ -3,6 +3,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
+    "lint": "eslint .",
     "run": "node index.js",
     "test": "jest --silent"
   },
