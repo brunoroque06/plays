@@ -24,12 +24,12 @@ const groupEdgePool = R.pipe(
 );
 
 const pickEdges = R.curry((getInt, nEdges, edges) => {
-  const pick = R.curry((idx, e) => {
-    return R.pipe(
+  const pick = R.curry((idx, e) =>
+    R.pipe(
       R.assoc('edges', R.append(R.nth(idx, e.pool), e.edges)),
       R.assoc('pool', R.remove(idx, 1, e.pool)),
-    )({});
-  });
+    )({}),
+  );
   return R.unless(
     R.pipe(R.prop('edges'), R.length, R.equals(nEdges)),
     R.pipe(
@@ -39,12 +39,11 @@ const pickEdges = R.curry((getInt, nEdges, edges) => {
   )(edges);
 });
 
-const joinEdges = (edges) => {
-  return R.pipe(
+const joinEdges = (edges) =>
+  R.pipe(
     R.assoc('edges', R.unnest(R.pluck('edges', edges))),
     R.assoc('pool', R.unnest(R.pluck('pool', edges))),
   )({});
-};
 
 const createEdges = R.curry((getInt, nVertices, nEdges) =>
   R.pipe(
