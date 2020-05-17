@@ -18,7 +18,7 @@ test('create edge pool', () => {
 });
 
 test('create edges with 0 density', () => {
-  const getInt = (min, _) => min;
+  const getInt = (n) => n;
   const edges = graph.createEdges(getInt, 4, 3);
   expect(edges.length).toBe(3);
   expect(edges[0]).toEqual([1, 0]);
@@ -27,7 +27,7 @@ test('create edges with 0 density', () => {
 });
 
 test('create edges with higher density', () => {
-  const getInt = (min, _) => min;
+  const getInt = (n) => n;
   const edges = graph.createEdges(getInt, 4, 5);
   expect(edges.length).toBe(5);
   expect(edges[0]).toEqual([1, 0]);

@@ -13,27 +13,45 @@ function createEdgePool(nVertices) {
   return R.chain(lowerEdges, R.range(1, nVertices));
 }
 
-const pickEdge = R.curry((getInt, pool) => {
-  const idx = getInt(0, pool.length - 1);
-  return { edge: pool[idx], pool: R.remove(idx, 1, pool) };
+const groupEdgePool = R.pipe(
+  R.groupWith(R.eqBy(R.head)),
+  R.map((p) => R.assoc('pool', p, {})),
+  R.map(R.assoc('edges', [])),
+);
+
+const pickEdges = R.curry((getInt, nEdges, edges) => {
+  const pick = R.curry((idx, e) => {
+    return R.pipe(
+      R.assoc('edges', R.append(R.nth(idx, e.pool), e.edges)),
+      R.assoc('pool', R.remove(idx, 1, e.pool)),
+    )({});
+  });
+  return R.unless(
+    R.pipe(R.prop('edges'), R.length, R.equals(nEdges)),
+    R.pipe(
+      pick(getInt(0, R.length(edges.pool) - 1)),
+      pickEdges(getInt, nEdges),
+    ),
+  )(edges);
 });
 
-function joinEdges(edges) {
+const joinEdges = (edges) => {
   return R.pipe(
-    R.assoc('edges', R.pluck('edge', edges)),
-    R.assoc('pool', R.pluck('pool', edges)),
+    R.assoc('edges', R.unnest(R.pluck('edges', edges))),
+    R.assoc('pool', R.unnest(R.pluck('pool', edges))),
   )({});
-}
+};
 
-function createEdges(getInt, nVertices, nEdges) {
+const createEdges = R.curry((getInt, nVertices, nEdges) => {
   return R.pipe(
     createEdgePool,
-    R.groupWith(R.eqBy(R.head)),
-    R.map(pickEdge(getInt)),
+    groupEdgePool,
+    R.map(pickEdges(getInt, 1)),
     joinEdges,
+    pickEdges(getInt, nEdges),
     R.prop('edges'),
   )(nVertices);
-}
+});
 
 // function pickEdges(nVertices, nEdges, pool) {}
 // const generateEdges = R.curry((getRandomInt, nVertices, nEdges) => {
