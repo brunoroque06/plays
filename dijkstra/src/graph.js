@@ -70,6 +70,18 @@ const createVertex = R.curry((id, edges) => {
   return { id, edges };
 });
 
+/* eslint-disable */
+// Check README for explanation
+const linkVertices = (vertices) => {
+  R.forEach((v) => {
+    R.forEach((e) => {
+      e.id = vertices[e.id];
+    })(v.edges);
+  })(vertices);
+  return vertices;
+};
+/* eslint-enable */
+
 const mapToGraph = R.curry((nVertices, edges) => {
   const getTargets = R.curry((id, eds) => {
     return R.map((e) => {
@@ -87,7 +99,7 @@ const mapToGraph = R.curry((nVertices, edges) => {
       createVertex(id),
     )(eds),
   );
-  return R.pipe(R.range(0), R.map(mapToVertex(edges)))(nVertices);
+  return R.pipe(R.range(0), R.map(mapToVertex(edges)), linkVertices)(nVertices);
 });
 
 const createGraph = R.curry(

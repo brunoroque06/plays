@@ -50,30 +50,28 @@ test('create graph with 0 density', () => {
     maxEdgeCost: 10,
   });
 
-  console.log(gra);
-
-  const v0 = gra.vertices[0];
-  const v1 = gra.vertices[1];
-  const v2 = gra.vertices[2];
-  const v3 = gra.vertices[3];
+  const v0 = gra[0];
+  const v1 = gra[1];
+  const v2 = gra[2];
+  const v3 = gra[3];
 
   expect(v0.id).toBe(0);
-  expect(v0.edges[0].vertex).toEqual(v1);
-  expect(v0.edges[0].cost).toBe(10);
-  expect(v0.edges[1].vertex).toEqual(v2);
-  expect(v0.edges[1].cost).toBe(10);
-  expect(v0.edges[2].vertex).toEqual(v3);
-  expect(v0.edges[2].cost).toBe(10);
+  expect(v0.edges[0].id).toEqual(v1);
+  expect(v0.edges[0].weight).toBe(10);
+  expect(v0.edges[1].id).toEqual(v2);
+  expect(v0.edges[1].weight).toBe(10);
+  expect(v0.edges[2].id).toEqual(v3);
+  expect(v0.edges[2].weight).toBe(10);
 
   expect(v1.id).toBe(1);
-  expect(v1.edges[0].vertex).toEqual(v0);
-  expect(v1.edges[0].cost).toBe(10);
+  expect(v1.edges[0].id).toEqual(v0);
+  expect(v1.edges[0].weight).toBe(10);
 
   expect(v2.id).toBe(2);
-  expect(v2.edges[0].vertex).toEqual(v0);
-  expect(v2.edges[0].cost).toBe(10);
+  expect(v2.edges[0].id).toEqual(v0);
+  expect(v2.edges[0].weight).toBe(10);
 
-  expect(v3.id).toBe(2);
-  expect(v3.edges[0].vertex).toEqual(v0);
-  expect(v3.edges[0].cost).toBe(10);
+  expect(v3.id).toBe(3);
+  expect(v3.edges[0].id).toEqual(v0);
+  expect(v3.edges[0].weight).toBe(10);
 });
