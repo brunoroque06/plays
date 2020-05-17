@@ -66,12 +66,6 @@ const weightEdges = R.curry((getInt, { minEdgeCost, maxEdgeCost }, vertices) =>
   )(vertices),
 );
 
-const createVertices = R.pipe(
-  R.range(0),
-  R.map(R.assoc('id', R.__, {})),
-  R.map(R.assoc('edges', [])),
-);
-
 const createVertex = R.curry((id, edges) => {
   return { id, edges };
 });
@@ -95,25 +89,6 @@ const mapToGraph = R.curry((nVertices, edges) => {
   );
   return R.pipe(R.range(0), R.map(mapToVertex(edges)))(nVertices);
 });
-
-// const mapToGraph = R.curry((nVertices, weightedEdges) => {
-//   const getEdges = R.curry((vertex, edges) =>
-//     R.filter(
-//       (e) => R.equals(e.source, vertex.id) || R.equals(e.target, vertex.id),
-//     )(edges),
-//   );
-//   const addEdges = R.curry((edges, vertex) =>
-//     R.pipe(
-//       getEdges(vertex),
-//       // R.reduce((a, b) => {
-//       //   a.edges = R.append(a.edges, b.source);
-//       //   return a;
-//       // }, vertex),
-//       R.always(vertex),
-//     )(edges),
-//   );
-//   return R.pipe(createVertices, R.map(addEdges(weightedEdges)))(nVertices);
-// });
 
 const createGraph = R.curry(
   (getInt, { nVertices, density, minEdgeCost, maxEdgeCost }) => {
