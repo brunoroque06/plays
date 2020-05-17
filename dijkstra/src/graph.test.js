@@ -37,41 +37,43 @@ test('create edges with higher density', () => {
   expect(edges[4]).toEqual([3, 1]);
 });
 
-// test('create graph with 0 density', () => {
-//   const getInt = (min, max) => {
-//     if (max < 5) return min;
-//     return max;
-//   };
+test('create graph with 0 density', () => {
+  const getInt = (min, max) => {
+    if (max < 5) return min;
+    return max;
+  };
 
-//   const gra = graph.createGraph(getInt, {
-//     nVertices: 4,
-//     density: 0,
-//     minEdgeCost: 0,
-//     maxEdgeCost: 10,
-//   });
+  const gra = graph.createGraph(getInt, {
+    nVertices: 4,
+    density: 0,
+    minEdgeCost: 0,
+    maxEdgeCost: 10,
+  });
 
-//   const v0 = gra.vertices[0];
-//   const v1 = gra.vertices[1];
-//   const v2 = gra.vertices[2];
-//   const v3 = gra.vertices[3];
+  console.log(gra);
 
-//   expect(v0.id).toBe(0);
-//   expect(v0.edges[0].vertex).toEqual(v1);
-//   expect(v0.edges[0].cost).toBe(10);
-//   expect(v0.edges[1].vertex).toEqual(v2);
-//   expect(v0.edges[1].cost).toBe(10);
-//   expect(v0.edges[2].vertex).toEqual(v3);
-//   expect(v0.edges[2].cost).toBe(10);
+  const v0 = gra.vertices[0];
+  const v1 = gra.vertices[1];
+  const v2 = gra.vertices[2];
+  const v3 = gra.vertices[3];
 
-//   expect(v1.id).toBe(1);
-//   expect(v1.edges[0].vertex).toEqual(v0);
-//   expect(v1.edges[0].cost).toBe(10);
+  expect(v0.id).toBe(0);
+  expect(v0.edges[0].vertex).toEqual(v1);
+  expect(v0.edges[0].cost).toBe(10);
+  expect(v0.edges[1].vertex).toEqual(v2);
+  expect(v0.edges[1].cost).toBe(10);
+  expect(v0.edges[2].vertex).toEqual(v3);
+  expect(v0.edges[2].cost).toBe(10);
 
-//   expect(v2.id).toBe(2);
-//   expect(v2.edges[0].vertex).toEqual(v0);
-//   expect(v2.edges[0].cost).toBe(10);
+  expect(v1.id).toBe(1);
+  expect(v1.edges[0].vertex).toEqual(v0);
+  expect(v1.edges[0].cost).toBe(10);
 
-//   expect(v3.id).toBe(2);
-//   expect(v3.edges[0].vertex).toEqual(v0);
-//   expect(v3.edges[0].cost).toBe(10);
-// });
+  expect(v2.id).toBe(2);
+  expect(v2.edges[0].vertex).toEqual(v0);
+  expect(v2.edges[0].cost).toBe(10);
+
+  expect(v3.id).toBe(2);
+  expect(v3.edges[0].vertex).toEqual(v0);
+  expect(v3.edges[0].cost).toBe(10);
+});

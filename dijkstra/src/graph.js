@@ -56,15 +56,74 @@ const createEdges = R.curry((getInt, nVertices, nEdges) =>
   )(nVertices),
 );
 
-// const createGraph = R.curry(
-//   (getInt, { nVertices, density, minEdgeCost, maxEdgeCost }) => {
-//     return R.pipe();
-//   },
-// );
+const weightEdges = R.curry((getInt, { minEdgeCost, maxEdgeCost }, vertices) =>
+  R.map((v) =>
+    R.pipe(
+      R.assoc('source', R.head(v)),
+      R.assoc('target', R.last(v)),
+      R.assoc('weight', getInt(minEdgeCost, maxEdgeCost)),
+    )({}),
+  )(vertices),
+);
+
+const createVertices = R.pipe(
+  R.range(0),
+  R.map(R.assoc('id', R.__, {})),
+  R.map(R.assoc('edges', [])),
+);
+
+const mapToGraph = R.curry((nVertices, edges) => {
+  const getTarget = R.curry((id, eds) => {
+    return R.map((e) => {
+      return {
+        id: R.when(R.equals(id), R.always(e.source))(e.target),
+        weight: e.weight,
+      };
+    })(eds);
+  });
+
+  const getEdges = R.curry((eds, id) =>
+    R.pipe(
+      R.filter((e) => R.equals(e.source, id) || R.equals(e.target, id)),
+      getTarget(id),
+    )(eds),
+  );
+  return R.pipe(R.range(0), R.map(getEdges(edges)))(nVertices);
+});
+
+// const mapToGraph = R.curry((nVertices, weightedEdges) => {
+//   const getEdges = R.curry((vertex, edges) =>
+//     R.filter(
+//       (e) => R.equals(e.source, vertex.id) || R.equals(e.target, vertex.id),
+//     )(edges),
+//   );
+//   const addEdges = R.curry((edges, vertex) =>
+//     R.pipe(
+//       getEdges(vertex),
+//       // R.reduce((a, b) => {
+//       //   a.edges = R.append(a.edges, b.source);
+//       //   return a;
+//       // }, vertex),
+//       R.always(vertex),
+//     )(edges),
+//   );
+//   return R.pipe(createVertices, R.map(addEdges(weightedEdges)))(nVertices);
+// });
+
+const createGraph = R.curry(
+  (getInt, { nVertices, density, minEdgeCost, maxEdgeCost }) => {
+    return R.pipe(
+      calculateNumberEdges(nVertices),
+      createEdges(getInt, nVertices),
+      weightEdges(getInt, { minEdgeCost, maxEdgeCost }),
+      mapToGraph(nVertices),
+    )(density);
+  },
+);
 
 module.exports = {
   calculateNumberEdges,
   createEdgePool,
   createEdges,
-  // createGraph,
+  createGraph,
 };

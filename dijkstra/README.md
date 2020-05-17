@@ -6,7 +6,7 @@ Ramda?
 
 ## Graph Properties
 
-For an undirected connected graph, the following is true:
+For an undirected connected weighted graph, the following is true:
 
 - minimum number of edges: `n - 1`;
 - maximum number of edges: `n * (n - 1) / 2`;
