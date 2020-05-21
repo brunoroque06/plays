@@ -71,7 +71,7 @@ const createVertex = R.curry((id, edges) => {
 });
 
 /* eslint-disable */
-// Check README for explanation
+// Check README.md for explanation
 const linkVertices = (vertices) => {
   R.forEach((v) => {
     R.forEach((e) => {
