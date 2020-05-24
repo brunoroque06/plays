@@ -2,14 +2,23 @@ const R = require('ramda');
 
 const abc = 'abcdefghijklmnopqrstuvwxyz';
 
-const toCharInts = R.curry((chars, remainder) =>
-  R.ifElse(
-    R.lt(R.__, R.length(abc)),
-    R.append(R.__, chars),
-    R.pipe(R.modulo(R.__, R.length(abc)), (newRemainder) =>
-      toCharInts(R.append(newRemainder, chars), newRemainder),
+function divide(dividend) {
+  return {
+    quotient: Math.floor(R.divide(dividend, R.length(abc))),
+    remainder: R.modulo(dividend, R.length(abc)),
+  };
+}
+
+const toCharInts = R.curry((chars, dividend) =>
+  R.pipe(
+    divide,
+    R.ifElse(
+      (division) => R.equals(division.quotient, 0),
+      (division) => R.prepend(division.remainder, chars),
+      (division) =>
+        toCharInts(R.prepend(division.remainder, chars), division.quotient),
     ),
-  )(remainder),
+  )(dividend),
 );
 
 const toChars = R.pipe(R.map(R.nth(R.__, abc)));
