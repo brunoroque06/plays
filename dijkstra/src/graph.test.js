@@ -56,22 +56,22 @@ test('create graph with 0 density', () => {
   const v3 = gra[3];
 
   expect(v0.id).toBe(0);
-  expect(v0.edges[0].id).toEqual(v1);
+  expect(v0.edges[0].vertex).toEqual(v1);
   expect(v0.edges[0].weight).toBe(10);
-  expect(v0.edges[1].id).toEqual(v2);
+  expect(v0.edges[1].vertex).toEqual(v2);
   expect(v0.edges[1].weight).toBe(10);
-  expect(v0.edges[2].id).toEqual(v3);
+  expect(v0.edges[2].vertex).toEqual(v3);
   expect(v0.edges[2].weight).toBe(10);
 
   expect(v1.id).toBe(1);
-  expect(v1.edges[0].id).toEqual(v0);
+  expect(v1.edges[0].vertex).toEqual(v0);
   expect(v1.edges[0].weight).toBe(10);
 
   expect(v2.id).toBe(2);
-  expect(v2.edges[0].id).toEqual(v0);
+  expect(v2.edges[0].vertex).toEqual(v0);
   expect(v2.edges[0].weight).toBe(10);
 
   expect(v3.id).toBe(3);
-  expect(v3.edges[0].id).toEqual(v0);
+  expect(v3.edges[0].vertex).toEqual(v0);
   expect(v3.edges[0].weight).toBe(10);
 });

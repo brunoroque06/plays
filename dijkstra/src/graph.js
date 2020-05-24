@@ -75,7 +75,8 @@ const createVertex = R.curry((id, edges) => {
 const linkVertices = (vertices) => {
   R.forEach((v) => {
     R.forEach((e) => {
-      e.id = vertices[e.id];
+      e.vertex = vertices[e.id];
+      delete e.id;
     })(v.edges);
   })(vertices);
   return vertices;
