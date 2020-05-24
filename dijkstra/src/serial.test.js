@@ -8,3 +8,10 @@ test('map to string', () => {
   expect(serial.toString(52)).toBe('ca');
   expect(serial.toString(55)).toBe('cd');
 });
+
+test('map to integer', () => {
+  expect(serial.toInt('a')).toBe(0);
+  expect(serial.toInt('s')).toBe(18);
+  expect(serial.toInt('bd')).toBe(29);
+  expect(serial.toInt('ct')).toBe(71);
+});
