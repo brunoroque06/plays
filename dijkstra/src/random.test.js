@@ -1,5 +1,7 @@
 const random = require('./random');
 
 test('int', () => {
-  expect(random.getInt(0)(10)).toBeLessThanOrEqual(10);
+  const value = random.getInt(0)(10);
+  expect(value).toBeLessThanOrEqual(10);
+  expect(value).toBeGreaterThanOrEqual(0);
 });
