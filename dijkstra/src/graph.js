@@ -83,7 +83,7 @@ const linkVertices = (vertices) => {
 };
 /* eslint-enable */
 
-const mapToGraph = R.curry((nVertices, edges) => {
+const toVertices = R.curry((nVertices, edges) => {
   const getTargets = R.curry((id, eds) => {
     return R.map((e) => {
       return {
@@ -109,7 +109,8 @@ const createGraph = R.curry(
       calculateNumberEdges(nVertices),
       createEdges(getInt, nVertices),
       weightEdges(getInt, { minEdgeCost, maxEdgeCost }),
-      mapToGraph(nVertices),
+      toVertices(nVertices),
+      R.assoc('vertices', R.__, {}),
     )(density);
   },
 );

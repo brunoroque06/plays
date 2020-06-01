@@ -43,17 +43,17 @@ test('create graph with 0 density', () => {
     return max;
   };
 
-  const gra = graph.createGraph(getInt, {
+  const g = graph.createGraph(getInt, {
     nVertices: 4,
     density: 0,
     minEdgeCost: 0,
     maxEdgeCost: 10,
   });
 
-  const v0 = gra[0];
-  const v1 = gra[1];
-  const v2 = gra[2];
-  const v3 = gra[3];
+  const v0 = g.vertices[0];
+  const v1 = g.vertices[1];
+  const v2 = g.vertices[2];
+  const v3 = g.vertices[3];
 
   expect(v0.id).toBe(0);
   expect(v0.edges[0].vertex).toEqual(v1);
