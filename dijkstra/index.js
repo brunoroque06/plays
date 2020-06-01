@@ -1,36 +1,24 @@
-// Rules
-// - immutability
-// - declarative (no loops, etc)
-// - return objects from functions
-// - control exceptions by returning [error, result]
+const graph = require('./src/graph');
+const random = require('./src/random');
+const routing = require('./src/routing');
 
-// const req = name => {
-//   throw new Error(`The value ${name} is required.`);
-// };
-// const doStuff = ( stuff = req('stuff') ) => {
-//   ...
-// }
-const game = require('./src/game');
+const g = graph.createGraph(random.getInt, {
+  nVertices: 10,
+  density: 0,
+  minEdgeCost: 0,
+  maxEdgeCost: 10,
+});
 
-const result = game.playGame();
+const prim = routing.prim(g);
+const primPaths = routing.getPaths(prim.edges);
 
-console.log(result);
+console.log('# Prim');
+console.log(prim);
+console.log(primPaths);
 
-// const increasePrice = (item, increaseBy) => {
-//   // never ever do this
-//   item.price += increaseBy;
+const dijk = routing.dijkstra(g);
+const dijkPaths = routing.getPaths(dijk.edges);
 
-//   return item;
-// };
-
-// const oldItem = { price: 10 };
-// const newItem = increasePrice(oldItem, 3);
-
-// // prints newItem.price 13
-// console.log('newItem.price', newItem.price);
-
-// // prints oldItem.price 13
-// // unexpected?
-// console.log('oldItem.price', oldItem.price);
-
-// const obj = new Object();
+console.log('# Dijkstra');
+console.log(dijk);
+console.log(dijkPaths);
