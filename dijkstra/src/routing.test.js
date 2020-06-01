@@ -46,3 +46,25 @@ test('get vertices paths', () => {
   expect(paths[2].cost).toBe(2);
   expect(paths[2].ids).toStrictEqual(['a', 'c']);
 });
+
+test('dijkstra', () => {
+  const v0 = { id: 'a', edges: [] };
+  const v1 = { id: 'b', edges: [] };
+  const v2 = { id: 'c', edges: [] };
+
+  connectVertices(v0, v1, 2);
+  connectVertices(v1, v2, 2);
+  connectVertices(v0, v2, 3);
+
+  const graph = { vertices: [v0, v1, v2] };
+
+  const dijk = routing.dijkstra(graph);
+
+  expect(dijk.cost).toBe(5);
+  expect(dijk.edges[0].x).toBe('a');
+  expect(dijk.edges[0].y).toBe('b');
+  expect(dijk.edges[0].cost).toBe(2);
+  expect(dijk.edges[1].x).toBe('a');
+  expect(dijk.edges[1].y).toBe('c');
+  expect(dijk.edges[1].cost).toBe(3);
+});
