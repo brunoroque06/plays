@@ -1,8 +1,10 @@
 # Dijkstra
 
-Dijsktra
-Minimum Spanning Tree
-Ramda?
+The following is performed:
+
+- a random graph is created;
+- the minimum spanning tree is calculated using Prim's algorithm;
+- the shortest paths to each vertex are calculated using Dijkstra's algorithm.
 
 ## Graph Properties
 
