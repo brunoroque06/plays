@@ -4,7 +4,7 @@ function getCheapestEdge(edges) {
   return R.reduce(
     (cheapest, edge) =>
       R.unless(
-        R.pipe(R.prop('cost'), R.gt(R.prop('cost', edge))),
+        R.pipe(R.prop('pathCost'), R.gt(R.prop('pathCost', edge))),
         R.always(edge),
       )(cheapest),
     edges[0],
@@ -17,7 +17,8 @@ const getEdges = R.curry((costFn, vertex) => {
     return {
       x: vertex.id,
       y: e.vertex.id,
-      cost: costFn(e.weight),
+      cost: e.weight,
+      pathCost: costFn(e.weight),
       vertex: e.vertex,
     };
   })(vertex.edges);
