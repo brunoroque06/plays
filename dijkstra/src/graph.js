@@ -1,4 +1,5 @@
 const R = require('ramda');
+const serial = require('./serial');
 
 const calculateNumberEdges = R.curry((nVertices, density) =>
   R.pipe(
@@ -67,7 +68,7 @@ const weightEdges = R.curry((getInt, { minEdgeCost, maxEdgeCost }, vertices) =>
 );
 
 const createVertex = R.curry((id, edges) => {
-  return { id, edges };
+  return { id: serial.toString(id), edges };
 });
 
 /* eslint-disable */
