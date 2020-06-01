@@ -1,24 +1,24 @@
 # Dotnet
-bin/
-obj/
+bin
+obj
 
 # Haskell
-dist-newstyle/
+dist-newstyle
 
 # Java
 *.iml
-.gradle/
-.idea/
-build/
-out/
+.gradle
+.idea
+build
+out
 
 # Node.js
-node_modules/
+node_modules
 
 # Python
 .ipynb_checkpoints
 __pycache__
-venv/
+venv
 
 # VSCode
-.vscode/
+.vscode
