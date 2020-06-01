@@ -8,7 +8,7 @@ function connectVertices(v0, v1, weight) {
 
 /* eslint-disable */
 
-test('dijkstra', () => {
+test('prim', () => {
   const v0 = { id: 'a', edges: [] };
   const v1 = { id: 'b', edges: [] };
   const v2 = { id: 'c', edges: [] };
@@ -19,16 +19,15 @@ test('dijkstra', () => {
 
   const graph = { vertices: [v0, v1, v2] };
 
-  const dijkstra = routing.dijkstra(graph);
-  console.log(dijkstra);
+  const prim = routing.prim(graph);
 
-  expect(dijkstra.cost).toBe(5);
-  expect(dijkstra.edges[0].x).toBe('a');
-  expect(dijkstra.edges[0].y).toBe('b');
-  expect(dijkstra.edges[0].cost).toBe(2);
-  expect(dijkstra.edges[1].x).toBe('a');
-  expect(dijkstra.edges[1].y).toBe('c');
-  expect(dijkstra.edges[1].cost).toBe(3);
+  expect(prim.cost).toBe(4);
+  expect(prim.edges[0].x).toBe('a');
+  expect(prim.edges[0].y).toBe('b');
+  expect(prim.edges[0].cost).toBe(2);
+  expect(prim.edges[1].x).toBe('b');
+  expect(prim.edges[1].y).toBe('c');
+  expect(prim.edges[1].cost).toBe(2);
   // expect(dijkstra.paths[0].cost).toBe(2);
   // expect(dijkstra.paths[0].value).toBe(['a', 'b']);
   // expect(dijkstra.paths[1].cost).toBe(3);
