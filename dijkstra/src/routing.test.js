@@ -28,8 +28,21 @@ test('prim', () => {
   expect(prim.edges[1].x).toBe('b');
   expect(prim.edges[1].y).toBe('c');
   expect(prim.edges[1].cost).toBe(2);
-  // expect(dijkstra.paths[0].cost).toBe(2);
-  // expect(dijkstra.paths[0].value).toBe(['a', 'b']);
-  // expect(dijkstra.paths[1].cost).toBe(3);
-  // expect(dijkstra.paths[1].value).toBe(['a', 'c']);
+});
+
+test('get vertices paths', () => {
+  const edges = [
+    { x: 'a', y: 'b', cost: 2 },
+    { x: 'b', y: 'd', cost: 1 },
+    { x: 'a', y: 'c', cost: 2 },
+  ];
+
+  const paths = routing.getPaths(edges);
+
+  expect(paths[0].cost).toBe(2);
+  expect(paths[0].ids).toStrictEqual(['a', 'b']);
+  expect(paths[1].cost).toBe(3);
+  expect(paths[1].ids).toStrictEqual(['a', 'b', 'd']);
+  expect(paths[2].cost).toBe(2);
+  expect(paths[2].ids).toStrictEqual(['a', 'c']);
 });

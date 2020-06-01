@@ -49,4 +49,30 @@ function prim(graph) {
   )([]);
 }
 
-module.exports = { prim };
+const walkPath = R.curry((root, edges, path) => {
+  const edge = R.find((e) => e.y === R.head(path.ids), edges);
+  const newPath = R.pipe(
+    R.assoc('ids', R.prepend(edge.x, path.ids)),
+    R.assoc('cost', R.add(path.cost, edge.cost)),
+  )(path);
+
+  return R.ifElse(
+    R.pipe(R.prop('ids'), R.head, R.equals(root)),
+    R.always(newPath),
+    walkPath(root, edges),
+  )(newPath);
+});
+
+function getPaths(edges) {
+  const xs = R.pluck('x', edges);
+  const ys = R.pluck('y', edges);
+  const root = R.find((x) => !R.includes(x, ys), xs);
+  return R.pipe(
+    R.map(R.append(R.__, [])),
+    R.map(R.assoc('ids', R.__, {})),
+    R.map(R.assoc('cost', 0)),
+    R.map(walkPath(root, edges)),
+  )(ys);
+}
+
+module.exports = { getPaths, prim };
