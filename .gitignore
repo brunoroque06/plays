@@ -12,6 +12,9 @@ dist-newstyle
 build
 out
 
+# MacOS
+.DS_Store
+
 # Node.js
 node_modules
 
@@ -19,6 +22,9 @@ node_modules
 .ipynb_checkpoints
 __pycache__
 venv
+
+# Rust
+target
 
 # VSCode
 .vscode
