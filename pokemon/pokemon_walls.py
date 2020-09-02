@@ -1,7 +1,7 @@
 # %% Pokemon Walls
 import pandas as pd
 
-import pokemon_utilities
+import pokemon_util as pu
 
 POKEMONS = pd.read_csv("pokemons.csv").set_index("#")
 TYPES = pd.read_csv("types-chart.csv").set_index("Attack")
@@ -9,18 +9,18 @@ TYPES = pd.read_csv("types-chart.csv").set_index("Attack")
 print(POKEMONS.loc[197].to_frame().T)
 
 # %% Effective HP
-POKEMONS["Effective HP"] = pokemon_utilities.effective_hp(POKEMONS["HP"])
+POKEMONS["Effective HP"] = pu.effective_hp(POKEMONS["HP"])
 POKEMONS.sort_values("Effective HP", ascending=False).filter(regex="Name|HP").head()
 
 # %% Type Factors and Damage
 for ptype in TYPES.iloc[:, 1:]:
-    POKEMONS[ptype] = pokemon_utilities.calculate_type_damage_factors(
+    POKEMONS[ptype] = pu.calculate_type_damage_factors(
         TYPES, ptype, POKEMONS["Type 1"], POKEMONS["Type 2"]
     )
-    POKEMONS[ptype + " Ph. Damage"] = pokemon_utilities.calculate_damages(
+    POKEMONS[ptype + " Ph. Damage"] = pu.calculate_damages(
         POKEMONS["Defense"], POKEMONS[ptype]
     )
-    POKEMONS[ptype + " Sp. Damage"] = pokemon_utilities.calculate_damages(
+    POKEMONS[ptype + " Sp. Damage"] = pu.calculate_damages(
         POKEMONS["Sp. Def"], POKEMONS[ptype]
     )
 
