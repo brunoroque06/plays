@@ -1,3 +1,4 @@
+/* eslint no-console: ["error", { allow: ["info"] }] */
 const graph = require('./src/graph');
 const random = require('./src/random');
 const routing = require('./src/routing');
@@ -12,13 +13,13 @@ const g = graph.createGraph(random.getInt, {
 const prim = routing.prim(g);
 const primPaths = routing.getPaths(prim.edges);
 
-console.log('# Prim');
-console.log(prim);
-console.log(primPaths);
+console.info('# Prim');
+console.info(prim);
+console.info(primPaths);
 
 const dijk = routing.dijkstra(g);
 const dijkPaths = routing.getPaths(dijk.edges);
 
-console.log('# Dijkstra');
-console.log(dijk);
-console.log(dijkPaths);
+console.info('# Dijkstra');
+console.info(dijk);
+console.info(dijkPaths);
