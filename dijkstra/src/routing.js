@@ -12,17 +12,15 @@ function getCheapestEdge(edges) {
   );
 }
 
-const getEdges = R.curry((costFn, vertex) => {
-  return R.map((e) => {
-    return {
-      x: vertex.id,
-      y: e.vertex.id,
-      cost: e.weight,
-      pathCost: costFn(e.weight),
-      vertex: e.vertex,
-    };
-  })(vertex.edges);
-});
+const getEdges = R.curry((costFn, vertex) =>
+  R.map((e) => ({
+    x: vertex.id,
+    y: e.vertex.id,
+    cost: e.weight,
+    pathCost: costFn(e.weight),
+    vertex: e.vertex,
+  }))(vertex.edges),
+);
 
 const walkGraph = R.curry((costFn, path, visited, edges) => {
   const cheapest = getCheapestEdge(edges);

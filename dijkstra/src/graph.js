@@ -67,9 +67,10 @@ const weightEdges = R.curry((getInt, { minEdgeCost, maxEdgeCost }, vertices) =>
   )(vertices),
 );
 
-const createVertex = R.curry((id, edges) => {
-  return { id: serial.toString(id), edges };
-});
+const createVertex = R.curry((id, edges) => ({
+  id: serial.toString(id),
+  edges,
+}));
 
 /* eslint-disable */
 // Check README.md for explanation
@@ -85,14 +86,12 @@ const linkVertices = (vertices) => {
 /* eslint-enable */
 
 const toVertices = R.curry((nVertices, edges) => {
-  const getTargets = R.curry((id, eds) => {
-    return R.map((e) => {
-      return {
-        id: R.when(R.equals(id), R.always(e.source))(e.target),
-        weight: e.weight,
-      };
-    })(eds);
-  });
+  const getTargets = R.curry((id, eds) =>
+    R.map((e) => ({
+      id: R.when(R.equals(id), R.always(e.source))(e.target),
+      weight: e.weight,
+    }))(eds),
+  );
 
   const mapToVertex = R.curry((eds, id) =>
     R.pipe(
@@ -105,15 +104,14 @@ const toVertices = R.curry((nVertices, edges) => {
 });
 
 const createGraph = R.curry(
-  (getInt, { nVertices, density, minEdgeCost, maxEdgeCost }) => {
-    return R.pipe(
+  (getInt, { nVertices, density, minEdgeCost, maxEdgeCost }) =>
+    R.pipe(
       calculateNumberEdges(nVertices),
       createEdges(getInt, nVertices),
       weightEdges(getInt, { minEdgeCost, maxEdgeCost }),
       toVertices(nVertices),
       R.assoc('vertices', R.__, {}),
-    )(density);
-  },
+    )(density),
 );
 
 module.exports = {
