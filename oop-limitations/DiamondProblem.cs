@@ -1,6 +1,6 @@
 using System;
 
-namespace oop_limitations
+namespace OopLimitations
 {
     public class Device
     {

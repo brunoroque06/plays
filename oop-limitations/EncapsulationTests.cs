@@ -1,10 +1,11 @@
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace oop_limitations
+namespace OopLimitations
 {
+    [TestClass]
     public class EncapsulationTests
     {
-        [Test]
+        [TestMethod]
         public void ShouldBeSafe()
         {
             var core = new Kernel { Secret = 22 };

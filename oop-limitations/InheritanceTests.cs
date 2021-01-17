@@ -1,14 +1,15 @@
 using System;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace oop_limitations
+namespace OopLimitations
 {
+    [TestClass]
     public class InheritanceTests
     {
-        [Test]
+        [TestMethod]
         public void JustWantTheBanana()
         {
-            Console.WriteLine(new Banana { Trees = 999, Fur = 1234, Calories = 89 });
+            Console.WriteLine(new Banana {Trees = 999, Fur = 1234, Calories = 89});
         }
     }
 }

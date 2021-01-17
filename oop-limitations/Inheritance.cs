@@ -1,4 +1,4 @@
-namespace oop_limitations
+namespace OopLimitations
 {
     public class Jungle
     {
