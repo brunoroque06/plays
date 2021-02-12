@@ -53,7 +53,7 @@ function solveGraph(costFn, graph) {
   )([]);
 }
 
-export function prim(graph) {
+function prim(graph) {
   return solveGraph(R.always(R.add(0)), graph);
 }
 
@@ -71,7 +71,7 @@ const walkPath = R.curry((root, edges, path) => {
   )(newPath);
 });
 
-export function getPaths(edges) {
+function getPaths(edges) {
   const xs = R.pluck('x', edges);
   const ys = R.pluck('y', edges);
   const root = R.find((x) => !R.includes(x, ys), xs);
@@ -83,6 +83,8 @@ export function getPaths(edges) {
   )(ys);
 }
 
-export function dijkstra(graph) {
+function dijkstra(graph) {
   return solveGraph(R.add, graph);
 }
+
+module.exports = { dijkstra, getPaths, prim };
