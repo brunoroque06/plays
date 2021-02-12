@@ -1,9 +1,9 @@
 const R = require('ramda');
 
-const getInt = R.curry((min, max) =>
+export const getInt = R.curry((min, max) =>
   Math.round(Math.random() * (max - min) + min),
 );
 
-module.exports = {
-  getInt,
-};
+export function getNumber(num) {
+  return num;
+}

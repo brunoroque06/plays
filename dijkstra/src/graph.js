@@ -1,7 +1,7 @@
 const R = require('ramda');
 const serial = require('./serial');
 
-const calculateNumberEdges = R.curry((nVertices, density) =>
+export const calculateNumberEdges = R.curry((nVertices, density) =>
   R.pipe(
     R.subtract(R.__, 1),
     R.multiply(nVertices),
@@ -13,7 +13,7 @@ const calculateNumberEdges = R.curry((nVertices, density) =>
   )(nVertices),
 );
 
-function createEdgePool(nVertices) {
+export function createEdgePool(nVertices) {
   const lowerEdges = (id) => R.pipe(R.range(0), R.map(R.pair(id)))(id);
   return R.chain(lowerEdges, R.range(1, nVertices));
 }
@@ -46,7 +46,7 @@ const joinEdges = (edges) =>
     R.assoc('pool', R.unnest(R.pluck('pool', edges))),
   )({});
 
-const createEdges = R.curry((getInt, nVertices, nEdges) =>
+export const createEdges = R.curry((getInt, nVertices, nEdges) =>
   R.pipe(
     createEdgePool,
     groupEdgePool,
@@ -103,7 +103,7 @@ const toVertices = R.curry((nVertices, edges) => {
   return R.pipe(R.range(0), R.map(mapToVertex(edges)), linkVertices)(nVertices);
 });
 
-const createGraph = R.curry(
+export const createGraph = R.curry(
   (getInt, { nVertices, density, minEdgeCost, maxEdgeCost }) =>
     R.pipe(
       calculateNumberEdges(nVertices),
@@ -113,10 +113,3 @@ const createGraph = R.curry(
       R.assoc('vertices', R.__, {}),
     )(density),
 );
-
-module.exports = {
-  calculateNumberEdges,
-  createEdgePool,
-  createEdges,
-  createGraph,
-};

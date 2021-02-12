@@ -38,10 +38,7 @@ test('create edges with higher density', () => {
 });
 
 test('create graph with 0 density', () => {
-  const getInt = (min, max) => {
-    if (max < 5) return min;
-    return max;
-  };
+  const getInt = (min, max) => (max < 5 ? min : max);
 
   const g = graph.createGraph(getInt, {
     nVertices: 4,
