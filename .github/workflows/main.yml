@@ -3,12 +3,46 @@ name: CI
 on: [push]
 
 jobs:
-  test:
+  blockchain:
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: blockchain/old
     steps:
       - uses: actions/checkout@v2
-      - name: Prepare
-        run: make prepare
-      - name: Test
-        run: make test
+      - name: yarn install
+        run: yarn install
+      - name: yarn test
+        run: yarn test
+
+  dijkstra:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: dijkstra
+    steps:
+      - uses: actions/checkout@v2
+      - name: yarn install
+        run: yarn install
+      - name: yarn test
+        run: yarn test
+
+  geneticalgorithm:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: geneticalgorithm
+    steps:
+      - uses: actions/checkout@v2
+      - name: go test
+        run: go test ./...
+
+  oop-limitations:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: oop-limitations
+    steps:
+      - uses: actions/checkout@v2
+      - name: dotnet test
+        run: dotnet test
