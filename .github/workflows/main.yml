@@ -15,6 +15,16 @@ jobs:
       - name: yarn test
         run: yarn test
 
+  decision-tree-player:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: decision-tree-player
+    steps:
+      - uses: actions/checkout@v2
+      - name: gradle test
+        run: gradle test
+
   dijkstra:
     runs-on: ubuntu-latest
     defaults:
