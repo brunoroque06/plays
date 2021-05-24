@@ -26,13 +26,16 @@ function createGraph(nVertices, density, minEdgeCost, maxEdgeCost) {
     edges: [],
   }));
 
+  let weightedEdges = [];
+
   edges.forEach((e) => {
     const weight = this.getInt(minEdgeCost, maxEdgeCost);
     vertices[e[0]].edges.push({ vertex: vertices[e[1]], weight });
     vertices[e[1]].edges.push({ vertex: vertices[e[0]], weight });
+    weightedEdges.push({ start: e[0], end: e[1], weight });
   });
 
-  return { vertices };
+  return { edges: weightedEdges, vertices };
 }
 
 module.exports = {

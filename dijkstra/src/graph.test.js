@@ -31,11 +31,12 @@ test('create edges with higher density', () => {
 });
 
 test('create graph with 0 density', () => {
-  let getInt = (min, max) => (max < 5 ? min : max);
+  let getInt = (min, max) => max;
 
-  let g = graph.createGraph.bind({ getInt, getIntMultiple })(4, 0, 0, 10);
+  let g = graph.createGraph.bind({ getInt, getIntMultiple })(4, 0, 1, 10);
 
   expect(g.vertices).toHaveLength(4);
+  expect(g.edges).toHaveLength(6);
 
   let v0 = g.vertices[0];
   let v1 = g.vertices[1];
