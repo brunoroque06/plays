@@ -25,12 +25,14 @@ let getEdges = R.curry((costFn, vertex) =>
 let walkGraph = R.curry((costFn, path, visited, edges) => {
   let cheapest = getCheapestEdge(edges);
   let newVisited = R.append(cheapest.y, visited);
+
   let newEdges = R.pipe(
     getEdges(costFn(cheapest.cost)),
     R.append(R.__, edges),
     R.flatten,
     R.filter((e) => !R.includes(e.y, newVisited)),
   )(cheapest.vertex);
+
   let newPath = R.append(cheapest, path);
 
   return R.ifElse(

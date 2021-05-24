@@ -1,5 +1,7 @@
 const graph = require('./graph');
 
+let getIntMultiple = (min, max, n) => [...Array(5).keys()].slice(0, n);
+
 test('number of edges', () => {
   expect(graph.calculateNumberEdges(3, 0)).toBe(2);
   expect(graph.calculateNumberEdges(4, 0)).toBe(3);
@@ -7,20 +9,8 @@ test('number of edges', () => {
   expect(graph.calculateNumberEdges(4, 100)).toBe(6);
 });
 
-test('create edge pool', () => {
-  let edges = graph.createEdgePool(4);
-
-  expect(edges[0]).toEqual([1, 0]);
-  expect(edges[1]).toEqual([2, 0]);
-  expect(edges[2]).toEqual([2, 1]);
-  expect(edges[3]).toEqual([3, 0]);
-  expect(edges[4]).toEqual([3, 1]);
-  expect(edges[5]).toEqual([3, 2]);
-});
-
 test('create edges with 0 density', () => {
-  let getInt = (n) => n;
-  let edges = graph.createEdges(getInt, 4, 3);
+  let edges = graph.createEdges.bind({ getIntMultiple })(4, 0);
 
   expect(edges.length).toBe(3);
   expect(edges[0]).toEqual([1, 0]);
@@ -29,26 +19,23 @@ test('create edges with 0 density', () => {
 });
 
 test('create edges with higher density', () => {
-  let getInt = (n) => n;
-  let edges = graph.createEdges(getInt, 4, 5);
+  let edges = graph.createEdges.bind({ getIntMultiple })(4, 3);
 
-  expect(edges.length).toBe(5);
+  expect(edges).toHaveLength(6);
   expect(edges[0]).toEqual([1, 0]);
-  expect(edges[1]).toEqual([2, 0]);
-  expect(edges[2]).toEqual([3, 0]);
+  expect(edges[1]).toEqual([1, 1]);
+  expect(edges[2]).toEqual([2, 0]);
   expect(edges[3]).toEqual([2, 1]);
-  expect(edges[4]).toEqual([3, 1]);
+  expect(edges[4]).toEqual([3, 0]);
+  expect(edges[5]).toEqual([3, 1]);
 });
 
 test('create graph with 0 density', () => {
   let getInt = (min, max) => (max < 5 ? min : max);
 
-  let g = graph.createGraph(getInt, {
-    nVertices: 4,
-    density: 0,
-    minEdgeCost: 0,
-    maxEdgeCost: 10,
-  });
+  let g = graph.createGraph.bind({ getInt, getIntMultiple })(4, 0, 0, 10);
+
+  expect(g.vertices).toHaveLength(4);
 
   let v0 = g.vertices[0];
   let v1 = g.vertices[1];
