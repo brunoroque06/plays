@@ -6,18 +6,16 @@ let routing = require('./src/routing');
 let g = graph.createGraph.bind({
   getInt: random.getInt,
   getIntMultiple: random.getIntMultiple,
-})(100, 75, 1, 100);
+})(200, 50, 1, 100);
 
 let prim = routing.prim(g);
-let primPaths = routing.getPaths(prim.edges);
 
 console.info('# Prim');
-console.info(`Cost: ${prim.cost}`);
-// console.info(primPaths);
+console.info(prim.edges);
+console.info(prim.cost);
 
 let dijk = routing.dijkstra(g);
-let dijkPaths = routing.getPaths(dijk.edges);
 
 console.info('# Dijkstra');
-console.info(`Cost: ${dijk.cost}`);
-// console.info(dijkPaths);
+console.info(dijk.edges);
+console.info(dijk.cost);

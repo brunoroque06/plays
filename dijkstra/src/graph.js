@@ -32,7 +32,10 @@ function createGraph(nVertices, density, minEdgeCost, maxEdgeCost) {
     const weight = this.getInt(minEdgeCost, maxEdgeCost);
     vertices[e[0]].edges.push({ vertex: vertices[e[1]], weight });
     vertices[e[1]].edges.push({ vertex: vertices[e[0]], weight });
-    weightedEdges.push({ start: e[0], end: e[1], weight });
+    weightedEdges.push({
+      vertices: [vertices[e[0]].id, vertices[e[1]].id],
+      weight,
+    });
   });
 
   return { edges: weightedEdges, vertices };
