@@ -2,25 +2,15 @@
   "env": {
     "commonjs": true
   },
-  "plugins": ["functional", "jest", "ramda"],
+  "plugins": ["jest", "ramda"],
   "extends": [
     "airbnb-base",
-    "plugin:functional/external-recommended",
-    "plugin:functional/recommended",
-    "plugin:functional/stylitic",
     "plugin:jest/recommended",
     "plugin:ramda/recommended",
     "prettier"
   ],
-  "rules": { "no-underscore-dangle": "off" },
-  "overrides": [
-    {
-      "files": ["index.js", "*.test.js"],
-      "rules": {
-        "functional/functional-parameters": "off",
-        "functional/no-expression-statement": "off",
-        "max-lines-per-function": "off"
-      }
-    }
-  ]
+  "rules": {
+    "no-underscore-dangle": "off",
+    "prefer-const": "off" // `const` is misleading because the object itself can be mutated, just that the reference cannot change. Good for native types though
+  }
 }

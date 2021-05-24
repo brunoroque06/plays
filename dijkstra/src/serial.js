@@ -1,4 +1,4 @@
-const R = require('ramda');
+let R = require('ramda');
 
 const abc = 'abcdefghijklmnopqrstuvwxyz'.split('');
 
@@ -9,7 +9,7 @@ function divide(dividend) {
   };
 }
 
-const toCharInts = R.curry((chars, dividend) =>
+let toCharInts = R.curry((chars, dividend) =>
   R.pipe(
     divide,
     R.ifElse(
@@ -21,20 +21,23 @@ const toCharInts = R.curry((chars, dividend) =>
   )(dividend),
 );
 
-const toChars = R.pipe(R.map(R.nth(R.__, abc)));
+let toChars = R.pipe(R.map(R.nth(R.__, abc)));
 
-const toString = R.pipe(toCharInts([]), toChars, R.reduce(R.concat, ''));
+let toString = R.pipe(toCharInts([]), toChars, R.reduce(R.concat, ''));
 
-const sumIndexes = R.curry((factor, acc) => {
-  const part = R.length(abc) ** acc.index * factor;
-  return { sum: R.add(acc.sum, part), index: R.inc(acc.index) };
+let sumIndexes = R.curry((factor, acc) => {
+  const part = abc.length ** acc.index * factor;
+  return {
+    sum: R.add(acc.sum, part),
+    index: R.inc(acc.index),
+  };
 });
 
-const toInt = R.pipe(
+let toInt = R.pipe(
   R.split(''),
   R.map((l) => R.findIndex(R.equals(l), abc)),
   R.reduceRight(sumIndexes, { sum: 0, index: 0 }),
-  R.prop('sum'),
+  (s) => s.sum,
 );
 
 module.exports = { toInt, toString };

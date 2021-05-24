@@ -12,7 +12,7 @@ function getCheapestEdge(edges) {
   );
 }
 
-const getEdges = R.curry((costFn, vertex) =>
+let getEdges = R.curry((costFn, vertex) =>
   R.map((e) => ({
     x: vertex.id,
     y: e.vertex.id,
@@ -22,16 +22,16 @@ const getEdges = R.curry((costFn, vertex) =>
   }))(vertex.edges),
 );
 
-const walkGraph = R.curry((costFn, path, visited, edges) => {
-  const cheapest = getCheapestEdge(edges);
-  const newVisited = R.append(cheapest.y, visited);
-  const newEdges = R.pipe(
+let walkGraph = R.curry((costFn, path, visited, edges) => {
+  let cheapest = getCheapestEdge(edges);
+  let newVisited = R.append(cheapest.y, visited);
+  let newEdges = R.pipe(
     getEdges(costFn(cheapest.cost)),
     R.append(R.__, edges),
     R.flatten,
     R.filter((e) => !R.includes(e.y, newVisited)),
   )(cheapest.vertex);
-  const newPath = R.append(cheapest, path);
+  let newPath = R.append(cheapest, path);
 
   return R.ifElse(
     R.isEmpty,
@@ -58,8 +58,8 @@ function prim(graph) {
 }
 
 const walkPath = R.curry((root, edges, path) => {
-  const edge = R.find((e) => e.y === R.head(path.ids), edges);
-  const newPath = R.pipe(
+  let edge = R.find((e) => e.y === R.head(path.ids), edges);
+  let newPath = R.pipe(
     R.assoc('ids', R.prepend(edge.x, path.ids)),
     R.assoc('cost', R.add(path.cost, edge.cost)),
   )(path);
@@ -72,9 +72,10 @@ const walkPath = R.curry((root, edges, path) => {
 });
 
 function getPaths(edges) {
-  const xs = R.pluck('x', edges);
-  const ys = R.pluck('y', edges);
-  const root = R.find((x) => !R.includes(x, ys), xs);
+  let xs = R.pluck('x', edges);
+  let ys = R.pluck('y', edges);
+  let root = R.find((x) => !R.includes(x, ys), xs);
+
   return R.pipe(
     R.map(R.append(R.__, [])),
     R.map(R.assoc('ids', R.__, {})),
@@ -87,4 +88,8 @@ function dijkstra(graph) {
   return solveGraph(R.add, graph);
 }
 
-module.exports = { dijkstra, getPaths, prim };
+module.exports = {
+  dijkstra,
+  getPaths,
+  prim,
+};

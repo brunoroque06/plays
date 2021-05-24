@@ -1,25 +1,22 @@
-const routing = require('./routing');
+let routing = require('./routing');
 
-/* eslint-disable */
 function connectVertices(v0, v1, weight) {
   v0.edges.push({ vertex: v1, weight });
   v1.edges.push({ vertex: v0, weight });
 }
 
-/* eslint-disable */
-
 test('prim', () => {
-  const v0 = { id: 'a', edges: [] };
-  const v1 = { id: 'b', edges: [] };
-  const v2 = { id: 'c', edges: [] };
+  let v0 = { id: 'a', edges: [] };
+  let v1 = { id: 'b', edges: [] };
+  let v2 = { id: 'c', edges: [] };
 
   connectVertices(v0, v1, 2);
   connectVertices(v1, v2, 2);
   connectVertices(v0, v2, 3);
 
-  const graph = { vertices: [v0, v1, v2] };
+  let graph = { vertices: [v0, v1, v2] };
 
-  const prim = routing.prim(graph);
+  let prim = routing.prim(graph);
 
   expect(prim.cost).toBe(4);
   expect(prim.edges[0].x).toBe('a');
@@ -31,13 +28,13 @@ test('prim', () => {
 });
 
 test('get vertices paths', () => {
-  const edges = [
+  let edges = [
     { x: 'a', y: 'b', cost: 2 },
     { x: 'b', y: 'd', cost: 1 },
     { x: 'a', y: 'c', cost: 2 },
   ];
 
-  const paths = routing.getPaths(edges);
+  let paths = routing.getPaths(edges);
 
   expect(paths[0].cost).toBe(2);
   expect(paths[0].ids).toStrictEqual(['a', 'b']);
@@ -48,17 +45,17 @@ test('get vertices paths', () => {
 });
 
 test('dijkstra', () => {
-  const v0 = { id: 'a', edges: [] };
-  const v1 = { id: 'b', edges: [] };
-  const v2 = { id: 'c', edges: [] };
+  let v0 = { id: 'a', edges: [] };
+  let v1 = { id: 'b', edges: [] };
+  let v2 = { id: 'c', edges: [] };
 
   connectVertices(v0, v1, 2);
   connectVertices(v1, v2, 2);
   connectVertices(v0, v2, 3);
 
-  const graph = { vertices: [v0, v1, v2] };
+  let graph = { vertices: [v0, v1, v2] };
 
-  const dijk = routing.dijkstra(graph);
+  let dijk = routing.dijkstra(graph);
 
   expect(dijk.cost).toBe(5);
   expect(dijk.edges[0].x).toBe('a');

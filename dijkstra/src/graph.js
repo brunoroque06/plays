@@ -1,7 +1,7 @@
-const R = require('ramda');
-const serial = require('./serial');
+let R = require('ramda');
+let serial = require('./serial');
 
-const calculateNumberEdges = R.curry((nVertices, density) =>
+let calculateNumberEdges = R.curry((nVertices, density) =>
   R.pipe(
     R.subtract(R.__, 1),
     R.multiply(nVertices),
@@ -18,19 +18,20 @@ function createEdgePool(nVertices) {
   return R.chain(lowerEdges, R.range(1, nVertices));
 }
 
-const groupEdgePool = R.pipe(
+let groupEdgePool = R.pipe(
   R.groupWith(R.eqBy(R.head)),
   R.map((p) => R.assoc('pool', p, {})),
   R.map(R.assoc('edges', [])),
 );
 
-const pickEdges = R.curry((getInt, nEdges, edges) => {
-  const pick = R.curry((idx, e) =>
+let pickEdges = R.curry((getInt, nEdges, edges) => {
+  let pick = R.curry((idx, e) =>
     R.pipe(
       R.assoc('edges', R.append(R.nth(idx, e.pool), e.edges)),
       R.assoc('pool', R.remove(idx, 1, e.pool)),
     )({}),
   );
+
   return R.unless(
     R.pipe(R.prop('edges'), R.length, R.equals(nEdges)),
     R.pipe(
@@ -40,13 +41,13 @@ const pickEdges = R.curry((getInt, nEdges, edges) => {
   )(edges);
 });
 
-const joinEdges = (edges) =>
+let joinEdges = (edges) =>
   R.pipe(
     R.assoc('edges', R.unnest(R.pluck('edges', edges))),
     R.assoc('pool', R.unnest(R.pluck('pool', edges))),
   )({});
 
-const createEdges = R.curry((getInt, nVertices, nEdges) =>
+let createEdges = R.curry((getInt, nVertices, nEdges) =>
   R.pipe(
     createEdgePool,
     groupEdgePool,
@@ -57,7 +58,7 @@ const createEdges = R.curry((getInt, nVertices, nEdges) =>
   )(nVertices),
 );
 
-const weightEdges = R.curry((getInt, { minEdgeCost, maxEdgeCost }, vertices) =>
+let weightEdges = R.curry((getInt, { minEdgeCost, maxEdgeCost }, vertices) =>
   R.map((v) =>
     R.pipe(
       R.assoc('source', R.head(v)),
@@ -67,14 +68,12 @@ const weightEdges = R.curry((getInt, { minEdgeCost, maxEdgeCost }, vertices) =>
   )(vertices),
 );
 
-const createVertex = R.curry((id, edges) => ({
+let createVertex = R.curry((id, edges) => ({
   id: serial.toString(id),
   edges,
 }));
 
-/* eslint-disable */
-// Check README.md for explanation
-const linkVertices = (vertices) => {
+let linkVertices = (vertices) => {
   R.forEach((v) => {
     R.forEach((e) => {
       e.vertex = vertices[e.id];
@@ -83,9 +82,8 @@ const linkVertices = (vertices) => {
   })(vertices);
   return vertices;
 };
-/* eslint-enable */
 
-const toVertices = R.curry((nVertices, edges) => {
+let toVertices = R.curry((nVertices, edges) => {
   const getTargets = R.curry((id, eds) =>
     R.map((e) => ({
       id: R.when(R.equals(id), R.always(e.source))(e.target),
@@ -100,10 +98,11 @@ const toVertices = R.curry((nVertices, edges) => {
       createVertex(id),
     )(eds),
   );
+
   return R.pipe(R.range(0), R.map(mapToVertex(edges)), linkVertices)(nVertices);
 });
 
-const createGraph = R.curry(
+let createGraph = R.curry(
   (getInt, { nVertices, density, minEdgeCost, maxEdgeCost }) =>
     R.pipe(
       calculateNumberEdges(nVertices),

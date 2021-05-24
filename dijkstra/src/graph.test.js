@@ -8,7 +8,8 @@ test('number of edges', () => {
 });
 
 test('create edge pool', () => {
-  const edges = graph.createEdgePool(4);
+  let edges = graph.createEdgePool(4);
+
   expect(edges[0]).toEqual([1, 0]);
   expect(edges[1]).toEqual([2, 0]);
   expect(edges[2]).toEqual([2, 1]);
@@ -18,8 +19,9 @@ test('create edge pool', () => {
 });
 
 test('create edges with 0 density', () => {
-  const getInt = (n) => n;
-  const edges = graph.createEdges(getInt, 4, 3);
+  let getInt = (n) => n;
+  let edges = graph.createEdges(getInt, 4, 3);
+
   expect(edges.length).toBe(3);
   expect(edges[0]).toEqual([1, 0]);
   expect(edges[1]).toEqual([2, 0]);
@@ -27,8 +29,9 @@ test('create edges with 0 density', () => {
 });
 
 test('create edges with higher density', () => {
-  const getInt = (n) => n;
-  const edges = graph.createEdges(getInt, 4, 5);
+  let getInt = (n) => n;
+  let edges = graph.createEdges(getInt, 4, 5);
+
   expect(edges.length).toBe(5);
   expect(edges[0]).toEqual([1, 0]);
   expect(edges[1]).toEqual([2, 0]);
@@ -38,19 +41,19 @@ test('create edges with higher density', () => {
 });
 
 test('create graph with 0 density', () => {
-  const getInt = (min, max) => (max < 5 ? min : max);
+  let getInt = (min, max) => (max < 5 ? min : max);
 
-  const g = graph.createGraph(getInt, {
+  let g = graph.createGraph(getInt, {
     nVertices: 4,
     density: 0,
     minEdgeCost: 0,
     maxEdgeCost: 10,
   });
 
-  const v0 = g.vertices[0];
-  const v1 = g.vertices[1];
-  const v2 = g.vertices[2];
-  const v3 = g.vertices[3];
+  let v0 = g.vertices[0];
+  let v1 = g.vertices[1];
+  let v2 = g.vertices[2];
+  let v3 = g.vertices[3];
 
   expect(v0.id).toBe('a');
   expect(v0.edges[0].vertex).toEqual(v1);

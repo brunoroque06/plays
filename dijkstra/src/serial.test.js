@@ -1,4 +1,4 @@
-const serial = require('./serial');
+let serial = require('./serial');
 
 test('map to string', () => {
   expect(serial.toString(0)).toBe('a');
