@@ -1,5 +1,12 @@
 let R = require('ramda');
 
+function newVertex(vertices, e) {
+  return (
+    (vertices.has(e.vertices[0]) && !vertices.has(e.vertices[1])) ||
+    (vertices.has(e.vertices[1]) && !vertices.has(e.vertices[0]))
+  );
+}
+
 function dijkstra(graph) {
   let vertices = new Map([[graph.vertices[0].id, { cost: 0, path: [] }]]);
 
@@ -11,10 +18,7 @@ function dijkstra(graph) {
     let cost = Number.MAX_VALUE;
 
     graph.edges.forEach((e) => {
-      if (
-        (vertices.has(e.vertices[0]) && !vertices.has(e.vertices[1])) ||
-        (vertices.has(e.vertices[1]) && !vertices.has(e.vertices[0]))
-      ) {
+      if (newVertex(vertices, e)) {
         if (
           vertices.has(e.vertices[0]) &&
           vertices.get(e.vertices[0]).cost + e.weight < cost
@@ -54,11 +58,7 @@ function prim(graph) {
     let cost = Number.MAX_VALUE;
 
     graph.edges.forEach((e, idx) => {
-      if (
-        ((vertices.has(e.vertices[0]) && !vertices.has(e.vertices[1])) ||
-          (vertices.has(e.vertices[1]) && !vertices.has(e.vertices[0]))) &&
-        e.weight < cost
-      ) {
+      if (newVertex(vertices, e) && e.weight < cost) {
         index = idx;
         cost = e.weight;
       }
