@@ -1,54 +1,62 @@
 let R = require('ramda');
 
 function dijkstra(graph) {
-  let selected = R.range(0, graph.edges.length).map(R.F);
-  let visited = new Set([graph.vertices[0].id]);
-  let totalCost = 0;
+  let vertices = new Map([[graph.vertices[0].id, { cost: 0, path: [] }]]);
 
-  while (visited.size < graph.vertices.length) {
-    let index;
+  while (vertices.size < graph.vertices.length) {
+    let start;
+    let edge;
+    let end;
+
     let cost = Number.MAX_VALUE;
 
-    graph.edges.forEach((e, idx) => {
+    graph.edges.forEach((e) => {
       if (
-        ((visited.has(e.vertices[0]) && !visited.has(e.vertices[1])) ||
-          (visited.has(e.vertices[1]) && !visited.has(e.vertices[0]))) &&
-        e.weight < cost
+        (vertices.has(e.vertices[0]) && !vertices.has(e.vertices[1])) ||
+        (vertices.has(e.vertices[1]) && !vertices.has(e.vertices[0]))
       ) {
-        index = idx;
-        cost = e.weight;
+        if (
+          vertices.has(e.vertices[0]) &&
+          vertices.get(e.vertices[0]).cost + e.weight < cost
+        ) {
+          [start, end] = e.vertices;
+          edge = e;
+          cost = vertices.get(e.vertices[0]).cost + e.weight;
+        } else if (
+          vertices.has(e.vertices[1]) &&
+          vertices.get(e.vertices[1]).cost + e.weight < cost
+        ) {
+          [end, start] = e.vertices;
+          edge = e;
+          cost = vertices.get(e.vertices[1]).cost + e.weight;
+        }
       }
     });
 
-    selected[index] = true;
-    totalCost += cost;
-
-    let visit = visited.has(graph.edges[index].vertices[0])
-      ? graph.edges[index].vertices[1]
-      : graph.edges[index].vertices[0];
-
-    visited.add(visit);
+    vertices.set(end, { cost, path: [...vertices.get(start).path, edge] });
   }
 
   return {
-    cost: totalCost,
-    edges: graph.edges.filter((_, idx) => selected[idx]),
+    cost: Array.from(vertices.values())
+      .map((p) => p.cost)
+      .reduce(R.add),
+    vertices,
   };
 }
 
 function prim(graph) {
-  let selected = R.range(0, graph.edges.length).map(R.F);
-  let visited = new Set([graph.vertices[0].id]);
+  let edges = R.range(0, graph.edges.length).map(R.F);
+  let vertices = new Set([graph.vertices[0].id]);
   let totalCost = 0;
 
-  while (visited.size < graph.vertices.length) {
+  while (vertices.size < graph.vertices.length) {
     let index;
     let cost = Number.MAX_VALUE;
 
     graph.edges.forEach((e, idx) => {
       if (
-        ((visited.has(e.vertices[0]) && !visited.has(e.vertices[1])) ||
-          (visited.has(e.vertices[1]) && !visited.has(e.vertices[0]))) &&
+        ((vertices.has(e.vertices[0]) && !vertices.has(e.vertices[1])) ||
+          (vertices.has(e.vertices[1]) && !vertices.has(e.vertices[0]))) &&
         e.weight < cost
       ) {
         index = idx;
@@ -56,19 +64,19 @@ function prim(graph) {
       }
     });
 
-    selected[index] = true;
+    edges[index] = true;
     totalCost += cost;
 
-    let visit = visited.has(graph.edges[index].vertices[0])
+    let visit = vertices.has(graph.edges[index].vertices[0])
       ? graph.edges[index].vertices[1]
       : graph.edges[index].vertices[0];
 
-    visited.add(visit);
+    vertices.add(visit);
   }
 
   return {
     cost: totalCost,
-    edges: graph.edges.filter((_, idx) => selected[idx]),
+    edges: graph.edges.filter((_, idx) => edges[idx]),
   };
 }
 

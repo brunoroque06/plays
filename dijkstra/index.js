@@ -6,7 +6,7 @@ let routing = require('./src/routing');
 let g = graph.createGraph.bind({
   getInt: random.getInt,
   getIntMultiple: random.getIntMultiple,
-})(200, 50, 1, 100);
+})(20, 50, 1, 100);
 
 let prim = routing.prim(g);
 
@@ -17,5 +17,5 @@ console.info(prim.cost);
 let dijk = routing.dijkstra(g);
 
 console.info('# Dijkstra');
-console.info(dijk.edges);
+console.info(dijk.vertices);
 console.info(dijk.cost);
