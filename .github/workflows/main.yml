@@ -10,9 +10,9 @@ jobs:
         working-directory: blockchain/old
     steps:
       - uses: actions/checkout@v2
-      - name: yarn install
+      - name: Install
         run: yarn install
-      - name: yarn run test
+      - name: Test
         run: yarn run test
 
   decision-tree-player:
@@ -26,7 +26,7 @@ jobs:
         with:
           distribution: "adopt"
           java-version: "15"
-      - name: gradle test
+      - name: Test
         run: gradle test
 
   dijkstra:
@@ -36,11 +36,11 @@ jobs:
         working-directory: dijkstra
     steps:
       - uses: actions/checkout@v2
-      - name: yarn install
+      - name: Install
         run: yarn install
-      - name: yarn run lit
+      - name: Lint
         run: yarn run lint
-      - name: yarn run test
+      - name: Test
         run: yarn run test
 
   geneticalgorithm:
@@ -50,7 +50,7 @@ jobs:
         working-directory: geneticalgorithm
     steps:
       - uses: actions/checkout@v2
-      - name: go test
+      - name: Test
         run: go test ./...
 
   oop-limitations:
@@ -60,5 +60,5 @@ jobs:
         working-directory: oop-limitations
     steps:
       - uses: actions/checkout@v2
-      - name: dotnet test
+      - name: Test
         run: dotnet test
