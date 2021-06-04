@@ -7,13 +7,15 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: blockchain/old
+        working-directory: blockchain
     steps:
       - uses: actions/checkout@v2
       - name: Install
-        run: yarn install
-      - name: Test
-        run: yarn run test
+        run: dotnet tool restore
+      - name: Format
+        run: dotnet tool run fantomas --check .
+      - name: Lint
+        run: dotnet tool run dotnet-fsharplint lint blockchain.fsproj
 
   decision-tree-player:
     runs-on: ubuntu-latest
