@@ -15,7 +15,7 @@ jobs:
       - name: Format
         run: dotnet tool run fantomas --check .
       - name: Lint
-        run: dotnet tool run dotnet-fsharplint lint blockchain.fsproj
+        run: dotnet tool run dotnet-fsharplint lint Blockchain.fsproj
 
   decision-tree-player:
     runs-on: ubuntu-latest
