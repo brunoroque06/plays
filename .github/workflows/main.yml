@@ -45,11 +45,11 @@ jobs:
       - name: Test
         run: yarn run test
 
-  geneticalgorithm:
+  genetic-algorithm:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: geneticalgorithm
+        working-directory: genetic_algorithm
     steps:
       - uses: actions/checkout@v2
       - name: Install
