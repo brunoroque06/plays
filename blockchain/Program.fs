@@ -10,7 +10,6 @@ printf $"%s{m}"
 
 let sampleFunction1 x = x * x + 3
 let tuple1 = (1, 2, 3)
-printfn tuple1.[0]
 
 [<EntryPoint>]
 let main argv =
