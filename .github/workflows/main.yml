@@ -52,8 +52,14 @@ jobs:
         working-directory: geneticalgorithm
     steps:
       - uses: actions/checkout@v2
+      - name: Install
+        run: pip install -r requirements.txt
+      - name: Lint
+        run: pylint . && mypy .
+      - name: Format
+        run: black --check
       - name: Test
-        run: go test ./...
+        run: pytest .
 
   oop-limitations:
     runs-on: ubuntu-latest
