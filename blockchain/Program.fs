@@ -8,7 +8,7 @@ let from whom = $"from %s{whom}\n"
 let m = from "Bruno"
 printf $"%s{m}"
 
-let sampleFunction1 x = x*x + 3
+let sampleFunction1 x = x * x + 3
 let tuple1 = (1, 2, 3)
 printfn tuple1.[0]
 
