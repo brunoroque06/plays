@@ -10,12 +10,12 @@ def main():
     target_genes = genetics.Genes(value=target)
 
     pop = population.create(
-        target=target_genes,
-        max_generation=200,
         random_string=random_string,
-        elitism=0.25,
+        size=200,
+        max_generation=200,
+        elitism=0.20,
         mutation_rate=0.01,
-        size=300,
+        target=target_genes,
     )
 
     random_char = stochastic.string(pool=pool, length=1)

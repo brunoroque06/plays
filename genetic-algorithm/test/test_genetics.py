@@ -23,3 +23,25 @@ def test_crossover():
         genes=(genetics.Genes(value="abc"), genetics.Genes(value="def")),
     )
     assert genes.value == "dec"
+
+
+def test_mutate():
+    time = 0
+
+    def random_integer(_: int, __: int):
+        nonlocal time
+        time += 1
+        if time < 4:
+            return 100
+        return 0
+
+    def char():
+        return "_"
+
+    genes = genetics.mutate(
+        random_integer=random_integer,
+        random_char=char,
+        mutation_rate=0.10,
+        genes=genetics.Genes(value="abcde"),
+    )
+    assert genes.value == "abc__"

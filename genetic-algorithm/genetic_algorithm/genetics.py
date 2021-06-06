@@ -41,7 +41,7 @@ def mutate(
         integer = random_integer(0, 100) / 100
         return integer < mutation_rate
 
-    for i in range(len(value)):
+    for i, _ in enumerate(value):
         if does_mutate():
             value = list(value)
             value[i] = random_char()

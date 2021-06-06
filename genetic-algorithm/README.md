@@ -19,13 +19,18 @@ Crossover consists of the combination of any 2 individuals of a given generation
 ## Output Example
 
 ```shell
-Generation:    0 | MaxFitness: 0.17 | BestGenes: epbzzxztknrvmth ectftmgearTrhce effTfa.nq
-Generation:   25 | MaxFitness: 0.54 | BestGenes: Tplbztojknovbto reg,tsatifsghhe epestions
-Generation:   50 | MaxFitness: 0.71 | BestGenes: To,betox notlto je utsat lsqhhe questions
-Generation:   75 | MaxFitness: 0.76 | BestGenes: Tocbetox notkto je  tsat lsqthe questions
-Generation:  100 | MaxFitness: 0.88 | BestGenes: Toxbe or not to je  that lscthe question.
-Generation:  125 | MaxFitness: 0.95 | BestGenes: Toxbe or not to beh that is the question.
-Generation:  150 | MaxFitness: 0.98 | BestGenes: To be or not to beb that is the question.
-Generation:  166 | MaxFitness: 1.00 | BestGenes: To be or not to be, that is the question.
-Elapsed time: 70.583113ms
+Gen Fit  Genes
+010 0.41 ncibebkd ncq tf oee fhecpzsxtru uTeotibn.
+020 0.51 novbe bd noq tf oee fheupzsxthu uTeotibn.
+030 0.59 novbe bd noq tr oe, fhecpisxthu uTeotisn.
+040 0.66 no be bd noq te oe, thacpistthu i eotion.
+050 0.73 no be br noq te oe, thacpistthu q estion.
+060 0.80 no be br noq te be, thatpistthe q estion.
+070 0.90 no be br not te be, that istthe question.
+080 0.88 no be br not te be, that istthe question.
+090 0.95 no be br not to be, that is the question.
+100 0.98 no be or not to be, that is the question.
+110 0.98 no be or not to be, that is the question.
+120 0.98 no be or not to be, that is the question.
+123 1.00 To be or not to be, that is the question.
 ```

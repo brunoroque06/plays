@@ -29,12 +29,12 @@ def max_fitness(individuals: typing.List[individual.Individual]) -> float:
 
 
 def create(
+    random_string: typing.Callable[[], str],
+    size: int,
+    max_generation: int,
     elitism: float,
     mutation_rate: float,
-    max_generation: int,
-    size: int,
     target: genetics.Genes,
-    random_string: typing.Callable[[], str],
 ) -> Population:
     stats = Stats(
         elitism=elitism,
@@ -57,9 +57,9 @@ def find_parents(
     individuals: typing.List[individual.Individual],
     pool: typing.List[int],
 ) -> typing.Tuple[genetics.Genes, genetics.Genes]:
-    x = pool[random_integer(0, len(pool) - 1)]
-    y = pool[random_integer(0, len(pool) - 1)]
-    return individuals[x].genes, individuals[y].genes
+    par_x = pool[random_integer(0, len(pool) - 1)]
+    par_y = pool[random_integer(0, len(pool) - 1)]
+    return individuals[par_x].genes, individuals[par_y].genes
 
 
 def next_generation(
@@ -103,9 +103,14 @@ def next_generation(
 
 
 def print_statistics(population: Population):
-    if population.generation % 50 == 0:
-        best_genes = max(ind.fitness for ind in population.individuals)
-        print(population.generation, population.max_fitness)
+    fitnesses = [ind.fitness for ind in population.individuals]
+    best = max(fitnesses)
+    best_genes = [i for i in population.individuals if i.fitness == best]
+    print(
+        "{}".format(population.generation).zfill(3),
+        "{:.2f}".format(population.max_fitness),
+        best_genes[0].genes.value,
+    )
 
 
 # Recursion would be nice
@@ -130,6 +135,8 @@ def resolve(
         population.individuals = inds
         population.max_fitness = max_fitness(inds)
         population.generation = population.generation + 1
-        print_statistics(population)
+        if population.generation % 10 == 0:
+            print_statistics(population)
 
+    print_statistics(population)
     return population
