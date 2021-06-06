@@ -43,8 +43,8 @@ def mutate(
 
     for i, _ in enumerate(value):
         if does_mutate():
-            value = list(value)
-            value[i] = random_char()
-            value = "".join(value)
+            lis = list(value)
+            lis[i] = random_char()
+            value = "".join(lis)
 
     return Genes(value=value)
