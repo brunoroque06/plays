@@ -1,12 +1,12 @@
 # Genetic Algorithm
 
-This project consists of a genetic algorithm (heuristic, stochastic) that, given a `set of genes` (a string), creates a population that converges to that set using Darwinian Principles.
+This project consists of a genetic algorithm (heuristic, stochastic) that, given a `set of genes`, creates a population that converges to that set using Darwinian Principles.
 
 ## Algorithm Description
 
-The first generation is obtained by randomising every individual, where each individual is characterized by its genes. Then for each individual its fitness is estimated through comparison of its genes and the target `set of genes`. Finally the next generation is created using individuals from the current generation; using methods of crossover, and mutation.
+The first generation is obtained by randomising every individual, where each individual is characterized by its genes. Then for each individual its fitness is estimated through comparison of its genes and the target `set of genes`. The next generation is then created using individuals from the current generation, by using methods of crossover and mutation. Fitness is again estimated, and the next generation is created. This process is repeated until the maximum number of generations is reached, or when at least one individual obtains the target `set of genes`.
 
-Fitness is again estimated, and the next generation is created. This process is repeated until the maximum number of generations is reached, or when at least one individual obtains the target `set of genes`.
+Crossover consists of the combination of any 2 individuals of a given generation. An individual is more likely to be picked from the mating pool the higher its fitness is. Crossover works on combining the good genes already in the population. Mutation changes genes randomly of a given individual, and is a method used to bring new genes into the population.
 
 ## Input Parameters
 
@@ -16,7 +16,7 @@ Fitness is again estimated, and the next generation is created. This process is 
 - `Mutation Rate`, mutation rate of each gene after the crossover;
 - `Maximum Number of Generations`, maximum number of generations that the population has to achieve the target string;
 
-## Output
+## Output Example
 
 ```shell
 Generation:    0 | MaxFitness: 0.17 | BestGenes: epbzzxztknrvmth ectftmgearTrhce effTfa.nq

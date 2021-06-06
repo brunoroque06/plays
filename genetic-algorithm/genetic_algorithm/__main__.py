@@ -16,7 +16,8 @@ def main():
         mutation_rate=0.01,
         size=100,
     )
-    print(pop)
+
+    population.resolve(population=pop)
     return 0
 
 
