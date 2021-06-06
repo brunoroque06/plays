@@ -9,7 +9,7 @@ class Genes:
 
 def calc_fitness(target: Genes, genes: Genes) -> float:
     match = 0
-    for idx in range(0, len(target.value)):
+    for idx in range(len(target.value)):
         if target.value[idx] == genes.value[idx]:
             match = match + 1
     return match / len(target.value)
@@ -27,3 +27,24 @@ def crossover(
 
 def random_genes(random_string: typing.Callable[[], str]) -> Genes:
     return Genes(value=random_string())
+
+
+def mutate(
+    random_integer: typing.Callable[[int, int], int],
+    random_char: typing.Callable[[], str],
+    mutation_rate: float,
+    genes: Genes,
+):
+    value = genes.value
+
+    def does_mutate() -> bool:
+        integer = random_integer(0, 100) / 100
+        return integer < mutation_rate
+
+    for i in range(len(value)):
+        if does_mutate():
+            value = list(value)
+            value[i] = random_char()
+            value = "".join(value)
+
+    return Genes(value=value)

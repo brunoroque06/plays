@@ -52,8 +52,20 @@ def create(
     )
 
 
+def find_parents(
+    random_integer: typing.Callable[[int, int], int],
+    individuals: typing.List[individual.Individual],
+    pool: typing.List[int],
+) -> typing.Tuple[genetics.Genes, genetics.Genes]:
+    x = pool[random_integer(0, len(pool) - 1)]
+    y = pool[random_integer(0, len(pool) - 1)]
+    return individuals[x].genes, individuals[y].genes
+
+
 def next_generation(
     random_bool: typing.Callable[[], bool],
+    random_integer: typing.Callable[[int, int], int],
+    random_char: typing.Callable[[], str],
     stats: Stats,
     individuals: typing.List[individual.Individual],
 ) -> typing.List[individual.Individual]:
@@ -66,19 +78,43 @@ def next_generation(
     inds: typing.List[individual.Individual] = []
 
     for i in range(len(individuals)):
-        if i < num_elites:
-            child = genetics.crossover(
-                random_bool=random_bool,
-                genes=(individuals[best].genes, individuals[second].genes),
+        parents = (
+            (individuals[best].genes, individuals[second].genes)
+            if i < num_elites
+            else find_parents(
+                random_integer=random_integer, individuals=individuals, pool=pool
             )
+        )
+        child = genetics.crossover(random_bool=random_bool, genes=parents)
+        mutated_child = genetics.mutate(
+            random_integer=random_integer,
+            random_char=random_char,
+            mutation_rate=stats.mutation_rate,
+            genes=child,
+        )
+        inds.append(
+            individual.Individual(
+                genes=mutated_child,
+                fitness=genetics.calc_fitness(target=stats.target, genes=mutated_child),
+            )
+        )
 
     return inds
+
+
+def print_statistics(population: Population):
+    if population.generation % 50 == 0:
+        best_genes = max(ind.fitness for ind in population.individuals)
+        print(population.generation, population.max_fitness)
 
 
 # Recursion would be nice
 # But without tail recursion it might be extremely inefficient memory/stack wise
 def resolve(
-    random_bool: typing.Callable[[], bool], population: Population
+    random_bool: typing.Callable[[], bool],
+    random_integer: typing.Callable[[int, int], int],
+    random_char: typing.Callable[[], str],
+    population: Population,
 ) -> Population:
     while (
         population.max_fitness != 1
@@ -86,11 +122,14 @@ def resolve(
     ):
         inds = next_generation(
             random_bool=random_bool,
+            random_integer=random_integer,
+            random_char=random_char,
             stats=population.stats,
             individuals=population.individuals,
         )
         population.individuals = inds
         population.max_fitness = max_fitness(inds)
         population.generation = population.generation + 1
+        print_statistics(population)
 
     return population
