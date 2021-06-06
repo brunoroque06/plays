@@ -6,3 +6,4 @@ from genetic_algorithm import genetics
 @dataclass(frozen=True)
 class Individual:
     genes: genetics.Genes
+    fitness: float

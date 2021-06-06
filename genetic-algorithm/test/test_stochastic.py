@@ -12,7 +12,7 @@ def test_character():
 
 
 def test_string():
-    string = stochastic.string("abc", 10)
+    string = stochastic.string("abc", 10)()
     assert len(string) == 10
     for char in string:
         assert char in "abc"
