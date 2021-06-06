@@ -53,19 +53,41 @@ def create(
 
 
 def next_generation(
-    stats: Stats, individuals: typing.List[individual.Individual]
+    random_bool: typing.Callable[[], bool],
+    stats: Stats,
+    individuals: typing.List[individual.Individual],
 ) -> typing.List[individual.Individual]:
-    return individuals
+
+    fits = list(map(lambda i: i.fitness, individuals))
+    pool = individual.mating_pool(fitnesses=fits)
+    best, second = individual.top_individuals(fitnesses=fits)
+    num_elites = round(len(individuals) * stats.elitism)
+
+    inds: typing.List[individual.Individual] = []
+
+    for i in range(len(individuals)):
+        if i < num_elites:
+            child = genetics.crossover(
+                random_bool=random_bool,
+                genes=(individuals[best].genes, individuals[second].genes),
+            )
+
+    return inds
 
 
-# Recursion would be nice, but without tail recursion it might be extremely inefficient memory/stack wise
-def resolve(population: Population) -> Population:
+# Recursion would be nice
+# But without tail recursion it might be extremely inefficient memory/stack wise
+def resolve(
+    random_bool: typing.Callable[[], bool], population: Population
+) -> Population:
     while (
         population.max_fitness != 1
         and population.generation != population.stats.max_generation
     ):
         inds = next_generation(
-            stats=population.stats, individuals=population.individuals
+            random_bool=random_bool,
+            stats=population.stats,
+            individuals=population.individuals,
         )
         population.individuals = inds
         population.max_fitness = max_fitness(inds)

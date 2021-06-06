@@ -17,7 +17,7 @@ def main():
         size=100,
     )
 
-    population.resolve(population=pop)
+    population.resolve(random_bool=stochastic.boolean, population=pop)
     return 0
 
 

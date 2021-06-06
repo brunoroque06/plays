@@ -1,6 +1,11 @@
 from genetic_algorithm import stochastic
 
 
+def test_boolean():
+    boolean = stochastic.boolean()
+    assert boolean or boolean is False
+
+
 def test_integer():
     num = stochastic.integer(10, 20)
     assert 10 <= num <= 20

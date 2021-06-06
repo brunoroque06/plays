@@ -3,6 +3,10 @@ import functools
 import typing
 
 
+def boolean() -> bool:
+    return bool(random.getrandbits(1))
+
+
 def integer(mini: int, maxi: int) -> int:
     return mini + round(random.random() * (maxi - mini))
 
