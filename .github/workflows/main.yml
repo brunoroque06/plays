@@ -17,6 +17,8 @@ jobs:
         run: dotnet tool restore
       - name: Build
         run: dotnet build
+      - name: Test
+        run: dotnet test
       - name: Format
         run: dotnet tool run fantomas --check .
       - name: Lint

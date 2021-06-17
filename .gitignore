@@ -1,6 +1,8 @@
-# Dotnet
+# Artifacts
 bin
+build
 obj
+out
 
 # Haskell
 dist-newstyle
@@ -8,11 +10,8 @@ dist-newstyle
 # Java
 *.iml
 .gradle
-.idea
-build
-out
 
-# MacOS
+# macOS
 .DS_Store
 
 # Node.js
@@ -28,9 +27,3 @@ out
 .ipynb_checkpoints
 __pycache__
 venv
-
-# Rust
-target
-
-# VSCode
-.vscode
