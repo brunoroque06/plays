@@ -1,6 +1,6 @@
 let routing = require('./routing');
 
-test('dijkstra', () => {
+it('dijkstra', () => {
   let graph = {
     edges: [
       { vertices: ['c', 'b'], weight: 2 },
@@ -21,7 +21,7 @@ test('dijkstra', () => {
   expect(dijk.vertices.get('d').cost).toBe(8);
 });
 
-test('prim', () => {
+it('prim', () => {
   let graph = {
     edges: [
       { vertices: ['b', 'a'], weight: 2 },
@@ -35,8 +35,8 @@ test('prim', () => {
 
   expect(prim.cost).toBe(4);
 
-  expect(prim.edges[0].vertices).toStrictEqual(['b', 'a']);
+  expect(prim.edges[0].vertices).toEqual(['b', 'a']);
   expect(prim.edges[0].weight).toBe(2);
-  expect(prim.edges[1].vertices).toStrictEqual(['c', 'b']);
+  expect(prim.edges[1].vertices).toEqual(['c', 'b']);
   expect(prim.edges[1].weight).toBe(2);
 });

@@ -1,6 +1,6 @@
 let serial = require('./serial');
 
-test('map to string', () => {
+it('map to string', () => {
   expect(serial.toString(0)).toBe('a');
   expect(serial.toString(10)).toBe('k');
   expect(serial.toString(26)).toBe('ba');
@@ -9,7 +9,7 @@ test('map to string', () => {
   expect(serial.toString(55)).toBe('cd');
 });
 
-test('map to integer', () => {
+it('map to integer', () => {
   expect(serial.toInt('a')).toBe(0);
   expect(serial.toInt('s')).toBe(18);
   expect(serial.toInt('bd')).toBe(29);

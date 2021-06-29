@@ -1,11 +1,12 @@
 {
   "env": {
-    "commonjs": true
+    "commonjs": true,
+    "jasmine": true
   },
-  "plugins": ["jest", "ramda"],
+  "plugins": ["jasmine", "ramda"],
   "extends": [
     "airbnb-base",
-    "plugin:jest/recommended",
+    "plugin:jasmine/recommended",
     "plugin:ramda/recommended",
     "prettier"
   ],
