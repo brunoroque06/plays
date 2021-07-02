@@ -45,15 +45,12 @@ jobs:
         working-directory: dijkstra
     steps:
       - uses: actions/checkout@v2
-      - uses: pnpm/action-setup@v2.0.1
-        with:
-          version: 6.9.0
       - name: Install
-        run: pnpm install --frozen-lockfile
+        run: npm ci
       - name: Lint
-        run: pnpm run lint
+        run: npm run lint
       - name: Test
-        run: pnpm run test
+        run: npm run test
 
   genetic-algorithm:
     runs-on: ubuntu-latest
