@@ -9,8 +9,8 @@ class Genes:
 
 def calc_fitness(target: Genes, genes: Genes) -> float:
     match = 0
-    for idx in range(len(target.value)):
-        if target.value[idx] == genes.value[idx]:
+    for i, _ in enumerate(target.value):
+        if target.value[i] == genes.value[i]:
             match = match + 1
     return match / len(target.value)
 
@@ -19,7 +19,7 @@ def crossover(
     random_bool: typing.Callable[[], bool], genes: typing.Tuple[Genes, Genes]
 ) -> Genes:
     gen = ""
-    for i in range(len(genes[0].value)):
+    for i, _ in enumerate(genes[0].value):
         gen = gen + genes[0 if random_bool() else 1].value[i]
 
     return Genes(value=gen)

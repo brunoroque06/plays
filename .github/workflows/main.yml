@@ -62,14 +62,17 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: 3.9
+      - uses: Gr1N/setup-poetry@v7
+        with:
+          poetry-version: 1.1.7
       - name: Install
-        run: pip install -r requirements.txt
+        run: poetry install
       - name: Lint
-        run: pylint --rcfile='.pylintrc' genetic_algorithm test && mypy genetic_algorithm test
+        run: poetry run pylint --rcfile='.pylintrc' genetic_algorithm test && poetry run mypy genetic_algorithm test
       - name: Format
-        run: black --check
+        run: poetry run black --check .
       - name: Test
-        run: pytest .
+        run: poetry run pytest .
 
   oop-limitations:
     runs-on: ubuntu-latest
