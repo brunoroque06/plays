@@ -4,3 +4,4 @@ disable=
     missing-function-docstring,
     missing-module-docstring,
     too-many-arguments,
+    too-few-public-methods,

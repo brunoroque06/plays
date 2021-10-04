@@ -28,7 +28,7 @@ def test_crossover():
 def test_mutate():
     time = 0
 
-    def random_integer(_: int, __: int):
+    def random_int(_: int, __: int):
         nonlocal time
         time += 1
         if time < 4:
@@ -39,7 +39,7 @@ def test_mutate():
         return "_"
 
     genes = genetics.mutate(
-        random_integer=random_integer,
+        random_int=random_int,
         random_char=char,
         mutation_rate=0.10,
         genes=genetics.Genes(value="abcde"),

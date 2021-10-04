@@ -1,6 +1,8 @@
 import typing
 from dataclasses import dataclass
 
+from genetic_algorithm import container
+
 
 @dataclass(frozen=True)
 class Genes:
@@ -16,7 +18,8 @@ def calc_fitness(target: Genes, genes: Genes) -> float:
 
 
 def crossover(
-    random_bool: typing.Callable[[], bool], genes: typing.Tuple[Genes, Genes]
+    genes: typing.Tuple[Genes, Genes],
+    random_bool: typing.Callable[[], bool] = container.Container.random_bool,
 ) -> Genes:
     gen = ""
     for i, _ in enumerate(genes[0].value):
@@ -25,20 +28,20 @@ def crossover(
     return Genes(value=gen)
 
 
-def random_genes(random_string: typing.Callable[[], str]) -> Genes:
-    return Genes(value=random_string())
+def random_genes(random_str: typing.Callable[[], str]) -> Genes:
+    return Genes(value=random_str())
 
 
 def mutate(
-    random_integer: typing.Callable[[int, int], int],
     random_char: typing.Callable[[], str],
     mutation_rate: float,
     genes: Genes,
+    random_int: typing.Callable[[int, int], int] = container.Container.random_int,
 ):
     value = genes.value
 
     def does_mutate() -> bool:
-        integer = random_integer(0, 100) / 100
+        integer = random_int(0, 100) / 100
         return integer < mutation_rate
 
     for i, _ in enumerate(value):

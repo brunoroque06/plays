@@ -2,7 +2,7 @@ import functools
 import typing
 from dataclasses import dataclass
 
-from genetic_algorithm import genetics, individual
+from genetic_algorithm import container, genetics, individual
 
 
 @dataclass(frozen=True)
@@ -29,7 +29,7 @@ def max_fitness(individuals: typing.List[individual.Individual]) -> float:
 
 
 def create(
-    random_string: typing.Callable[[], str],
+    random_str: typing.Callable[[], str],
     size: int,
     max_generation: int,
     elitism: float,
@@ -42,7 +42,7 @@ def create(
         max_generation=max_generation,
         target=target,
     )
-    genes = [genetics.random_genes(random_string) for _ in range(0, size)]
+    genes = [genetics.random_genes(random_str) for _ in range(0, size)]
     inds = [
         individual.Individual(genes=g, fitness=genetics.calc_fitness(g, target))
         for g in genes
@@ -53,18 +53,16 @@ def create(
 
 
 def find_parents(
-    random_integer: typing.Callable[[int, int], int],
     individuals: typing.List[individual.Individual],
     pool: typing.List[int],
+    random_int: typing.Callable[[int, int], int] = container.Container.random_int,
 ) -> typing.Tuple[genetics.Genes, genetics.Genes]:
-    par_x = pool[random_integer(0, len(pool) - 1)]
-    par_y = pool[random_integer(0, len(pool) - 1)]
+    par_x = pool[random_int(0, len(pool) - 1)]
+    par_y = pool[random_int(0, len(pool) - 1)]
     return individuals[par_x].genes, individuals[par_y].genes
 
 
 def next_generation(
-    random_bool: typing.Callable[[], bool],
-    random_integer: typing.Callable[[int, int], int],
     random_char: typing.Callable[[], str],
     stats: Stats,
     individuals: typing.List[individual.Individual],
@@ -81,13 +79,10 @@ def next_generation(
         parents = (
             (individuals[best].genes, individuals[second].genes)
             if i < num_elites
-            else find_parents(
-                random_integer=random_integer, individuals=individuals, pool=pool
-            )
+            else find_parents(individuals=individuals, pool=pool)
         )
-        child = genetics.crossover(random_bool=random_bool, genes=parents)
+        child = genetics.crossover(genes=parents)
         mutated_child = genetics.mutate(
-            random_integer=random_integer,
             random_char=random_char,
             mutation_rate=stats.mutation_rate,
             genes=child,
@@ -107,8 +102,8 @@ def print_statistics(population: Population):
     best = max(fitnesses)
     best_genes = [i for i in population.individuals if i.fitness == best]
     print(
-        "{}".format(population.generation).zfill(3),
-        "{:.2f}".format(population.max_fitness),
+        f"{population.generation}".zfill(3),
+        f"{population.max_fitness:.2f}",
         best_genes[0].genes.value,
     )
 
@@ -116,8 +111,6 @@ def print_statistics(population: Population):
 # Recursion would be nice
 # But without tail recursion it might be extremely inefficient memory/stack wise
 def resolve(
-    random_bool: typing.Callable[[], bool],
-    random_integer: typing.Callable[[int, int], int],
     random_char: typing.Callable[[], str],
     population: Population,
 ) -> Population:
@@ -126,8 +119,6 @@ def resolve(
         and population.generation != population.stats.max_generation
     ):
         inds = next_generation(
-            random_bool=random_bool,
-            random_integer=random_integer,
             random_char=random_char,
             stats=population.stats,
             individuals=population.individuals,

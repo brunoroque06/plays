@@ -1,5 +1,5 @@
-import random
 import functools
+import random
 import typing
 
 
