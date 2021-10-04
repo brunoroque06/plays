@@ -1,7 +1,7 @@
 .PHONY: build
 build:
-	cabal new-build
+	cabal build
 
 .PHONY: run
 run:
-	cabal new-run pi
+	cabal run pi
