@@ -22,7 +22,7 @@ jobs:
       - name: Format
         run: dotnet tool run fantomas --check .
       - name: Lint
-        run: dotnet tool run dotnet-fsharplint lint Blockchain.fsproj
+        run: dotnet tool run dotnet-fsharplint lint DecisionTreePlayer.fsproj
 
   dijkstra:
     runs-on: ubuntu-latest
