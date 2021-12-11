@@ -1,5 +1,6 @@
 module Program =
 
     [<EntryPoint>]
-    printfn "Hello World"
+    printfn "Sup"
+
     let main _ = 0
