@@ -1,4 +1,4 @@
-module decision_tree_player
+module DecisionTreePlayer
 
 open NUnit.Framework
 
