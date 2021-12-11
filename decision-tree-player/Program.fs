@@ -1,5 +1,5 @@
 module Program =
 
     [<EntryPoint>]
-    System.Console.("Hello, World!");
+    printfn "Hello World"
     let main _ = 0
