@@ -80,16 +80,3 @@ jobs:
         run: poetry run black --check .
       - name: Test
         run: poetry run pytest .
-
-  oop-limitations:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: oop-limitations
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 5.0.x
-      - name: Test
-        run: dotnet test
