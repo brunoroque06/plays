@@ -3,27 +3,6 @@ name: CI
 on: [push]
 
 jobs:
-  blockchain:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: blockchain
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 5.0.x
-      - name: Install
-        run: dotnet tool restore
-      - name: Build
-        run: dotnet build
-      - name: Test
-        run: dotnet test
-      - name: Format
-        run: dotnet tool run fantomas --check .
-      - name: Lint
-        run: dotnet tool run dotnet-fsharplint lint Blockchain.fsproj
-
   decision-tree-player:
     runs-on: ubuntu-latest
     defaults:
