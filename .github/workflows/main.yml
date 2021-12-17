@@ -17,12 +17,12 @@ jobs:
         run: dotnet tool restore
       - name: Build
         run: dotnet build
-      - name: Test
-        run: dotnet test
       - name: Format
         run: dotnet tool run fantomas --check .
       - name: Lint
         run: dotnet tool run dotnet-fsharplint lint DecisionTreePlayer.fsproj
+      - name: Test
+        run: dotnet test
 
   dijkstra:
     runs-on: ubuntu-latest
@@ -31,6 +31,9 @@ jobs:
         working-directory: dijkstra
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 17
       - name: Install
         run: npm ci
       - name: Lint
@@ -47,15 +50,15 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-          python-version: 3.10
+          python-version: 3.10.x
       - uses: Gr1N/setup-poetry@v7
         with:
           poetry-version: 1.1.12
       - name: Install
         run: poetry install
-      - name: Lint
-        run: poetry run pylint --rcfile='.pylintrc' genetic_algorithm test && poetry run mypy genetic_algorithm test
       - name: Format
         run: poetry run black --check .
+      - name: Lint
+        run: poetry run pylint --rcfile='.pylintrc' genetic_algorithm test && poetry run mypy genetic_algorithm test
       - name: Test
         run: poetry run pytest .
