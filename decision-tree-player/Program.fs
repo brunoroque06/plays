@@ -1,6 +1,3 @@
-module Program =
+module Program
 
-    [<EntryPoint>]
-    printfn "Sup"
-
-    let main _ = 0
+TicTacToe.createBoard |> TicTacToe.printBoard
