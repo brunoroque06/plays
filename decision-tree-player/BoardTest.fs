@@ -1,7 +1,8 @@
-module TicTacToeTest
+module BoardTest
 
 open NUnit.Framework
-open TicTacToe
+
+open Board
 
 [<Test>]
 let testCreateBoard () =

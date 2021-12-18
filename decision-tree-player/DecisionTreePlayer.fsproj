@@ -7,8 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="TicTacToe.fs" />
-    <Compile Include="TicTacToeTest.fs" />
+    <Compile Include="Board.fs" />
+    <Compile Include="BoardTest.fs" />
+    <Compile Include="Player.fs" />
+    <Compile Include="PlayerTest.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

@@ -1,4 +1,4 @@
-module TicTacToe
+module Board
 
 type Piece =
     | Empty
@@ -24,3 +24,5 @@ let printBoard board =
     |> Array.map piece2Char
     |> Array.chunkBySize 3
     |> Array.iter (Array.iteri printChar)
+
+let playMove piece idx board = Array.updateAt idx piece board
