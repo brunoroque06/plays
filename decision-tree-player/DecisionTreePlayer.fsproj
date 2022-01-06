@@ -11,6 +11,8 @@
     <Compile Include="BoardTest.fs" />
     <Compile Include="Player.fs" />
     <Compile Include="PlayerTest.fs" />
+    <Compile Include="Referee.fs" />
+    <Compile Include="RefereeTest.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
