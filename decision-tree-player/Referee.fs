@@ -1,5 +1,7 @@
 module Referee
 
+open Board
+
 type Position =
     | Playing
     | CrossWon
@@ -8,11 +10,37 @@ type Position =
 
 let private sup = 1
 
-let evaluatePosition board =
-    let combs =
-        [| [| 0 .. 2 |]; [| 1; 4; 7 |] |]
-        |> Array.collect (fun c -> Array.map (fun i -> Array.map ((+) i) c) [| 0; 3; 6 |])
-        |> Array.append [| [| 0; 4; 8 |]
-                           [| 2; 4; 6 |] |]
+let private samePiece board combs =
+    Array.map (Array.map (fun s -> getPiece s board)) combs
+    |> Array.filter (fun f -> Option.isSome f[0] && Option.isSome f[1] && Option.isSome f[2])
+    |> Array.tryFind
+        (fun f ->
+            Array.pairwise f
+            |> Array.forall (fun (a, b) -> a.Value = b.Value))
+    |> Option.map Array.head
 
-    Position.Draw
+
+let evaluatePosition board =
+    let files =
+        Array.map (fun s -> Array.map ((+) s) [| 0 .. 2 |]) [| 0; 3; 6 |]
+
+    let ranks =
+        Array.map (fun s -> Array.map ((+) s) [| 0; 3; 6 |]) [| 0; 1; 2 |]
+
+    let diags = [| [| 0; 4; 8 |]; [| 2; 4; 6 |] |]
+
+    let combs =
+        Array.append files ranks |> Array.append diags
+
+    let piece = samePiece board combs
+
+    match piece with
+    | Some p ->
+        match p with
+        | Some Cross -> CrossWon
+        | _ -> NoughtWon
+    | _ ->
+        if (isBoardFull board) then
+            Draw
+        else
+            Playing

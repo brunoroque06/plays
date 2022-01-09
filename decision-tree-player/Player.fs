@@ -1,7 +1,5 @@
 module Player
 
-open Board
-
 type Side =
     | Cross
     | Nought
@@ -9,7 +7,7 @@ type Side =
 let pickDummyMove rand board =
     let idx =
         Array.mapi (fun i s -> (i, s)) board
-        |> Array.filter (fun (_, s) -> s = Piece.Empty)
+        |> Array.filter (fun (_, s) -> Option.isNone s)
         |> Array.map fst
 
     Array.length idx |> rand |> Array.get idx

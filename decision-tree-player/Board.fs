@@ -1,18 +1,19 @@
 module Board
 
 type Piece =
-    | Empty
     | Cross
     | Nought
 
 let piece2Char piece =
     match piece with
-    | Empty -> ' '
-    | Cross -> 'X'
-    | Nought -> 'O'
+    | Some p ->
+        match p with
+        | Cross -> 'X'
+        | Nought -> 'O'
+    | None -> ' '
 
-let createBoard =
-    [| 0 .. 8 |] |> Array.map (fun _ -> Piece.Empty)
+let createBoard: Piece option [] =
+    [| 0 .. 8 |] |> Array.map (fun _ -> None)
 
 let printChar col piece =
     match col with
@@ -25,4 +26,11 @@ let printBoard board =
     |> Array.chunkBySize 3
     |> Array.iter (Array.iteri printChar)
 
-let playMove piece idx board = Array.updateAt idx piece board
+let playMove piece idx board = Array.updateAt idx (Some piece) board
+
+let getPiece idx board = Array.get board idx
+
+let isBoardFull board =
+    match Array.tryFind Option.isNone board with
+    | Some _ -> false
+    | None -> true
