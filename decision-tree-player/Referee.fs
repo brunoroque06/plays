@@ -29,7 +29,7 @@ let evaluatePosition board =
 
     let diags = [| [| 0; 4; 8 |]; [| 2; 4; 6 |] |]
 
-    let combs = Array.append files ranks |> Array.append diags
+    let combs = Array.concat [| files; ranks; diags |]
 
     let piece = samePiece board combs
 
