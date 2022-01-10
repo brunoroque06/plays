@@ -12,8 +12,7 @@ let piece2Char piece =
         | Nought -> 'O'
     | None -> ' '
 
-let createBoard: Piece option [] =
-    [| 0 .. 8 |] |> Array.map (fun _ -> None)
+let createBoard: Piece option [] = [| 0..8 |] |> Array.map (fun _ -> None)
 
 let printChar col piece =
     match col with
