@@ -12,8 +12,9 @@ let playGame playerO playerX =
     let rec resolveGame board playerPlaying theOther piece =
         let move = playerPlaying piece board
         let board' = playMove piece board move
+
         match (evaluatePosition board') with
-            | Position.Playing -> resolveGame board' theOther playerPlaying (switchPiece piece)
-            | pos -> pos
+        | Position.Playing -> resolveGame board' theOther playerPlaying (switchPiece piece)
+        | pos -> pos
 
     resolveGame (createBoard) playerO playerX Piece.Nought
