@@ -1,4 +1,4 @@
-module Referee
+module Game
 
 open Board
 
@@ -8,10 +8,8 @@ type Position =
     | NoughtWon
     | Draw
 
-let private sup = 1
-
 let private samePiece board combs =
-    Array.map (Array.map (fun s -> getPiece s board)) combs
+    Array.map (Array.map (fun s -> getPiece board s)) combs
     |> Array.filter (fun f ->
         Option.isSome f[0]
         && Option.isSome f[1]
@@ -21,12 +19,9 @@ let private samePiece board combs =
         |> Array.forall (fun (a, b) -> a.Value = b.Value))
     |> Option.map Array.head
 
-
 let evaluatePosition board =
     let files = Array.map (fun s -> Array.map ((+) s) [| 0..2 |]) [| 0; 3; 6 |]
-
     let ranks = Array.map (fun s -> Array.map ((+) s) [| 0; 3; 6 |]) [| 0; 1; 2 |]
-
     let diags = [| [| 0; 4; 8 |]; [| 2; 4; 6 |] |]
 
     let combs = Array.concat [| files; ranks; diags |]

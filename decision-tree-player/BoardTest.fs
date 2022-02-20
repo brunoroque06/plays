@@ -1,8 +1,7 @@
 module BoardTest
 
-open NUnit.Framework
-
 open Board
+open NUnit.Framework
 
 [<Test>]
 let testCreateBoard () =
@@ -13,7 +12,7 @@ let testCreateBoard () =
 let testBoardFull () =
     let isFull =
         createBoard
-        |> fun b -> List.fold (fun b i -> playMove Cross i b) b [ 0..8 ]
+        |> fun b -> List.fold (playMove Cross) b [ 0..8 ]
         |> isBoardFull
 
     Assert.IsTrue(isFull)

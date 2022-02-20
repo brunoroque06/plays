@@ -11,15 +11,17 @@
     <Compile Include="BoardTest.fs" />
     <Compile Include="Player.fs" />
     <Compile Include="PlayerTest.fs" />
-    <Compile Include="Referee.fs" />
-    <Compile Include="RefereeTest.fs" />
+    <Compile Include="Game.fs" />
+    <Compile Include="GameTest.fs" />
+    <Compile Include="Match.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
     <PackageReference Include="NUnit" Version="3.13.2" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.1.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
+    <PackageReference Update="FSharp.Core" Version="6.0.3" />
   </ItemGroup>
 
 </Project>

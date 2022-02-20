@@ -4,7 +4,7 @@ type Side =
     | Cross
     | Nought
 
-let pickDummyMove rand board =
+let pickDummyMove rand _ board =
     let idx =
         Array.mapi (fun i s -> (i, s)) board
         |> Array.filter (fun (_, s) -> Option.isNone s)

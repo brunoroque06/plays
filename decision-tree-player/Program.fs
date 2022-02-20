@@ -1,9 +1,10 @@
 module Program
 
-Board.createBoard |> Board.printBoard
+open Match
+open Player
+open System
 
-// board
-// pick move
-// play move
-// evaluate position
-// back to decide move if game not over
+let rand _ = 0
+
+playGame (pickDummyMove rand) (pickDummyMove rand)
+|> Console.WriteLine

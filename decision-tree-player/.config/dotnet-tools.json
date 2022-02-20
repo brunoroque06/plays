@@ -7,7 +7,7 @@
       "commands": ["dotnet-fsharplint"]
     },
     "fantomas-tool": {
-      "version": "4.6.0-beta-001",
+      "version": "4.6.4",
       "commands": ["fantomas"]
     }
   }
