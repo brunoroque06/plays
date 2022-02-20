@@ -5,8 +5,8 @@ open Board
 type Position =
     | Playing
     | CrossWon
-    | NoughtWon
     | Draw
+    | NoughtWon
 
 let private samePiece board combs =
     Array.map (Array.map (getPiece board)) combs
