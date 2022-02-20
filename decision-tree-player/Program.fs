@@ -4,7 +4,8 @@ open Match
 open Player
 open System
 
-let rand _ = 0
+let rand len = Random.Shared.Next(0, len)
 
-playGame (pickDummyMove rand) (pickDummyMove rand)
+playMatch 100 (pickDummyMove rand) (pickDummyMove rand)
+|> List.countBy id
 |> Console.WriteLine

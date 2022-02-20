@@ -9,7 +9,7 @@ type Position =
     | Draw
 
 let private samePiece board combs =
-    Array.map (Array.map (fun s -> getPiece board s)) combs
+    Array.map (Array.map (getPiece board)) combs
     |> Array.filter (fun f ->
         Option.isSome f[0]
         && Option.isSome f[1]
