@@ -7,6 +7,16 @@ open System
 let rand len = Random.Shared.Next(0, len)
 
 playMatch 100 (pickDummyMove rand) (pickDummyMove rand)
-|> List.countBy id
-|> List.sortBy fst
-|> Console.WriteLine
+|> Array.countBy id
+|> Array.sortBy fst
+|> printfn "%A"
+
+playMatch 100 (pickDecisionTreeMove 6) (pickDummyMove rand)
+|> Array.countBy id
+|> Array.sortBy fst
+|> printfn "%A"
+
+playMatch 100 (pickDummyMove rand) (pickDecisionTreeMove 6)
+|> Array.countBy id
+|> Array.sortBy fst
+|> printfn "%A"

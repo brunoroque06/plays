@@ -14,7 +14,29 @@ let pickDummyMoveWithEmptyBoard () =
 [<Test>]
 let pickDummyMoveWithNonEmptyBoard () =
     let board = List.fold (playMove Piece.Cross) createBoard [ 0..3 ]
-
     let rand _ = 0
     let move = pickDummyMove rand Piece.Nought board
+    Assert.AreEqual(4, move)
+
+[<Test>]
+let decisionTreePicksCenterMoveWithEmptyBoard () =
+    let board = createBoard
+    let move = pickDecisionTreeMove 1 Piece.Nought board
+    Assert.AreEqual(4, move)
+
+[<Test>]
+let decisionTreePicks2WinningMoves () =
+    let board =
+        createBoard
+        |> fun b -> playMove Piece.Cross b 2
+        |> fun b -> playMove Piece.Nought b 1
+
+    let move = pickDecisionTreeMove 5 Piece.Nought board
+    Assert.AreEqual(8, move)
+
+    let board' =
+        playMove Piece.Cross board 8
+        |> fun b -> playMove Piece.Nought b 5
+
+    let move = pickDecisionTreeMove 3 Piece.Nought board'
     Assert.AreEqual(4, move)

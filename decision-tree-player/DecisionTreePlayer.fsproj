@@ -9,11 +9,11 @@
   <ItemGroup>
     <Compile Include="Board.fs" />
     <Compile Include="BoardTest.fs" />
-    <Compile Include="Player.fs" />
-    <Compile Include="PlayerTest.fs" />
     <Compile Include="Game.fs" />
     <Compile Include="GameTest.fs" />
     <Compile Include="Match.fs" />
+    <Compile Include="Player.fs" />
+    <Compile Include="PlayerTest.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
