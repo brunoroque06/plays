@@ -17,11 +17,14 @@ let bestLeaf leaves =
     let findWin position =
         Array.sortBy
             (fun l ->
-                match l.Position with
-                | p when p = position -> 3
-                | Playing -> 2
-                | Draw -> 1
-                | _ -> 0)
+                let res =
+                    match l.Position with
+                    | p when p = position -> 0
+                    | Draw -> 1
+                    | Playing -> 2
+                    | _ -> 3
+
+                res * 10 + l.Move)
             leaves
         |> Array.head
 
@@ -38,6 +41,10 @@ let pickDecisionTreeMove depth piece board =
             legalMoves board'
             |> Array.map (revolveLeaf (depth - 1) (switchPiece piece) board')
             |> bestLeaf
+            |> fun l ->
+                { Piece = piece
+                  Move = move
+                  Position = l.Position }
         else
             { Piece = piece
               Move = move
@@ -47,6 +54,6 @@ let pickDecisionTreeMove depth piece board =
     | true -> 4
     | _ ->
         legalMoves board
-        |> Array.map (revolveLeaf depth piece board)
+        |> Array.map (revolveLeaf (depth - 1) piece board)
         |> bestLeaf
         |> fun l -> l.Move

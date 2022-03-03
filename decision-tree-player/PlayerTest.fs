@@ -31,15 +31,15 @@ let decisionTreePicksWinningMoves () =
         |> fun b -> playMove Piece.Cross b 2
         |> fun b -> playMove Piece.Nought b 1
 
-    let move = pickDecisionTreeMove 5 Piece.Nought board
-    Assert.AreEqual(8, move)
+    let move = pickDecisionTreeMove 5 Piece.Cross board
+    Assert.AreEqual(4, move)
 
     let board' =
-        playMove Piece.Cross board 8
-        |> fun b -> playMove Piece.Nought b 5
+        playMove Piece.Cross board move
+        |> fun b -> playMove Piece.Nought b 6
 
-    let move = pickDecisionTreeMove 3 Piece.Nought board'
-    Assert.AreEqual(4, move)
+    let move = pickDecisionTreeMove 3 Piece.Cross board'
+    Assert.AreEqual(5, move)
 
 [<Test>]
 let decisionTreePicksDefensiveMove () =
