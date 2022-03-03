@@ -3,11 +3,11 @@
   "isRoot": true,
   "tools": {
     "dotnet-fsharplint": {
-      "version": "0.21.0",
+      "version": "0.21.1",
       "commands": ["dotnet-fsharplint"]
     },
     "fantomas-tool": {
-      "version": "4.6.4",
+      "version": "4.6.5",
       "commands": ["fantomas"]
     }
   }
