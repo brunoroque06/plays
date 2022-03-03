@@ -20,3 +20,8 @@ playMatch 100 (pickDummyMove rand) (pickDecisionTreeMove 6)
 |> Array.countBy id
 |> Array.sortBy fst
 |> printfn "%A"
+
+playMatch 100 (pickDummyMove rand) (pickDecisionTreeMove 5)
+|> Array.countBy id
+|> Array.sortBy fst
+|> printfn "%A"

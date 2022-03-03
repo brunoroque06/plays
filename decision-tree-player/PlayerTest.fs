@@ -25,7 +25,7 @@ let decisionTreePicksCenterMoveWithEmptyBoard () =
     Assert.AreEqual(4, move)
 
 [<Test>]
-let decisionTreePicks2WinningMoves () =
+let decisionTreePicksWinningMoves () =
     let board =
         createBoard
         |> fun b -> playMove Piece.Cross b 2
@@ -40,3 +40,10 @@ let decisionTreePicks2WinningMoves () =
 
     let move = pickDecisionTreeMove 3 Piece.Nought board'
     Assert.AreEqual(4, move)
+
+[<Test>]
+let decisionTreePicksDefensiveMove () =
+    let board = createBoard |> fun b -> playMove Piece.Cross b 4
+
+    let move = pickDecisionTreeMove 6 Piece.Nought board
+    Assert.AreEqual(0, move)
