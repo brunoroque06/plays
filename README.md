@@ -1,3 +1,3 @@
-# λ
+# Playground
 
-This repository contains (unrelated) side projects I work on. :whale:
+This repository contains (unrelated) side projects I work on.
