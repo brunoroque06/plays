@@ -5,7 +5,7 @@ let routing = require('./src/routing');
 
 let g = graph.createGraph.bind({
   getInt: random.getInt,
-  getIntMultiple: random.getIntMultiple,
+  getInts: random.getInts,
 })(20, 50, 1, 100);
 
 let prim = routing.prim(g);

@@ -9,11 +9,8 @@ function calculateNumberEdges(nVertices, density) {
 
 function createEdges(nVertices, nEdges) {
   const aEdgesPerVertices = Math.ceil(nEdges / nVertices) + 1;
-
   return R.range(1, nVertices)
-    .map((v) =>
-      this.getIntMultiple(0, v, aEdgesPerVertices).map((vd) => [v, vd]),
-    )
+    .map((v) => this.getInts(0, v, aEdgesPerVertices).map((vd) => [v, vd]))
     .reduce(R.concat);
 }
 

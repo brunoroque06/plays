@@ -1,16 +1,15 @@
 const graph = require('./graph');
 
-let getIntMultiple = (min, max, n) => [...Array(5).keys()].slice(0, n);
+let getInts = (min, max, n) => [...Array(5).keys()].slice(0, n);
 
 it('number of edges', () => {
   expect(graph.calculateNumberEdges(3, 0)).toBe(2);
-  expect(graph.calculateNumberEdges(4, 0)).toBe(3);
   expect(graph.calculateNumberEdges(4, 30)).toBe(4);
   expect(graph.calculateNumberEdges(4, 100)).toBe(6);
 });
 
 it('create edges with 0 density', () => {
-  let edges = graph.createEdges.bind({ getIntMultiple })(4, 0);
+  let edges = graph.createEdges.bind({ getInts })(4, 0);
 
   expect(edges.length).toBe(3);
   expect(edges[0]).toEqual([1, 0]);
@@ -19,7 +18,7 @@ it('create edges with 0 density', () => {
 });
 
 it('create edges with higher density', () => {
-  let edges = graph.createEdges.bind({ getIntMultiple })(4, 3);
+  let edges = graph.createEdges.bind({ getInts })(4, 3);
 
   expect(edges.length).toBe(6);
   expect(edges[0]).toEqual([1, 0]);
@@ -33,7 +32,7 @@ it('create edges with higher density', () => {
 it('create graph with 0 density', () => {
   let getInt = (min, max) => max;
 
-  let g = graph.createGraph.bind({ getInt, getIntMultiple })(4, 0, 1, 10);
+  let g = graph.createGraph.bind({ getInt, getInts })(4, 0, 1, 10);
 
   expect(g.vertices.length).toBe(4);
   expect(g.edges.length).toBe(6);
