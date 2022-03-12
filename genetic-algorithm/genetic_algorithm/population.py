@@ -10,7 +10,7 @@ class Stats:
     elitism: float
     mutation_rate: float
     max_generation: int
-    target: genetics.Genes
+    target: str
 
 
 @dataclass
@@ -34,7 +34,7 @@ def create(
     max_generation: int,
     elitism: float,
     mutation_rate: float,
-    target: genetics.Genes,
+    target: str,
 ) -> Population:
     stats = Stats(
         elitism=elitism,
@@ -42,7 +42,7 @@ def create(
         max_generation=max_generation,
         target=target,
     )
-    genes = [genetics.random_genes(random_str) for _ in range(0, size)]
+    genes = [random_str() for _ in range(0, size)]
     inds = [
         individual.Individual(genes=g, fitness=genetics.calc_fitness(g, target))
         for g in genes
@@ -56,7 +56,7 @@ def find_parents(
     individuals: typing.List[individual.Individual],
     pool: typing.List[int],
     random_int: typing.Callable[[int, int], int] = container.Container.random_int,
-) -> typing.Tuple[genetics.Genes, genetics.Genes]:
+) -> typing.Tuple[str, str]:
     par_x = pool[random_int(0, len(pool) - 1)]
     par_y = pool[random_int(0, len(pool) - 1)]
     return individuals[par_x].genes, individuals[par_y].genes
@@ -67,21 +67,20 @@ def next_generation(
     stats: Stats,
     individuals: typing.List[individual.Individual],
 ) -> typing.List[individual.Individual]:
-
-    fits = list(map(lambda i: i.fitness, individuals))
-    pool = individual.mating_pool(fitnesses=fits)
-    best, second = individual.top_individuals(fitnesses=fits)
+    fits = list(map(lambda ind: ind.fitness, individuals))
+    pool = individual.mating_pool(fits=fits)
+    best, second = individual.top_individuals(fits=fits)
     num_elites = round(len(individuals) * stats.elitism)
 
     inds: typing.List[individual.Individual] = []
 
-    for i in range(len(individuals)):
+    for i, _ in enumerate(individuals):
         parents = (
             (individuals[best].genes, individuals[second].genes)
             if i < num_elites
             else find_parents(individuals=individuals, pool=pool)
         )
-        child = genetics.crossover(genes=parents)
+        child = genetics.crossover(parents=parents)
         mutated_child = genetics.mutate(
             random_char=random_char,
             mutation_rate=stats.mutation_rate,
@@ -98,13 +97,13 @@ def next_generation(
 
 
 def print_statistics(population: Population):
-    fitnesses = [ind.fitness for ind in population.individuals]
-    best = max(fitnesses)
+    fits = [ind.fitness for ind in population.individuals]
+    best = max(fits)
     best_genes = [i for i in population.individuals if i.fitness == best]
     print(
         f"{population.generation}".zfill(3),
         f"{population.max_fitness:.2f}",
-        best_genes[0].genes.value,
+        best_genes[0].genes,
     )
 
 

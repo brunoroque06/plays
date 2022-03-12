@@ -1,53 +1,33 @@
 import typing
-from dataclasses import dataclass
 
 from genetic_algorithm import container
 
 
-@dataclass(frozen=True)
-class Genes:
-    value: str
-
-
-def calc_fitness(target: Genes, genes: Genes) -> float:
+def calc_fitness(target: str, genes: str) -> float:
     match = 0
-    for i, _ in enumerate(target.value):
-        if target.value[i] == genes.value[i]:
-            match = match + 1
-    return match / len(target.value)
+    for tar, gen in zip(target, genes):
+        if tar == gen:
+            match += 1
+    return match / len(target)
 
 
 def crossover(
-    genes: typing.Tuple[Genes, Genes],
+    parents: typing.Tuple[str, str],
     random_bool: typing.Callable[[], bool] = container.Container.random_bool,
-) -> Genes:
-    gen = ""
-    for i, _ in enumerate(genes[0].value):
-        gen = gen + genes[0 if random_bool() else 1].value[i]
-
-    return Genes(value=gen)
-
-
-def random_genes(random_str: typing.Callable[[], str]) -> Genes:
-    return Genes(value=random_str())
+) -> str:
+    genes = [p_x if random_bool() else p_y for p_x, p_y in zip(parents[0], parents[1])]
+    return "".join(genes)
 
 
 def mutate(
     random_char: typing.Callable[[], str],
     mutation_rate: float,
-    genes: Genes,
+    genes: str,
     random_int: typing.Callable[[int, int], int] = container.Container.random_int,
 ):
-    value = genes.value
-
     def does_mutate() -> bool:
         integer = random_int(0, 100) / 100
         return integer < mutation_rate
 
-    for i, _ in enumerate(value):
-        if does_mutate():
-            lis = list(value)
-            lis[i] = random_char()
-            value = "".join(lis)
-
-    return Genes(value=value)
+    new_genes = [random_char() if does_mutate() else g for g in genes]
+    return "".join(new_genes)

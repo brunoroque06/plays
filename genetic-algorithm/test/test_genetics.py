@@ -2,9 +2,7 @@ from genetic_algorithm import genetics
 
 
 def test_calc_fitness():
-    fit = genetics.calc_fitness(
-        target=genetics.Genes(value="abcd"), genes=genetics.Genes(value="ab__")
-    )
+    fit = genetics.calc_fitness(target="abcd", genes="ab__")
     assert fit == 0.5
 
 
@@ -20,9 +18,9 @@ def test_crossover():
 
     genes = genetics.crossover(
         random_bool=random_bool,
-        genes=(genetics.Genes(value="abc"), genetics.Genes(value="def")),
+        parents=("abc", "def"),
     )
-    assert genes.value == "dec"
+    assert genes == "dec"
 
 
 def test_mutate():
@@ -42,6 +40,6 @@ def test_mutate():
         random_int=random_int,
         random_char=char,
         mutation_rate=0.10,
-        genes=genetics.Genes(value="abcde"),
+        genes="abcde",
     )
-    assert genes.value == "abc__"
+    assert genes == "abc__"

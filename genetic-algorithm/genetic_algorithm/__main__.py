@@ -1,4 +1,4 @@
-from genetic_algorithm import genetics, population, stochastic
+from genetic_algorithm import population, stochastic
 
 
 def main():
@@ -7,15 +7,13 @@ def main():
 
     random_str = stochastic.string(pool=pool, length=len(target))
 
-    target_genes = genetics.Genes(value=target)
-
     pop = population.create(
         random_str=random_str,
         size=200,
         max_generation=200,
         elitism=0.20,
         mutation_rate=0.01,
-        target=target_genes,
+        target=target,
     )
 
     random_char = stochastic.string(pool=pool, length=1)
