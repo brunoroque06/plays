@@ -30,4 +30,5 @@ def mutate(
         return integer < mutation_rate
 
     new_genes = [random_char() if does_mutate() else g for g in genes]
+
     return "".join(new_genes)

@@ -17,7 +17,9 @@ def top_individuals(fits: typing.List[float]) -> typing.Tuple[int, int]:
 def mating_pool(fits: typing.List[float]) -> typing.List[int]:
     pool: typing.List[int] = []
     fit_sum = sum(fits)
+
     for idx, fit in enumerate(fits, start=0):
         weight = int(fit / fit_sum * len(fits) * 2)
         pool = pool + [idx] * weight
+
     return pool

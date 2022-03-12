@@ -20,6 +20,7 @@ def test_crossover():
         random_bool=random_bool,
         parents=("abc", "def"),
     )
+
     assert genes == "dec"
 
 
@@ -42,4 +43,5 @@ def test_mutate():
         mutation_rate=0.10,
         genes="abcde",
     )
+
     assert genes == "abc__"

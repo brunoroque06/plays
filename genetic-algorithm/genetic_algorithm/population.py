@@ -107,8 +107,8 @@ def print_statistics(population: Population):
     )
 
 
-# Recursion would be nice
-# But without tail recursion it might be extremely inefficient memory/stack wise
+# Recursion would be nice,
+# but without tail recursion it might be extremely inefficient memory/stack wise
 def resolve(
     random_char: typing.Callable[[], str],
     population: Population,
