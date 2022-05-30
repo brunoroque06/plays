@@ -1,3 +1,3 @@
 # Playground
 
-This repository contains (unrelated) side projects I work on.
+This repository contains (unrelated) projects.
