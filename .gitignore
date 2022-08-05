@@ -4,13 +4,6 @@ build
 obj
 out
 
-# Haskell
-dist-newstyle
-
-# Java
-*.iml
-.gradle
-
 # macOS
 .DS_Store
 
@@ -18,6 +11,5 @@ dist-newstyle
 node_modules/
 
 # Python
-.ipynb_checkpoints
 __pycache__
 venv
