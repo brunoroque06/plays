@@ -13,7 +13,7 @@ let evaluateOnGoingGame () =
 let evaluateCrossWin () =
     let p =
         createBoard
-        |> fun board -> List.fold (playMove Cross) board [ 0; 1; 2 ]
+        |> fun board -> List.fold (playMove X) board [ 0; 1; 2 ]
         |> evaluatePosition
 
     Assert.AreEqual(Position.CrossWon, p)
@@ -22,8 +22,8 @@ let evaluateCrossWin () =
 let evaluateDraw () =
     let p =
         createBoard
-        |> fun board -> List.fold (playMove Cross) board [ 0; 2; 3; 7; 8 ]
-        |> fun board -> List.fold (playMove Nought) board [ 1; 4; 5; 6 ]
+        |> fun board -> List.fold (playMove X) board [ 0; 2; 3; 7; 8 ]
+        |> fun board -> List.fold (playMove O) board [ 1; 4; 5; 6 ]
         |> evaluatePosition
 
     Assert.AreEqual(Position.Draw, p)

@@ -1,13 +1,13 @@
 module Board
 
 type Piece =
-    | Cross
-    | Nought
+    | X
+    | O
 
 let switchPiece piece =
     match piece with
-    | Piece.Cross -> Piece.Nought
-    | _ -> Piece.Cross
+    | Piece.X -> Piece.O
+    | _ -> Piece.X
 
 let createBoard: Piece option [] = [| 0..8 |] |> Array.map (fun _ -> None)
 
@@ -16,8 +16,8 @@ let printBoard board =
         match piece with
         | Some p ->
             match p with
-            | Cross -> 'X'
-            | Nought -> 'O'
+            | X -> 'X'
+            | O -> 'O'
         | None -> ' '
 
     let printChar col piece =

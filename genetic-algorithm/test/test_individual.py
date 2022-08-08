@@ -2,9 +2,9 @@ from genetic_algorithm import individual
 
 
 def test_top_individuals():
-    best, second = individual.top_individuals(fits=[0.5, 0.99, 0.25, 0.75])
+    best, snd = individual.top_individuals(fits=[0.5, 0.99, 0.25, 0.75])
     assert best == 1
-    assert second == 3
+    assert snd == 3
 
 
 def test_mating_pool():

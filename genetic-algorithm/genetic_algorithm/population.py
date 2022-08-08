@@ -9,29 +9,29 @@ from genetic_algorithm import container, genetics, individual
 class Stats:
     elitism: float
     mutation_rate: float
-    max_generation: int
+    max_gen: int
     target: str
 
 
 @dataclass
 class Population:
     stats: Stats
-    generation: int
-    individuals: typing.List[individual.Individual]
+    gen: int
+    inds: typing.List[individual.Individual]
     max_fitness: float
 
 
-def max_fitness(individuals: typing.List[individual.Individual]) -> float:
+def max_fitness(inds: typing.List[individual.Individual]) -> float:
     return functools.reduce(
         lambda a, b: a if a > b else a,
-        map(lambda i: i.fitness, individuals),
+        map(lambda i: i.fitness, inds),
     )
 
 
 def create(
-    random_str: typing.Callable[[], str],
+    rnd_str: typing.Callable[[], str],
     size: int,
-    max_generation: int,
+    max_gen: int,
     elitism: float,
     mutation_rate: float,
     target: str,
@@ -39,94 +39,87 @@ def create(
     stats = Stats(
         elitism=elitism,
         mutation_rate=mutation_rate,
-        max_generation=max_generation,
+        max_gen=max_gen,
         target=target,
     )
-    genes = [random_str() for _ in range(0, size)]
+    genes = [rnd_str() for _ in range(0, size)]
     inds = [
         individual.Individual(genes=g, fitness=genetics.calc_fitness(g, target))
         for g in genes
     ]
-    return Population(
-        stats=stats, generation=0, individuals=inds, max_fitness=max_fitness(inds)
-    )
+    return Population(stats=stats, gen=0, inds=inds, max_fitness=max_fitness(inds))
 
 
 def find_parents(
-    individuals: typing.List[individual.Individual],
+    inds: typing.List[individual.Individual],
     pool: typing.List[int],
-    random_int: typing.Callable[[int, int], int] = container.Container.random_int,
+    rnd_int: typing.Callable[[int, int], int] = container.Container.rnd_int,
 ) -> typing.Tuple[str, str]:
-    par_x = pool[random_int(0, len(pool) - 1)]
-    par_y = pool[random_int(0, len(pool) - 1)]
-    return individuals[par_x].genes, individuals[par_y].genes
+    par_x = pool[rnd_int(0, len(pool) - 1)]
+    par_y = pool[rnd_int(0, len(pool) - 1)]
+    return inds[par_x].genes, inds[par_y].genes
 
 
 def next_generation(
-    random_char: typing.Callable[[], str],
+    rnd_char: typing.Callable[[], str],
     stats: Stats,
-    individuals: typing.List[individual.Individual],
+    inds: typing.List[individual.Individual],
 ) -> typing.List[individual.Individual]:
-    fits = list(map(lambda ind: ind.fitness, individuals))
+    fits = list(map(lambda ind: ind.fitness, inds))
     pool = individual.mating_pool(fits=fits)
-    best, second = individual.top_individuals(fits=fits)
-    num_elites = round(len(individuals) * stats.elitism)
+    best, snd = individual.top_individuals(fits=fits)
+    num_elites = round(len(inds) * stats.elitism)
 
-    inds: typing.List[individual.Individual] = []
-
-    for i, _ in enumerate(individuals):
+    def new_ind(i: int) -> individual.Individual:
         parents = (
-            (individuals[best].genes, individuals[second].genes)
+            (inds[best].genes, inds[snd].genes)
             if i < num_elites
-            else find_parents(individuals=individuals, pool=pool)
+            else find_parents(inds=inds, pool=pool)
         )
         child = genetics.crossover(parents=parents)
         mutated_child = genetics.mutate(
-            random_char=random_char,
+            rnd_char=rnd_char,
             mutation_rate=stats.mutation_rate,
             genes=child,
         )
-        inds.append(
-            individual.Individual(
-                genes=mutated_child,
-                fitness=genetics.calc_fitness(target=stats.target, genes=mutated_child),
-            )
+        return individual.Individual(
+            genes=mutated_child,
+            fitness=genetics.calc_fitness(target=stats.target, genes=mutated_child),
         )
 
-    return inds
+    next_inds = [new_ind(i) for i, _ in enumerate(inds)]
+
+    return next_inds
 
 
-def print_statistics(population: Population):
-    fits = [ind.fitness for ind in population.individuals]
+def print_stats(pop: Population):
+    fits = [ind.fitness for ind in pop.inds]
     best = max(fits)
-    best_genes = [i for i in population.individuals if i.fitness == best]
+    best_genes = [i for i in pop.inds if i.fitness == best]
     print(
-        f"{population.generation}".zfill(3),
-        f"{population.max_fitness:.2f}",
+        f"{pop.gen}".zfill(3),
+        f"{pop.max_fitness:.2f}",
         best_genes[0].genes,
     )
 
 
-# Recursion would be nice,
-# but without tail recursion it might be extremely inefficient memory/stack wise
 def resolve(
-    random_char: typing.Callable[[], str],
-    population: Population,
+    rnd_char: typing.Callable[[], str],
+    pop: Population,
 ) -> Population:
-    while (
-        population.max_fitness != 1
-        and population.generation != population.stats.max_generation
-    ):
-        inds = next_generation(
-            random_char=random_char,
-            stats=population.stats,
-            individuals=population.individuals,
-        )
-        population.individuals = inds
-        population.max_fitness = max_fitness(inds)
-        population.generation = population.generation + 1
-        if population.generation % 10 == 0:
-            print_statistics(population)
+    inds = next_generation(
+        rnd_char=rnd_char,
+        stats=pop.stats,
+        inds=pop.inds,
+    )
+    pop.inds = inds
+    pop.max_fitness = max_fitness(inds)
+    pop.gen = pop.gen + 1
 
-    print_statistics(population)
-    return population
+    if pop.gen % 10 == 0:
+        print_stats(pop)
+
+    if pop.max_fitness != 1 and pop.gen != pop.stats.max_gen:
+        pop = resolve(rnd_char, pop)
+
+    return pop

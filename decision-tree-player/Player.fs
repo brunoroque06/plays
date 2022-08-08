@@ -3,9 +3,9 @@ module Player
 open Board
 open Game
 
-let pickDummyMove rand _ board =
+let pickDummyMove rnd _ board =
     let moves = legalMoves board
-    Array.length moves |> rand |> Array.get moves
+    Array.length moves |> rnd |> Array.get moves
 
 [<Struct>]
 type Leaf =
@@ -14,12 +14,12 @@ type Leaf =
       Position: Position }
 
 let bestLeaf leaves =
-    let findWin position =
+    let findWin pos =
         Array.sortBy
             (fun l ->
                 let res =
                     match l.Position with
-                    | p when p = position -> 0
+                    | p when p = pos -> 0
                     | Draw -> 1
                     | Playing -> 2
                     | _ -> 3
@@ -29,7 +29,7 @@ let bestLeaf leaves =
         |> Array.head
 
     match leaves[0].Piece with
-    | Cross -> findWin CrossWon
+    | X -> findWin CrossWon
     | _ -> findWin NoughtWon
 
 let pickDecisionTreeMove depth piece board =

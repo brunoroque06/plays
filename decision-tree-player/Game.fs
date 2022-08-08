@@ -31,7 +31,7 @@ let evaluatePosition board =
     match piece with
     | Some p ->
         match p with
-        | Some Cross -> CrossWon
+        | Some X -> CrossWon
         | _ -> NoughtWon
     | _ ->
         if (isBoardFull board) then

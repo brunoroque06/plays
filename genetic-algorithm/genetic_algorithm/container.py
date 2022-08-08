@@ -4,5 +4,5 @@ from genetic_algorithm import stochastic
 
 
 class Container:
-    random_bool = stochastic.boolean
-    random_int = stochastic.integer
+    rnd_bool = stochastic.boolean
+    rnd_int = stochastic.integer

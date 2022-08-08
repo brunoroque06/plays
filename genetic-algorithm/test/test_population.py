@@ -8,16 +8,16 @@ def test_create_population():
 
     pop = population.create(
         target="algo",
-        max_generation=10,
-        random_str=random_str,
+        max_gen=10,
+        rnd_str=random_str,
         elitism=0.25,
         mutation_rate=0.01,
         size=2,
     )
 
-    assert pop.generation == 0
+    assert pop.gen == 0
     assert pop.max_fitness == 0.25
-    assert len(pop.individuals) == 2
+    assert len(pop.inds) == 2
 
 
 def test_find_parents():
@@ -29,12 +29,12 @@ def test_find_parents():
         return 0 if par < 2 else 1
 
     par_x, par_y = population.find_parents(
-        individuals=[
+        inds=[
             individual.Individual(fitness=0, genes="a"),
             individual.Individual(fitness=1, genes="b"),
         ],
         pool=[0, 1, 2, 3],
-        random_int=random_int,
+        rnd_int=random_int,
     )
 
     assert par_x == "a"

@@ -13,22 +13,22 @@ def calc_fitness(target: str, genes: str) -> float:
 
 def crossover(
     parents: typing.Tuple[str, str],
-    random_bool: typing.Callable[[], bool] = container.Container.random_bool,
+    rnd_bool: typing.Callable[[], bool] = container.Container.rnd_bool,
 ) -> str:
-    genes = [p_x if random_bool() else p_y for p_x, p_y in zip(parents[0], parents[1])]
+    genes = [p_x if rnd_bool() else p_y for p_x, p_y in zip(parents[0], parents[1])]
     return "".join(genes)
 
 
 def mutate(
-    random_char: typing.Callable[[], str],
+    rnd_char: typing.Callable[[], str],
     mutation_rate: float,
     genes: str,
-    random_int: typing.Callable[[int, int], int] = container.Container.random_int,
+    rnd_int: typing.Callable[[int, int], int] = container.Container.rnd_int,
 ):
     def does_mutate() -> bool:
-        integer = random_int(0, 100) / 100
+        integer = rnd_int(0, 100) / 100
         return integer < mutation_rate
 
-    new_genes = [random_char() if does_mutate() else g for g in genes]
+    new_genes = [rnd_char() if does_mutate() else g for g in genes]
 
     return "".join(new_genes)

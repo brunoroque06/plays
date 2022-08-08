@@ -12,7 +12,7 @@ let playGame playerX playerO =
         | Position.Playing -> resolveGame board' theOther playerPlaying (switchPiece piece)
         | pos -> pos
 
-    resolveGame createBoard playerX playerO Piece.Cross
+    resolveGame createBoard playerX playerO Piece.X
 
 let playMatch numberGames playerX playerO =
     [| 0 .. (numberGames - 1) |]
