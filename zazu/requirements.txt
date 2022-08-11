@@ -1,4 +1,5 @@
 black==22.6.0
+pandas==1.4.3
 mypy==0.971
 pylint==2.14.5
 python-dateutil==2.8.2

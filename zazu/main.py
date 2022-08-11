@@ -8,4 +8,4 @@ st.set_page_config(
 
 st.title("Zazu")
 
-st.markdown("Please check the pages.")
+st.markdown("Please check the pages on the sidebar.")
