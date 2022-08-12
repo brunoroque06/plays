@@ -1,5 +1,4 @@
 import typing
-from dataclasses import dataclass
 from datetime import date
 
 import pandas as pd
@@ -12,26 +11,37 @@ def load() -> pd.DataFrame:
         lambda r: pd.Interval(left=r["age_min"], right=r["age_max"], closed="left"),
         axis=1,
     )
-    df["val"] = df.apply(
-        lambda r: pd.Interval(left=r["val_min"], right=r["val_max"], closed="both"),
+    df["res"] = df.apply(
+        lambda r: pd.Interval(left=r["res_min"], right=r["res_max"] + 1, closed="left"),
         axis=1,
     )
-    df = df.drop(["age_min", "age_max", "val_min", "val_max"], axis=1)
+    df = df.drop(["age_max", "age_min", "res_max", "res_min"], axis=1)
+    df = df.set_index(["age", "id", "res"], verify_integrity=True).sort_index()
     return df
 
 
-@dataclass
-class Section:
-    id: str
-    values: typing.List[str]
+def get_age(birth: date, dat: date) -> int:
+    return relativedelta(dat, birth).years
 
 
-def get_sections(bir: date, dat: date) -> typing.List[Section]:
-    hand = Section(id="Handgeschicklichkeit", values=["hg11", "hg12", "hg2", "hg3"])
-    ball = Section(id="Ballfertigkeiten", values=["bf1", "bf2"])
-    balance = Section(id="Balance", values=["bl11", "bl12", "bl2"])
-    if relativedelta(dat, bir).years <= 6:
-        balance.values.append("bl3")
-    else:
-        balance.values.extend(["bl31", "bl32"])
-    return [hand, ball, balance]
+def get_sections(birth: date, dat: date) -> typing.Dict[str, typing.List[str]]:
+    return {
+        "Handgeschicklichkeit": ["hg11", "hg12", "hg2", "hg3"],
+        "Ballfertigkeiten": ["bf1", "bf2"],
+        "Balance": ["bl11", "bl12", "bl2", "bl3"]
+        if get_age(birth, dat) <= 6
+        else ["bl11", "bl12", "bl2", "bl31", "bl32"],
+    }
+
+
+def process(birth: date, dat: date, perf: typing.Dict[str, int]) -> pd.DataFrame:
+    age = get_age(birth, dat)
+    df = load().loc[age]
+    res = []
+    for k, v in perf.items():
+        fil = df.loc[k].loc[v]
+        r = fil['normalized']
+        l = fil['level']
+        res.append([k, r, l])
+
+    return pd.DataFrame(res)
