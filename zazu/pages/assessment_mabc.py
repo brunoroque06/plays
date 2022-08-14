@@ -14,9 +14,10 @@ def load():
 
 st.header("M ABC")
 
-col1, col2 = st.columns(2)
-birth = col1.date_input("Birthday", datetime.date.today() - relativedelta(years=6))
-dat = col2.date_input("Date", datetime.date.today())
+with st.sidebar:
+    col1, col2 = st.columns(2)
+    birth = col1.date_input("Birthday", datetime.date.today() - relativedelta(years=6))
+    dat = col2.date_input("Date", datetime.date.today())
 
 form = st.form(key="results")
 sects = mabc.get_sections(birth, dat)
@@ -36,12 +37,6 @@ for i, col in enumerate(cols):
 submit = form.form_submit_button("Submit")
 
 if submit:
-    st.write("hello")
-    st.json(perf)
     res = mabc.process(birth, dat, perf)
-    st.dataframe(res)
+    st.table(res)
     st.balloons()
-
-cnt = load()
-st.dataframe(cnt)
-st.table(cnt)
