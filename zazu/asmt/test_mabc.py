@@ -4,7 +4,7 @@ from asmt import mabc
 
 
 def test_boolean():
-    perf = {
+    raw = {
         "hg11": 17,
         "hg12": 29,
         "hg2": 32,
@@ -17,7 +17,7 @@ def test_boolean():
         "bl3": 1,
     }
 
-    res = mabc.process(date(2016, 1, 2), date(2022, 1, 1), perf)
+    res = mabc.process(date(2016, 1, 2), date(2022, 1, 1), raw)
 
     corr = [
         ["hg11", 11, 0],

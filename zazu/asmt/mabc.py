@@ -1,4 +1,5 @@
 import math
+import typing
 from datetime import date
 
 import pandas as pd
@@ -11,20 +12,20 @@ def load() -> tuple[pd.DataFrame, pd.DataFrame]:
         lambda r: pd.Interval(left=r["age_min"], right=r["age_max"], closed="left"),
         axis=1,
     )
-    map_i["perf"] = map_i.apply(
-        lambda r: pd.Interval(left=r["perf_min"], right=r["perf_max"] + 1, closed="left"),
+    map_i["raw"] = map_i.apply(
+        lambda r: pd.Interval(left=r["raw_min"], right=r["raw_max"] + 1, closed="left"),
         axis=1,
     )
-    map_i = map_i.drop(["age_max", "age_min", "perf_max", "perf_min"], axis=1)
-    map_i = map_i.set_index(["age", "id", "perf"], verify_integrity=True).sort_index()
+    map_i = map_i.drop(["age_max", "age_min", "raw_max", "raw_min"], axis=1)
+    map_i = map_i.set_index(["age", "id", "raw"], verify_integrity=True).sort_index()
 
     map_t = pd.read_csv("data/m-abc-t.csv")
-    map_t["perf"] = map_t.apply(
-        lambda r: pd.Interval(left=r["perf_min"], right=r["perf_max"] + 1, closed="left"),
+    map_t["raw"] = map_t.apply(
+        lambda r: pd.Interval(left=r["raw_min"], right=r["raw_max"] + 1, closed="left"),
         axis=1,
     )
-    map_t = map_t.drop(["perf_max", "perf_min"], axis=1)
-    map_t = map_t.set_index(["id", "perf"], verify_integrity=True).sort_index()
+    map_t = map_t.drop(["raw_max", "raw_min"], axis=1)
+    map_t = map_t.set_index(["id", "raw"], verify_integrity=True).sort_index()
 
     return map_i, map_t
 
@@ -33,7 +34,7 @@ def get_age(birth: date, dat: date) -> int:
     return relativedelta(dat, birth).years
 
 
-def get_sections(birth: date, dat: date) -> dict[str, list[str]]:
+def get_comps(birth: date, dat: date) -> dict[str, list[str]]:
     return {
         "Handgeschicklichkeit": ["hg11", "hg12", "hg2", "hg3"],
         "Ballfertigkeiten": ["bf1", "bf2"],
@@ -43,45 +44,74 @@ def get_sections(birth: date, dat: date) -> dict[str, list[str]]:
     }
 
 
-def process(birth: date, dat: date, perf: dict[str, int]) -> pd.DataFrame:
-    age = get_age(birth, dat)
-    map_i, map_t = load()
+def process_comp(
+    map_i: pd.DataFrame, age: int, raw: dict[str, int]
+) -> dict[str, list[typing.Optional[int], int, typing.Optional[int]]]:
     map_i_age = map_i.loc[age]
-    res = {}
-    for k, v in perf.items():
+    comp = {}
+    for k, v in raw.items():
         fil = map_i_age.loc[k].loc[v]
-        n = fil['normalized']
-        l = fil['level']
-        res[k] = [n, l]
+        comp[k] = [v, fil["standard"], fil["rank"]]
 
-    def avg(v0: int, v1: int):
+    def avg(v0: int, v1: int) -> int:
         a = (v0 + v1) / 2
-        if age < 10:
+        if a < 10:
             return math.floor(a)
         return math.ceil(a)
 
-    res['hg1'] = [avg(res['hg11'][0], res['hg12'][0]), None]
-    res['bl1'] = [avg(res['bl11'][0], res['bl12'][0]), None]
+    comp["hg1"] = [None, avg(comp["hg11"][1], comp["hg12"][1]), None]
+    comp["bl1"] = [None, avg(comp["bl11"][1], comp["bl12"][1]), None]
     if age > 6:
-        res['bl3'] = [avg(res['bl31'][0], res['bl32'][0]), None]
+        comp["bl3"] = [None, avg(comp["bl31"][1], comp["bl32"][1]), None]
 
-    res['hg'] = [res['hg1'][0] + res['hg2'][0] + res['hg3'][0], None]
-    res['bf'] = [res['bf1'][0] + res['bf2'][0], None]
-    res['bl'] = [res['bl1'][0] + res['bl2'][0] + res['bl3'][0], None]
+    return comp
 
-    res['total'] = [res['hg'][0] + res['bf'][0] + res['bl'][0], None]
 
-    for k in ['hg', 'bf', 'bl']:
-        t = map_t.loc[k].loc[res[k][0]]
-        l = t['level']
-        n = t['normalized']
-        p = t['percentage']
-        res[k + 's'] = [n, l]
-        res[k + 'p'] = [p, l]
+def process_agg(
+    map_t: pd.DataFrame, comp: dict[str, list[int, int]]
+) -> dict[str, list[int, int, int, int]]:
+    agg = {}
 
-    t = map_t.loc['gw'].loc[res['total'][0]]
-    res['totals'] = [t['normalized'], t['level']]
-    res['totalp'] = [t['percentage'], t['level']]
+    for c in ["hg", "bf", "bl"]:
+        score = sum(v[1] if k.startswith(c) else 0 for k, v in comp.items())
+        row = map_t.loc[c].loc[score]
+        agg[c] = [score, row["standard"], row["percentile"], row["rank"]]
 
-    return pd.DataFrame([[k] + v for k, v in res.items()], columns=['id', 'result', 'level']).set_index(
-        "id").sort_index().astype({'result': int, 'level': pd.Int64Dtype()})
+    score = sum(v[1] for v in comp.values())
+    row = map_t.loc["gw"].loc[score]
+    agg["total"] = [score, row["standard"], row["percentile"], row["rank"]]
+
+    return agg
+
+
+def process(
+    birth: date, dat: date, raw: dict[str, int]
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    age = get_age(birth, dat)
+    map_i, map_t = load()
+
+    comp = process_comp(map_i, age, raw)
+
+    agg = process_agg(map_t, comp)
+
+    comp_res = (
+        pd.DataFrame(
+            [[k] + v for k, v in comp.items()],
+            columns=["id", "raw", "standard", "rank"],
+        )
+        .set_index("id")
+        .sort_index()
+        .astype({"raw": pd.Int64Dtype(), "rank": pd.Int64Dtype()})
+    )
+
+    agg_res = (
+        pd.DataFrame(
+            [[k] + v for k, v in agg.items()],
+            columns=["id", "raw", "standard", "percentile", "rank"],
+        )
+        .set_index("id")
+        .sort_index()
+        .astype({"raw": int, "standard": int, "rank": int})
+    )
+
+    return comp_res, agg_res

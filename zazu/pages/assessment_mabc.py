@@ -8,7 +8,6 @@ from asmt import mabc
 
 @st.cache()
 def load():
-    st.write("Cache miss")
     return mabc.load()
 
 
@@ -20,23 +19,27 @@ with st.sidebar:
     dat = col2.date_input("Date", datetime.date.today())
 
 form = st.form(key="results")
-sects = mabc.get_sections(birth, dat)
-sect_ids = list(sects.keys())
-cols = form.columns(len(sect_ids))
+comps = mabc.get_comps(birth, dat)
+comp_ids = list(comps.keys())
+cols = form.columns(len(comp_ids))
 
-perf = {}
+raw = {}
 
 for i, col in enumerate(cols):
-    sect_id = sect_ids[i]
-    col.markdown(f"***{sect_id}***")
-    for exe in sects[sect_id]:
-        perf[exe] = col.number_input(
+    comp_id = comp_ids[i]
+    col.markdown(f"***{comp_id}***")
+    for exe in comps[comp_id]:
+        raw[exe] = col.number_input(
             label=exe.upper(), min_value=0, max_value=100, step=1
         )
 
 submit = form.form_submit_button("Submit")
 
 if submit:
-    res = mabc.process(birth, dat, perf)
-    st.table(res)
+    with st.spinner("Processing..."):
+        comp, agg = mabc.process(birth, dat, raw)
+    st.subheader("Component Results")
+    st.table(comp)
+    st.subheader("Total Results")
+    st.table(agg.style.format({"percentile": "{:.1f}"}))
     st.balloons()

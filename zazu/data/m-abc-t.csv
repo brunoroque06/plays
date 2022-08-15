@@ -1,4 +1,4 @@
-id,perf_min,perf_max,normalized,percentage,level
+id,raw_min,raw_max,standard,percentile,rank
 
 hg,43,inf,19,99.9,0
 hg,42,42,18,99.6,0
