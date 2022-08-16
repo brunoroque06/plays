@@ -77,4 +77,4 @@ jobs:
       - name: Lint
         run: pylint --rcfile=.pylintrc $(git ls-files '*.py')
       - name: Test
-        run: pytest .
+        run: python -m pytest .
