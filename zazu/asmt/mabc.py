@@ -72,12 +72,14 @@ def process_agg(
 ) -> dict[str, list[int, int, int, int]]:
     agg = {}
 
-    for c in ["hg", "bf", "bl"]:
-        score = sum(v[1] if k.startswith(c) else 0 for k, v in comp.items())
-        row = map_t.loc[c].loc[score]
-        agg[c] = [score, row["standard"], row["percentile"], row["rank"]]
+    for cmp in ["hg", "bf", "bl"]:
+        score = sum(
+            v[1] if len(k) == 3 and k.startswith(cmp) else 0 for k, v in comp.items()
+        )
+        row = map_t.loc[cmp].loc[score]
+        agg[cmp] = [score, row["standard"], row["percentile"], row["rank"]]
 
-    score = sum(v[1] for v in comp.values())
+    score = sum(v[0] for v in agg.values())
     row = map_t.loc["gw"].loc[score]
     agg["total"] = [score, row["standard"], row["percentile"], row["rank"]]
 

@@ -42,8 +42,8 @@ if submit:
     with st.spinner("Processing..."):
         comp, agg = mabc.process(birth, dat, raw)
 
-    def color_rank(r):
-        rank = r["rank"]
+    def color_rank(row):
+        rank = row["rank"]
         if pd.isna(rank):
             color = None
         elif rank == 0:
@@ -54,8 +54,8 @@ if submit:
             color = "#ffe6e6"
 
         if color is None:
-            return [""] * len(r)
-        return [f"background-color: {color}"] * len(r)
+            return [""] * len(row)
+        return [f"background-color: {color}"] * len(row)
 
     st.subheader("Component Results")
     # df.style.hide() is not supported at the moment
