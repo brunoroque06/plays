@@ -1,0 +1,9 @@
+[MASTER]
+disable=
+    missing-class-docstring,
+    missing-function-docstring,
+    missing-module-docstring,
+    too-many-arguments,
+    too-few-public-methods,
+
+good-names=a,k,v,v0,v1
