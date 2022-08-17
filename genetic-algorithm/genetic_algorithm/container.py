@@ -1,8 +1,7 @@
 # Inspired by https://python-dependency-injector.ets-labs.org/
-
-from genetic_algorithm import stochastic
+from genetic_algorithm import rand
 
 
 class Container:
-    rnd_bool = stochastic.boolean
-    rnd_int = stochastic.integer
+    rand_bool = rand.boolean
+    rand_int = rand.integer

@@ -52,13 +52,13 @@ jobs:
         with:
           python-version: 3.10.x
       - name: Install
-        run: pip install -r requirements.txt
+        run: pip install black pylint mypy -r requirements.txt
       - name: Format
         run: black --check .
       - name: Lint
         run: pylint --rcfile=.pylintrc genetic_algorithm test && mypy genetic_algorithm test
       - name: Test
-        run: pytest .
+        run: python -m pytest .
 
   zazu:
     runs-on: ubuntu-latest
@@ -71,7 +71,7 @@ jobs:
         with:
           python-version: 3.10.x
       - name: Install
-        run: pip install -r requirements.txt
+        run: pip install black pylint -r requirements.txt
       - name: Format
         run: black --check .
       - name: Lint

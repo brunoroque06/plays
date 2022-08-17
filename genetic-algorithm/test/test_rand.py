@@ -1,23 +1,23 @@
-from genetic_algorithm import stochastic
+from genetic_algorithm import rand
 
 
 def test_boolean():
-    boolean = stochastic.boolean()
+    boolean = rand.boolean()
     assert boolean or boolean is False
 
 
 def test_integer():
-    num = stochastic.integer(10, 20)
+    num = rand.integer(10, 20)
     assert 10 <= num <= 20
 
 
 def test_character():
-    char = stochastic.character("abc")
+    char = rand.character("abc")
     assert char in "abc"
 
 
 def test_string():
-    string = stochastic.string("abc", 10)()
+    string = rand.string("abc", 10)()
     assert len(string) == 10
     for char in string:
         assert char in "abc"

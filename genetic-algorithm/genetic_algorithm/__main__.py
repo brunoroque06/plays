@@ -1,11 +1,11 @@
-from genetic_algorithm import population, stochastic
+from genetic_algorithm import population, rand
 
 
 def main():
     target = "To be or not to be, that is the question."
     pool = "abcdefghijklmnopqrstuvxz ,.T"
 
-    rnd_str = stochastic.string(pool=pool, length=len(target))
+    rnd_str = rand.string(pool=pool, length=len(target))
 
     pop = population.create(
         rnd_str=rnd_str,
@@ -16,7 +16,7 @@ def main():
         target=target,
     )
 
-    rnd_char = stochastic.string(pool=pool, length=1)
+    rnd_char = rand.string(pool=pool, length=1)
 
     pop = population.resolve(
         rnd_char=rnd_char,

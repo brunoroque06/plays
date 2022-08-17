@@ -6,7 +6,9 @@ st.title("Housing")
 
 st.subheader("Renting vs Owning")
 
-st.markdown("Implementation of the oversimplified <https://www.pwlcapital.com/rent-or-own-your-home-5-rule>.")
+st.markdown(
+    "Implementation of the oversimplified <https://www.pwlcapital.com/rent-or-own-your-home-5-rule>."
+)
 
 tax = st.slider("Tax [%]", 0.0, 5.0, 1.0, 0.5)
 main = st.slider("Maintenance [%]", 0.0, 5.0, 1.0, 0.5)
@@ -27,4 +29,4 @@ st.metric(label="Cutoff for 1M", value=calc_cutoff(1_000_000))
 
 cutoffs = np.array([calc_cutoff(p) for p in prices])
 
-st.line_chart(pd.DataFrame(cutoffs, index=prices, columns=['cutoff']))
+st.line_chart(pd.DataFrame(cutoffs, index=prices, columns=["cutoff"]))

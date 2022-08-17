@@ -1,6 +1,7 @@
 import functools
-import typing
 from dataclasses import dataclass
+
+import typing
 
 from genetic_algorithm import container, genetics, individual
 
@@ -53,7 +54,7 @@ def create(
 def find_parents(
     inds: typing.List[individual.Individual],
     pool: typing.List[int],
-    rnd_int: typing.Callable[[int, int], int] = container.Container.rnd_int,
+    rnd_int: typing.Callable[[int, int], int] = container.Container.rand_int,
 ) -> typing.Tuple[str, str]:
     par_x = pool[rnd_int(0, len(pool) - 1)]
     par_y = pool[rnd_int(0, len(pool) - 1)]
