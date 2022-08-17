@@ -30,16 +30,23 @@ def load() -> tuple[pd.DataFrame, pd.DataFrame]:
     return map_i, map_t
 
 
-def get_age(birth: date, dat: date) -> relativedelta:
-    return relativedelta(dat, birth)
+def get_age(birth: date, asmt: date) -> relativedelta:
+    return relativedelta(asmt, birth)
 
 
-def get_comps(birth: date, dat: date) -> dict[str, list[str]]:
+def valid_age(birth: date, asmt: date) -> tuple[bool, typing.Optional[str]]:
+    age = get_age(birth, asmt).years
+    if 5 < age < 12:
+        return True, None
+    return False, "Age must be between 6 and 11 years old."
+
+
+def get_comps(birth: date, asmt: date) -> dict[str, list[str]]:
     return {
         "Handgeschicklichkeit": ["hg11", "hg12", "hg2", "hg3"],
         "Ballfertigkeiten": ["bf1", "bf2"],
         "Balance": ["bl11", "bl12", "bl2", "bl3"]
-        if get_age(birth, dat).years <= 6
+        if get_age(birth, asmt).years <= 6
         else ["bl11", "bl12", "bl2", "bl31", "bl32"],
     }
 
@@ -87,9 +94,9 @@ def process_agg(
 
 
 def process(
-    birth: date, dat: date, raw: dict[str, int]
+    birth: date, asmt: date, raw: dict[str, int]
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
-    age = get_age(birth, dat).years
+    age = get_age(birth, asmt).years
     map_i, map_t = load()
 
     comp = process_comp(map_i, age, raw)

@@ -12,17 +12,29 @@ def load():
     return mabc.load()
 
 
-st.header("M ABC")
-
 with st.sidebar:
     col1, col2 = st.columns(2)
-    birth = col1.date_input("Birthday", datetime.date.today() - relativedelta(years=6))
-    dat = col2.date_input("Date", datetime.date.today())
-    age = mabc.get_age(birth, dat)
+
+    today = datetime.date.today()
+    birth = col1.date_input(
+        "Birthday",
+        today - relativedelta(years=6),
+        max_value=today - relativedelta(years=6),
+    )
+    asmt = col2.date_input("Assessment", today, max_value=today)
+
+    age = mabc.get_age(birth, asmt)
     st.text(f"Age: {age.years} years, {age.months} months, {age.days} days")
 
+st.header("M ABC")
+
+vld, err = mabc.valid_age(birth, asmt)
+if not vld:
+    st.error(err)
+    st.stop()
+
 form = st.form(key="results")
-comps = mabc.get_comps(birth, dat)
+comps = mabc.get_comps(birth, asmt)
 comp_ids = list(comps.keys())
 cols = form.columns(len(comp_ids))
 
@@ -40,7 +52,7 @@ submit = form.form_submit_button("Submit")
 
 if submit:
     with st.spinner("Processing..."):
-        comp, agg = mabc.process(birth, dat, raw)
+        comp, agg = mabc.process(birth, asmt, raw)
 
     def color_rank(row):
         rank = row["rank"]
