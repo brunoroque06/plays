@@ -1,7 +1,6 @@
 #!/usr/bin/env elvish
 
-use path # Next release: path:join
-use str
+use path
 
 git clone --depth 1 https://github.com/brunoroque06/playground.git
 
@@ -12,7 +11,7 @@ cd ..
 git ls-files ^
   | from-lines ^
   | each { |src|
-    var f = (str:join / [playground $src])
+    var f = (path:join playground $src)
     var d = (path:dir $f)
     mkdir -p $d
     cp $src $f
