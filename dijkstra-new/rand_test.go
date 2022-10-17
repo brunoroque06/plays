@@ -2,18 +2,25 @@ package main
 
 import "testing"
 
-func TestInt(t *testing.T) {
-	min := 0
-	max := 10
-	num := genInt(min, max)
+var min = 0
+var max = 100
+var n = 10
+
+func TestIntn(t *testing.T) {
+	num := Intn(min, max)
 	if num < min || num > max {
-		t.Errorf("Outside of range [%d, %d]: %d", min, max, num)
+		t.Errorf("outside of bounds")
 	}
 }
 
-func TestInts(t *testing.T) {
-	n := 3
-	if len(genInts(0, 18, n)) != n {
-		t.Errorf("Wrong length")
+func TestDistinctIntn(t *testing.T) {
+	if len(DistinctIntn(min, max, n)) != n {
+		t.Errorf("wrong length")
+	}
+	ints := DistinctIntn(min, max, n)
+	for i, _ := range ints {
+		if i < min || i >= max {
+			t.Errorf("outside of bounds")
+		}
 	}
 }

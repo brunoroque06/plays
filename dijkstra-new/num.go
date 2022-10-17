@@ -9,6 +9,10 @@ var abc = []rune("abcdefghijklmnopqrstuvwxyz")
 var abcLen = len(abc)
 
 func ToCharBase(num int) string {
+	if num < 0 {
+		panic("invalid argument")
+	}
+
 	var base []rune
 	for quo := num / abcLen; ; quo = quo / abcLen {
 		rem := num % abcLen
