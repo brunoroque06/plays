@@ -2,14 +2,19 @@ package main
 
 import "testing"
 
-func TestCalcNumEdges(t *testing.T) {
-	if e := calcNumEdges(3, 0); e != 2 {
-		t.Error(e)
+func TestCreateEdges(t *testing.T) {
+	dist := func(v, n int) *[]int {
+		nums := make([]int, n, n)
+		return &nums
 	}
-	if e := calcNumEdges(4, 30); e != 4 {
-		t.Error(e)
+	edges := *createEdges(dist, 15, 10)
+	if len(edges) != 14 {
+		t.Error()
 	}
-	if e := calcNumEdges(4, 100); e != 6 {
-		t.Error(e)
+	if len(*edges[1]) != 1 {
+		t.Error()
+	}
+	if len(*edges[14]) != 10 {
+		t.Error()
 	}
 }

@@ -2,22 +2,30 @@ package main
 
 import (
 	"math/rand"
+	"sort"
 	"time"
 )
 
-func Intn(min int, max int) int {
+func Setup() {
+	// https://github.com/golang/go/issues/54880
+	rand.Seed(time.Now().UnixNano())
+}
+
+func Intn(min, max int) int {
 	return min + rand.Intn(max)
 }
 
-func DistinctIntn(min int, max int, n int) []int {
-	if min < 0 || max-min < n {
+func DistinctIntn(max, n int) *[]int {
+	if max < 1 || max < n {
 		panic("invalid argument")
 	}
-	pool := make([]int, max-min)
+	pool := make([]int, max)
 	for i := range pool {
-		pool[i] = min + i
+		pool[i] = i
 	}
-	rand.Seed(time.Now().UnixNano())
+	// https://en.wikipedia.org/wiki/Fisher–Yates_shuffle
 	rand.Shuffle(len(pool), func(a, b int) { pool[a], pool[b] = pool[b], pool[a] })
-	return pool[0:n] // sort?
+	sel := pool[0:n]
+	sort.Ints(sel)
+	return &sel
 }
