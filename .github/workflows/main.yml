@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: dijkstra-new
+        working-directory: dijkstra
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-go@v3
