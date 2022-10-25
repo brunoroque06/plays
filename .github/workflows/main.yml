@@ -3,11 +3,11 @@ name: CI
 on: [push]
 
 jobs:
-  decision-tree-player:
+  decision-tree:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: decision-tree-player
+        working-directory: decision-tree
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-dotnet@v1
@@ -20,7 +20,7 @@ jobs:
       - name: Format
         run: dotnet tool run fantomas --check .
       - name: Lint
-        run: dotnet tool run dotnet-fsharplint lint DecisionTreePlayer.fsproj
+        run: dotnet tool run dotnet-fsharplint lint DecisionTree.fsproj
       - name: Test
         run: dotnet test
 
@@ -41,11 +41,11 @@ jobs:
       - name: Test
         run: go test -v
 
-  genetic-algorithm:
+  genetic:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: genetic-algorithm
+        working-directory: genetic
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -56,7 +56,7 @@ jobs:
       - name: Format
         run: black --check .
       - name: Lint
-        run: pylint --rcfile=.pylintrc genetic_algorithm test && mypy genetic_algorithm test
+        run: pylint --rcfile=.pylintrc genetic test && mypy genetic test
       - name: Test
         run: python -m pytest .
 

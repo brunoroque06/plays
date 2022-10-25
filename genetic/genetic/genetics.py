@@ -1,6 +1,6 @@
 import typing
 
-from genetic_algorithm import container
+from genetic import container
 
 
 def calc_fitness(target: str, genes: str) -> float:

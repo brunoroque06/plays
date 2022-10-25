@@ -1,4 +1,4 @@
-from genetic_algorithm import population, rand
+from genetic import population, rand
 
 
 def main():

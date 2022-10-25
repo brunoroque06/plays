@@ -1,4 +1,4 @@
-from genetic_algorithm import rand
+from genetic import rand
 
 
 def test_boolean():

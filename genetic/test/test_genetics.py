@@ -1,4 +1,4 @@
-from genetic_algorithm import genetics
+from genetic import genetics
 
 
 def test_calc_fitness():

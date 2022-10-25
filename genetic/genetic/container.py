@@ -1,5 +1,5 @@
 # Inspired by https://python-dependency-injector.ets-labs.org/
-from genetic_algorithm import rand
+from genetic import rand
 
 
 class Container:

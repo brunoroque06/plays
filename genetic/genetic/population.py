@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 import typing
 
-from genetic_algorithm import container, genetics, individual
+from genetic import container, genetics, individual
 
 
 @dataclass(frozen=True)

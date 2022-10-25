@@ -1,4 +1,4 @@
-from genetic_algorithm import individual
+from genetic import individual
 
 
 def test_top_individuals():

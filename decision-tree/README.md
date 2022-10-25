@@ -1,4 +1,4 @@
-# Decision Tree Player
+# Decision Tree
 
 This project consists of a tic-tac-toe decision tree player. After the tree is created, the minimax decision rule is used to pick the best leaf. In order to correctly estimate the minimax indexes, a breadth first search (BFS), bottom up, is performed.
 
