@@ -2,7 +2,6 @@ package main
 
 import (
 	"math/rand"
-	"sort"
 	"time"
 )
 
@@ -15,17 +14,16 @@ func Intn(min, max int) int {
 	return min + rand.Intn(max)
 }
 
-func DistinctIntn(max, n int) *[]int {
+func Intns(max, n int) *Set {
 	if max < 1 || max < n {
 		panic("invalid argument")
 	}
-	pool := make([]int, max)
-	for i := range pool {
-		pool[i] = i
+	sel := makeSet()
+	for sel.Len() != n {
+		i := Intn(0, max)
+		if !sel.Has(i) {
+			sel.Add(i)
+		}
 	}
-	// https://en.wikipedia.org/wiki/Fisher–Yates_shuffle
-	rand.Shuffle(len(pool), func(a, b int) { pool[a], pool[b] = pool[b], pool[a] })
-	sel := pool[0:n]
-	sort.Ints(sel)
-	return &sel
+	return sel
 }

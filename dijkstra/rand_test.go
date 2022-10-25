@@ -1,7 +1,6 @@
 package main
 
 import (
-	"sort"
 	"testing"
 )
 
@@ -19,16 +18,13 @@ func TestIntn(t *testing.T) {
 
 func TestDistinctIntn(t *testing.T) {
 	Setup()
-	ints := DistinctIntn(max, n)
-	if len(*ints) != n {
+	ints := Intns(max, n)
+	if ints.Len() != n {
 		t.Errorf("wrong length")
 	}
-	for i := range *ints {
+	for i := range ints.Iter() {
 		if i < min || i >= max {
 			t.Errorf("outside of bounds")
 		}
-	}
-	if !sort.IntsAreSorted(*ints) {
-		t.Errorf("not sorted")
 	}
 }
