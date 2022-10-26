@@ -4,25 +4,25 @@ import (
 	"sync"
 )
 
-type adj struct {
-	v     int
-	neigs *[]int
-}
+func NewEdges(ints RandInts, nodeNum, edgeNum int) *map[int]*Set[int] {
+	type adj struct {
+		v     int
+		neigs *Set[int]
+	}
 
-func createEdges(dist func(v int, n int) *[]int, ver, edg int) *map[int]*[]int {
-	c := make(chan adj, ver)
+	c := make(chan adj, nodeNum)
 
 	var wg sync.WaitGroup
 
-	for v := 1; v < ver; v++ {
+	for v := 1; v < nodeNum; v++ {
 		wg.Add(1)
 		go func(v int) { // let's pretend this is heavy computation; worth spanning a thread...
 			defer wg.Done()
-			n := edg
+			n := edgeNum
 			if n > v {
 				n = v
 			}
-			neigs := dist(v, n)
+			neigs := ints(v, n)
 			c <- adj{v: v, neigs: neigs}
 		}(v)
 	}
@@ -32,10 +32,47 @@ func createEdges(dist func(v int, n int) *[]int, ver, edg int) *map[int]*[]int {
 		close(c)
 	}()
 
-	edges := make(map[int]*[]int, 0)
+	edges := make(map[int]*Set[int])
 	for n := range c {
 		edges[n.v] = n.neigs
 	}
 
 	return &edges
+}
+
+type Node struct {
+	id    int
+	edges []*Edge
+}
+
+type Edge struct {
+	neig   *Node
+	weight *int
+}
+
+func NewGraph(int RandInt, ints RandInts, nodeNum, edgeNum, min, max int) []*Node {
+	nodes := make([]*Node, nodeNum)
+	edges := *NewEdges(ints, nodeNum, edgeNum)
+
+	for i := 0; i < nodeNum; i++ {
+		nodes[i] = &Node{id: i, edges: make([]*Edge, 0)}
+
+		edg := edges[i]
+
+		if edg == nil {
+			continue
+		}
+
+		for e := range edg.Iter() {
+			weig := int(min, max)
+
+			out := Edge{neig: nodes[e], weight: &weig}
+			nodes[i].edges = append(nodes[i].edges, &out)
+
+			in := Edge{neig: nodes[i], weight: &weig}
+			nodes[e].edges = append(nodes[e].edges, &in)
+		}
+	}
+
+	return nodes
 }

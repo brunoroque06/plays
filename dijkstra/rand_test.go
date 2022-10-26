@@ -9,16 +9,16 @@ var max = 100
 var n = 10
 
 func TestIntn(t *testing.T) {
-	Setup()
-	num := Intn(min, max)
+	RandSetup()
+	num := Int(min, max)
 	if num < min || num > max {
 		t.Errorf("outside of bounds")
 	}
 }
 
 func TestDistinctIntn(t *testing.T) {
-	Setup()
-	ints := Intns(max, n)
+	RandSetup()
+	ints := Ints(max, n)
 	if ints.Len() != n {
 		t.Errorf("wrong length")
 	}

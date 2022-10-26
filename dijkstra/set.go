@@ -2,26 +2,26 @@ package main
 
 import "fmt"
 
-func makeSet() *Set {
-	return &Set{
-		keys: make(map[int]struct{}),
+func MakeSet[T comparable]() *Set[T] {
+	return &Set[T]{
+		keys: make(map[T]struct{}),
 	}
 }
 
-type Set struct {
-	keys map[int]struct{}
+type Set[T comparable] struct {
+	keys map[T]struct{}
 }
 
-func (s *Set) Add(k int) {
+func (s *Set[T]) Add(k T) {
 	s.keys[k] = struct{}{}
 }
 
-func (s *Set) Has(k int) bool {
+func (s *Set[T]) Has(k T) bool {
 	_, has := s.keys[k]
 	return has
 }
 
-func (s *Set) Del(k int) error {
+func (s *Set[T]) Del(k T) error {
 	has := s.Has(k)
 	if !has {
 		return fmt.Errorf("item does not exist")
@@ -30,12 +30,12 @@ func (s *Set) Del(k int) error {
 	return nil
 }
 
-func (s *Set) Len() int {
+func (s *Set[T]) Len() int {
 	return len(s.keys)
 }
 
-func (s *Set) Iter() chan int {
-	c := make(chan int)
+func (s *Set[T]) Iter() chan T {
+	c := make(chan T)
 	go func() {
 		for k := range s.keys {
 			c <- k

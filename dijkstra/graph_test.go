@@ -2,19 +2,47 @@ package main
 
 import "testing"
 
-func TestCreateEdges(t *testing.T) {
-	dist := func(v, n int) *[]int {
-		nums := make([]int, n, n)
-		return &nums
+var randInts = func(max, n int) *Set[int] {
+	nums := MakeSet[int]()
+	for i := 0; i < n; i++ {
+		nums.Add(i)
 	}
-	edges := *createEdges(dist, 15, 10)
+	return nums
+}
+
+func TestNewEdges(t *testing.T) {
+	edges := *NewEdges(randInts, 15, 10)
 	if len(edges) != 14 {
 		t.Error()
 	}
-	if len(*edges[1]) != 1 {
+	if (*edges[1]).Len() != 1 {
 		t.Error()
 	}
-	if len(*edges[14]) != 10 {
+	if (*edges[14]).Len() != 10 {
+		t.Error()
+	}
+}
+
+func TestNewGraph(t *testing.T) {
+	randInt := func(min, max int) int {
+		return max
+	}
+
+	g := NewGraph(randInt, randInts, 3, 3, 0, 10)
+
+	if len(g) != 3 {
+		t.Error()
+	}
+
+	if g[0].id != 0 {
+		t.Error()
+	}
+
+	if g[0] != g[0].edges[0].neig.edges[0].neig { // beautiful Oo
+		t.Error()
+	}
+
+	if g[1] != g[0].edges[0].neig {
 		t.Error()
 	}
 }

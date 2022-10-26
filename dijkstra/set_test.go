@@ -5,7 +5,7 @@ import (
 )
 
 func TestSet(t *testing.T) {
-	set := makeSet()
+	set := MakeSet[int]()
 	if set.Has(8) || set.Len() != 0 {
 		t.Error()
 	}
@@ -20,5 +20,17 @@ func TestSet(t *testing.T) {
 	set.Del(k)
 	if set.Len() != 0 {
 		t.Error()
+	}
+}
+
+func TestSet_Iter(t *testing.T) {
+	set := MakeSet[int]()
+	for i := 0; i < 3; i++ {
+		set.Add(i)
+	}
+	for v := range set.Iter() {
+		if v < 0 || v > 2 {
+			t.Error()
+		}
 	}
 }

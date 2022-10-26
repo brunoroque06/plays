@@ -5,22 +5,26 @@ import (
 	"time"
 )
 
-func Setup() {
+func RandSetup() {
 	// https://github.com/golang/go/issues/54880
 	rand.Seed(time.Now().UnixNano())
 }
 
-func Intn(min, max int) int {
+type RandInt func(min, max int) int
+
+func Int(min, max int) int {
 	return min + rand.Intn(max)
 }
 
-func Intns(max, n int) *Set {
+type RandInts func(v, n int) *Set[int]
+
+func Ints(max, n int) *Set[int] {
 	if max < 1 || max < n {
 		panic("invalid argument")
 	}
-	sel := makeSet()
+	sel := MakeSet[int]()
 	for sel.Len() != n {
-		i := Intn(0, max)
+		i := Int(0, max)
 		if !sel.Has(i) {
 			sel.Add(i)
 		}
