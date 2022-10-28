@@ -53,10 +53,10 @@ if submit:
         comp, agg = mabc.process(birth, asmt_date, raw)
 
     def color_row(row):
-        s = row["standard"]
-        if s > 6:
+        std = row["standard"]
+        if std > 6:
             color = "rgba(33, 195, 84, 0.1)"
-        elif s == 6:
+        elif std == 6:
             color = "rgba(255, 193, 7, 0.1)"
         else:
             color = "rgba(255, 43, 43, 0.09)"
