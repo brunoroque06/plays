@@ -1,40 +1,37 @@
 import datetime
+import time
 
-import pandas as pd
 import streamlit as st
 from dateutil.relativedelta import relativedelta
 
 from asmt import mabc
 
-
-@st.cache()
-def load():
-    return mabc.load()
-
-
 with st.sidebar:
     col1, col2 = st.columns(2)
 
     today = datetime.date.today()
-    birth = col1.date_input(
+    asmt_date = col1.date_input("Assessment", today, max_value=today)
+    birth = col2.date_input(
         "Birthday",
-        today - relativedelta(years=6),
-        max_value=today - relativedelta(years=6),
+        asmt_date - relativedelta(years=9),
+        max_value=asmt_date - relativedelta(years=5),
+        min_value=asmt_date - relativedelta(years=15, days=364),
     )
-    asmt = col2.date_input("Assessment", today, max_value=today)
-
-    age = mabc.get_age(birth, asmt)
-    st.text(f"Age: {age.years} years, {age.months} months, {age.days} days")
 
 st.header("M ABC")
 
-vld, err = mabc.valid_age(birth, asmt)
-if not vld:
-    st.error(err)
-    st.stop()
+age = mabc.get_age(birth, asmt_date)
+age_disp = f"Age: {age.years} years, {age.months} months, {age.days} days"
+# st.color_picker(..., disabled=True, label_visibility="collapsed") is an alternative
+if age.years < 7:
+    st.error(age_disp)
+elif age.years < 11:
+    st.success(age_disp)
+else:
+    st.info(age_disp)
 
 form = st.form(key="results")
-comps = mabc.get_comps(birth, asmt)
+comps = mabc.get_comps(birth, asmt_date)
 comp_ids = list(comps.keys())
 cols = form.columns(len(comp_ids))
 
@@ -48,30 +45,30 @@ for i, col in enumerate(cols):
             label=exe.upper(), min_value=0, max_value=100, step=1
         )
 
-submit = form.form_submit_button("Submit")
+submit = form.form_submit_button("Submit", type="primary")
 
 if submit:
     with st.spinner("Processing..."):
-        comp, agg = mabc.process(birth, asmt, raw)
+        time.sleep(1)  # UX? Oo
+        comp, agg = mabc.process(birth, asmt_date, raw)
 
-    def color_rank(row):
-        rank = row["rank"]
-        if pd.isna(rank):
-            color = None
-        elif rank == 0:
-            color = "rgba(40, 167, 69, 0.1)"
-        elif rank == 1:
+    def color_row(row):
+        s = row["standard"]
+        if s > 6:
+            color = "rgba(33, 195, 84, 0.1)"
+        elif s == 6:
             color = "rgba(255, 193, 7, 0.1)"
         else:
-            color = "#ffe6e6"
+            color = "rgba(255, 43, 43, 0.09)"
 
-        if color is None:
-            return [""] * len(row)
-        return [f"background-color: {color}"] * len(row)
+        return [f"background-color: {color};"] * len(row)
 
-    st.subheader("Component Results")
-    # df.style.hide() is not supported at the moment
-    st.table(comp.style.apply(color_rank, axis=1))
-    st.subheader("Aggregated Results")
-    st.table(agg.style.apply(color_rank, axis=1).format({"percentile": "{:.1f}"}))
-    st.balloons()
+    st.subheader("Component")
+    st.table(comp.style.apply(color_row, axis=1))
+    st.subheader("Aggregated")
+    st.table(agg.style.apply(color_row, axis=1).format({"percentile": "{:.1f}"}))
+
+    if 2 < datetime.date.today().month < 12:
+        st.balloons()
+    else:
+        st.snow()

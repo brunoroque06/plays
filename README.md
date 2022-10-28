@@ -1,3 +1,3 @@
 # Plays
 
-This repository contains (unrelated) projects.
+This repository contains unrelated projects.

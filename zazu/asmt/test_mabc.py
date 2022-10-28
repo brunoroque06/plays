@@ -94,3 +94,51 @@ def test_mabc_9():
 
     for k, v in agg_res:
         assert agg.loc[k].standard == v
+
+
+def test_mabc_12():
+    raw = {
+        "hg11": 17,
+        "hg12": 23,
+        "hg2": 36,
+        "hg3": 4,
+        "bf11": 6,
+        "bf12": 5,
+        "bf2": 9,
+        "bl1": 18,
+        "bl2": 13,
+        "bl31": 4,
+        "bl32": 3,
+    }
+
+    comp, agg = mabc.process(date(2010, 1, 1), date(2022, 1, 2), raw)
+
+    comp_res = [
+        ["bf1", 8],
+        ["bf11", 7],
+        ["bf12", 9],
+        ["bf2", 16],
+        ["bl1", 9],
+        ["bl2", 11],
+        ["bl3", 2],
+        ["bl31", 1],
+        ["bl32", 3],
+        ["hg1", 9],
+        ["hg11", 11],
+        ["hg12", 8],
+        ["hg2", 10],
+        ["hg3", 6],
+    ]
+
+    for k, v in comp_res:
+        assert comp.loc[k].standard == v
+
+    agg_res = [
+        ["bf", 13],
+        ["bl", 6],
+        ["hg", 8],
+        ["total", 8],
+    ]
+
+    for k, v in agg_res:
+        assert agg.loc[k].standard == v
