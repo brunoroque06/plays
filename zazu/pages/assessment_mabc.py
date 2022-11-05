@@ -58,9 +58,9 @@ if submit:
     def color_row(row):
         std = row["standard"]
         rank = mabc.rank(std)
-        if rank == mabc.Rank.ok:
+        if rank == mabc.Rank.OK:
             color = "rgba(33, 195, 84, 0.1)"
-        elif rank == mabc.Rank.critical:
+        elif rank == mabc.Rank.CRI:
             color = "rgba(255, 193, 7, 0.1)"
         else:
             color = "rgba(255, 43, 43, 0.09)"

@@ -90,17 +90,17 @@ def process_agg(
 
 
 class Rank(Enum):
-    ok = "ok"
-    critical = "critical"
-    nok = "nok"
+    OK = "ok"
+    CRI = "cri"
+    NOK = "nok"
 
 
 def rank(std: int) -> Rank:
     if std > 6:
-        return Rank.ok
-    elif std == 6:
-        return Rank.critical
-    return Rank.nok
+        return Rank.OK
+    if std == 6:
+        return Rank.CRI
+    return Rank.NOK
 
 
 def report(asmt: date, age: relativedelta, hand: str, agg: pd.DataFrame) -> str:
@@ -113,9 +113,9 @@ def report(asmt: date, age: relativedelta, hand: str, agg: pd.DataFrame) -> str:
 
     def rank_str(std: int) -> str:
         rnk = rank(std)
-        if rnk == Rank.ok:
+        if rnk == Rank.OK:
             return "unauffällig"
-        elif rnk == Rank.critical:
+        if rnk == Rank.CRI:
             return "kritisch"
         return "therapiebedürftig"
 
