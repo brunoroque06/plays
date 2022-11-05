@@ -1,6 +1,4 @@
 import math
-import typing
-from datetime import date
 
 import pandas as pd
 from dateutil.relativedelta import relativedelta
@@ -30,31 +28,28 @@ def load() -> tuple[pd.DataFrame, pd.DataFrame]:
     return map_i, map_t
 
 
-def get_age(birth: date, asmt: date) -> relativedelta:
-    return relativedelta(asmt, birth)
-
-
-def get_comps(birth: date, asmt: date) -> dict[str, list[str]]:
-    age = get_age(birth, asmt).years
+def get_comps(age: relativedelta) -> dict[str, list[str]]:
     return {
         "Handgeschicklichkeit": ["hg11", "hg12", "hg2", "hg3"],
-        "Ballfertigkeiten": ["bf1", "bf2"] if age < 11 else ["bf11", "bf12", "bf2"],
+        "Ballfertigkeiten": ["bf1", "bf2"]
+        if age.years < 11
+        else ["bf11", "bf12", "bf2"],
         "Balance": ["bl11", "bl12", "bl2", "bl3"]
-        if age < 7
+        if age.years < 7
         else ["bl11", "bl12", "bl2", "bl31", "bl32"]
-        if age < 11
+        if age.years < 11
         else ["bl1", "bl2", "bl31", "bl32"],
     }
 
 
 def process_comp(
     map_i: pd.DataFrame, age: int, raw: dict[str, int]
-) -> dict[str, list[typing.Optional[int], int, typing.Optional[int]]]:
+) -> dict[str, tuple[int | None, int]]:
     map_i_age = map_i.loc[age]
-    comp = {}
+    comp: dict[str, tuple[int | None, int]] = {}
     for k, v in raw.items():
         fil = map_i_age.loc[k].loc[v]
-        comp[k] = [v, fil["standard"]]
+        comp[k] = (v, fil["standard"])
 
     def avg(v0: int, v1: int) -> int:
         a = (v0 + v1) / 2
@@ -62,20 +57,20 @@ def process_comp(
             return math.floor(a)
         return math.ceil(a)
 
-    comp["hg1"] = [None, avg(comp["hg11"][1], comp["hg12"][1])]
+    comp["hg1"] = (None, avg(comp["hg11"][1], comp["hg12"][1]))
     if age > 10:
-        comp["bf1"] = [None, avg(comp["bf11"][1], comp["bf12"][1])]
+        comp["bf1"] = (None, avg(comp["bf11"][1], comp["bf12"][1]))
     if age < 11:
-        comp["bl1"] = [None, avg(comp["bl11"][1], comp["bl12"][1])]
+        comp["bl1"] = (None, avg(comp["bl11"][1], comp["bl12"][1]))
     if age > 6:
-        comp["bl3"] = [None, avg(comp["bl31"][1], comp["bl32"][1])]
+        comp["bl3"] = (None, avg(comp["bl31"][1], comp["bl32"][1]))
 
     return comp
 
 
 def process_agg(
-    map_t: pd.DataFrame, comp: dict[str, list[int, int]]
-) -> dict[str, list[int, int, int, int]]:
+    map_t: pd.DataFrame, comp: dict[str, tuple[int | None, int]]
+) -> dict[str, list[int]]:
     agg = {}
 
     for cmp in ["hg", "bf", "bl"]:
@@ -93,18 +88,17 @@ def process_agg(
 
 
 def process(
-    birth: date, asmt: date, raw: dict[str, int]
+    age: relativedelta, raw: dict[str, int]
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
-    age = get_age(birth, asmt).years
     map_i, map_t = load()
 
-    comp = process_comp(map_i, age, raw)
+    comp = process_comp(map_i, age.years, raw)
 
     agg = process_agg(map_t, comp)
 
     comp_res = (
         pd.DataFrame(
-            [[k] + v for k, v in comp.items()],
+            [[k] + list(v) for k, v in comp.items()],
             columns=["id", "raw", "standard"],
         )
         .set_index("id")
@@ -114,7 +108,7 @@ def process(
 
     agg_res = (
         pd.DataFrame(
-            [[k] + v for k, v in agg.items()],
+            [[k] + list(v) for k, v in agg.items()],
             columns=["id", "raw", "standard", "percentile"],
         )
         .set_index("id")

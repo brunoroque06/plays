@@ -10,17 +10,17 @@ git rm '*'
 cd ..
 git ls-files ^
   | from-lines ^
-  | each { |src|
-    var f = (path:join plays $src)
+  | each { |file|
+    var f = (path:join plays $file)
     var d = (path:dir $f)
     mkdir -p $d
-    cp $src $f
+    cp $file $f
   }
 
 cd plays
 git checkout -b zazu
 git add -A
-git commit -m 'Add zazu'
+git commit -m 'Release'
 git push --force origin zazu
 
 cd ..

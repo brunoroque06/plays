@@ -20,7 +20,8 @@ with st.sidebar:
 
 st.header("M ABC")
 
-age = mabc.get_age(birth, asmt_date)
+age = relativedelta(asmt_date, birth)
+
 age_disp = f"Age: {age.years} years, {age.months} months, {age.days} days"
 # st.color_picker(..., disabled=True, label_visibility="collapsed") is an alternative
 if age.years < 7:
@@ -30,27 +31,27 @@ elif age.years < 11:
 else:
     st.info(age_disp)
 
-form = st.form(key="results")
-comps = mabc.get_comps(birth, asmt_date)
-comp_ids = list(comps.keys())
-cols = form.columns(len(comp_ids))
+with st.form(key="results"):
+    comps = mabc.get_comps(age)
+    comp_ids = list(comps.keys())
+    cols = st.columns(len(comp_ids))
 
-raw = {}
+    raw = {}
 
-for i, col in enumerate(cols):
-    comp_id = comp_ids[i]
-    col.markdown(f"***{comp_id}***")
-    for exe in comps[comp_id]:
-        raw[exe] = col.number_input(
-            label=exe.upper(), min_value=0, max_value=100, step=1
-        )
+    for i, col in enumerate(cols):
+        comp_id = comp_ids[i]
+        col.markdown(f"***{comp_id}***")
+        for exe in comps[comp_id]:
+            raw[exe] = col.number_input(
+                label=exe.upper(), min_value=0, max_value=100, step=1
+            )
 
-submit = form.form_submit_button("Submit", type="primary")
+    submit = st.form_submit_button("Submit", type="primary")
 
 if submit:
     with st.spinner("Processing..."):
         time.sleep(1)  # UX? Oo
-        comp, agg = mabc.process(birth, asmt_date, raw)
+        comp, agg = mabc.process(age, raw)
 
     def color_row(row):
         std = row["standard"]

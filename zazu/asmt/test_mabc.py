@@ -1,4 +1,4 @@
-from datetime import date
+from dateutil.relativedelta import relativedelta
 
 from asmt import mabc
 
@@ -17,7 +17,7 @@ def test_mabc_6():
         "bl3": 1,
     }
 
-    comp, agg = mabc.process(date(2016, 1, 1), date(2022, 1, 2), raw)
+    comp, agg = mabc.process(relativedelta(years=6), raw)
 
     comp_res = [
         ["bf1", 5],
@@ -63,7 +63,7 @@ def test_mabc_9():
         "bl32": 4,
     }
 
-    comp, agg = mabc.process(date(2013, 1, 1), date(2022, 1, 2), raw)
+    comp, agg = mabc.process(relativedelta(years=9), raw)
 
     comp_res = [
         ["bf1", 12],
@@ -111,7 +111,7 @@ def test_mabc_12():
         "bl32": 3,
     }
 
-    comp, agg = mabc.process(date(2010, 1, 1), date(2022, 1, 2), raw)
+    comp, agg = mabc.process(relativedelta(years=12), raw)
 
     comp_res = [
         ["bf1", 8],
