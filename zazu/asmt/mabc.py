@@ -1,4 +1,6 @@
 import math
+from datetime import date
+from enum import Enum
 
 import pandas as pd
 from dateutil.relativedelta import relativedelta
@@ -85,6 +87,48 @@ def process_agg(
     agg["total"] = [score, row["standard"], row["percentile"]]
 
     return agg
+
+
+class Rank(Enum):
+    ok = "ok"
+    critical = "critical"
+    nok = "nok"
+
+
+def rank(std: int) -> Rank:
+    if std > 6:
+        return Rank.ok
+    elif std == 6:
+        return Rank.critical
+    return Rank.nok
+
+
+def report(asmt: date, age: relativedelta, hand: str, agg: pd.DataFrame) -> str:
+    if age.years < 7:
+        group = "3-6"
+    elif age.years < 11:
+        group = "7-10"
+    else:
+        group = "11-16"
+
+    def rank_str(std: int) -> str:
+        rnk = rank(std)
+        if rnk == Rank.ok:
+            return "unauffällig"
+        elif rnk == Rank.critical:
+            return "kritisch"
+        return "therapiebedürftig"
+
+    return f"""Movement Assessment Battery for Children 2nd Edition (M-ABC 2)
+{asmt.day}.{asmt.month}.{asmt.year}
+Protokollbogen Altersgruppe: {group} Jahre
+
+Handgeschicklichkeit: PR {agg.loc['hg']['percentile']} - {rank_str(agg.loc['hg']['standard'])}
+Händigkeit: {"Rechts" if hand == "Right" else "Links"}
+Ballfertigkeit: PR {agg.loc['bf']['percentile']} - {rank_str(agg.loc['bf']['standard'])}
+Balance: PR {agg.loc['bl']['percentile']} - {rank_str(agg.loc['bl']['percentile'])}
+
+Gesamttestwert: PR {agg.loc['total']['percentile']} - {rank_str(agg.loc['total']['percentile'])}"""
 
 
 def process(

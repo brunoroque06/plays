@@ -18,6 +18,8 @@ with st.sidebar:
         min_value=asmt_date - relativedelta(years=15, days=364),
     )
 
+    hand = st.selectbox("Preferred Hand", ("Right", "Left"))
+
 st.header("M ABC")
 
 age = relativedelta(asmt_date, birth)
@@ -55,9 +57,10 @@ if submit:
 
     def color_row(row):
         std = row["standard"]
-        if std > 6:
+        rank = mabc.rank(std)
+        if rank == mabc.Rank.ok:
             color = "rgba(33, 195, 84, 0.1)"
-        elif std == 6:
+        elif rank == mabc.Rank.critical:
             color = "rgba(255, 193, 7, 0.1)"
         else:
             color = "rgba(255, 43, 43, 0.09)"
@@ -68,6 +71,8 @@ if submit:
     st.table(comp.style.apply(color_row, axis=1))
     st.subheader("Aggregated")
     st.table(agg.style.apply(color_row, axis=1).format({"percentile": "{:.1f}"}))
+    st.subheader("Report")
+    st.code(mabc.report(asmt_date, age, hand, agg), language="markdown")
 
     if 2 < datetime.date.today().month < 12:
         st.balloons()
