@@ -67,10 +67,21 @@ if submit:
 
         return [f"background-color: {color};"] * len(row)
 
-    st.subheader("Component")
-    st.table(comp.style.apply(color_row, axis=1))
+    for c in [
+        ("Handgeschicklichkeit", "hg"),
+        ("Ballfertigkeiten", "bf"),
+        ("Balance", "bl"),
+    ]:
+        st.subheader(c[0])
+        st.table(comp.filter(like=c[1], axis=0).style.apply(color_row, axis=1))
+
     st.subheader("Aggregated")
-    st.table(agg.style.apply(color_row, axis=1).format({"percentile": "{:.1f}"}))
+    order = {"hg": 0, "bf": 1, "bl": 2, "total": 4}
+    st.table(
+        agg.sort_values(by=["id"], key=lambda x: x.map(order))
+        .style.apply(color_row, axis=1)
+        .format({"percentile": "{:.1f}"})
+    )
     st.subheader("Report")
     st.code(mabc.report(asmt_date, age, hand, agg), language="markdown")
 
