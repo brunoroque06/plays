@@ -1,6 +1,6 @@
 pandas==1.5.1
-pandas-stubs=1.5.1.221024
+pandas-stubs==1.5.1.221024
 pytest==7.2.0
 python-dateutil==2.8.2
 streamlit==1.14.0
-types-python-dateutil=2.8.19.2
+types-python-dateutil==2.8.19.2
