@@ -17,8 +17,8 @@ func (s *Set[T]) Add(k T) {
 }
 
 func (s *Set[T]) Has(k T) bool {
-	_, has := s.keys[k]
-	return has
+	_, ok := s.keys[k]
+	return ok
 }
 
 func (s *Set[T]) Del(k T) error {

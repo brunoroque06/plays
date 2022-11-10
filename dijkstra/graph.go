@@ -16,14 +16,15 @@ func NewEdges(ints RandInts, nodeNum, edgeNum int) *map[int]*Set[int] {
 
 	for v := 1; v < nodeNum; v++ {
 		wg.Add(1)
-		go func(v int) { // let's pretend this is heavy computation; worth spanning a thread...
+		// https://go.dev/doc/effective_go#parallel
+		go func(v int) { // let's pretend this is heavy computation, worth spanning a thread...
 			defer wg.Done()
 			n := edgeNum
 			if n > v {
 				n = v
 			}
 			neigs := ints(v, n)
-			c <- adj{v: v, neigs: neigs}
+			c <- adj{v, neigs}
 		}(v)
 	}
 
@@ -55,7 +56,7 @@ func NewGraph(int RandInt, ints RandInts, nodeNum, edgeNum, min, max int) []*Nod
 	edges := *NewEdges(ints, nodeNum, edgeNum)
 
 	for i := 0; i < nodeNum; i++ {
-		nodes[i] = &Node{id: i, edges: make([]*Edge, 0)}
+		nodes[i] = &Node{i, make([]*Edge, 0)}
 
 		edg := edges[i]
 
@@ -66,10 +67,10 @@ func NewGraph(int RandInt, ints RandInts, nodeNum, edgeNum, min, max int) []*Nod
 		for e := range edg.Iter() {
 			weig := int(min, max)
 
-			out := Edge{neig: nodes[e], weight: &weig}
+			out := Edge{nodes[e], &weig}
 			nodes[i].edges = append(nodes[i].edges, &out)
 
-			in := Edge{neig: nodes[i], weight: &weig}
+			in := Edge{nodes[i], &weig}
 			nodes[e].edges = append(nodes[e].edges, &in)
 		}
 	}

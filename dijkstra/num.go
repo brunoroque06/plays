@@ -1,12 +1,15 @@
 package main
 
 import (
-	"golang.org/x/exp/slices"
 	"math"
+
+	"golang.org/x/exp/slices"
 )
 
-var abc = []rune("abcdefghijklmnopqrstuvwxyz")
-var abcLen = len(abc)
+var (
+	abc    = []rune("abcdefghijklmnopqrstuvwxyz")
+	abcLen = len(abc)
+)
 
 func ToCharBase(num int) string {
 	if num < 0 {

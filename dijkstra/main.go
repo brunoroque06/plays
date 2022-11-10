@@ -9,11 +9,11 @@ func init() {
 }
 
 func main() {
-	var i interface{}
-	fmt.Println(i)
+	graph := NewGraph(Int, Ints, 100, 10, 1, 24)
 
-	graph := NewGraph(Int, Ints, 100, 10, 0, 24)
-	for g := range graph {
-		fmt.Println(g)
-	}
+	primPath := prim(graph, 0)
+	dijkstraPath := dijkstra(graph, 0)
+
+	fmt.Printf("Cost Prim: %d\n", cost(primPath))
+	fmt.Printf("Cost Dijkstra: %d\n", cost(dijkstraPath))
 }
