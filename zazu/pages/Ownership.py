@@ -5,7 +5,8 @@ import streamlit as st
 st.subheader("Renting vs Owning")
 
 st.markdown(
-    "Implementation of the oversimplified <https://www.pwlcapital.com/rent-or-own-your-home-5-rule>."
+    "Implementation of the oversimplified "
+    + "<https://www.pwlcapital.com/rent-or-own-your-home-5-rule>."
 )
 
 col1, col2 = st.columns(2)
