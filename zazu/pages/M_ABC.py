@@ -20,7 +20,7 @@ with st.sidebar:
 
     hand = st.selectbox("Preferred Hand", ("Right", "Left"))
 
-st.header("M ABC")
+st.subheader("M ABC")
 
 age = relativedelta(asmt_date, birth)
 
