@@ -9,7 +9,7 @@ func init() {
 }
 
 func main() {
-	graph := NewGraph(Int, Ints, 100, 10, 1, 24)
+	graph := NewGraph(Int, Ints, 1000, 10, 1, 24)
 
 	primPath := prim(graph, 0)
 	dijkstraPath := dijkstra(graph, 0)

@@ -2,20 +2,20 @@ package main
 
 import "testing"
 
-func graph() []*Node {
-	a := Node{0, make([]*Edge, 0)}
-	b := Node{1, make([]*Edge, 0)}
-	c := Node{2, make([]*Edge, 0)}
+func graph() []Node {
+	a := Node{0, make([]Edge, 0)}
+	b := Node{1, make([]Edge, 0)}
+	c := Node{2, make([]Edge, 0)}
 
 	ab := 3
 	ac := 5
 	bc := 4
 
-	a.edges = append(a.edges, &Edge{&b, &ab}, &Edge{&c, &ac})
-	b.edges = append(b.edges, &Edge{&a, &ab}, &Edge{&c, &bc})
-	c.edges = append(c.edges, &Edge{&a, &ac}, &Edge{&b, &bc})
+	a.edges = append(a.edges, Edge{&b, &ab}, Edge{&c, &ac})
+	b.edges = append(b.edges, Edge{&a, &ab}, Edge{&c, &bc})
+	c.edges = append(c.edges, Edge{&a, &ac}, Edge{&b, &bc})
 
-	return []*Node{&a, &b, &c}
+	return []Node{a, b, c}
 }
 
 func TestPrim(t *testing.T) {

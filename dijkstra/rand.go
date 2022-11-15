@@ -29,5 +29,5 @@ func Ints(max, n int) *Set[int] {
 			sel.Add(i)
 		}
 	}
-	return sel
+	return &sel
 }

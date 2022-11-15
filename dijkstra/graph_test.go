@@ -7,18 +7,18 @@ var randInts = func(max, n int) *Set[int] {
 	for i := 0; i < n; i++ {
 		nums.Add(i)
 	}
-	return nums
+	return &nums
 }
 
 func TestNewEdges(t *testing.T) {
-	edges := *NewEdges(randInts, 15, 10)
+	edges := NewEdges(randInts, 15, 10)
 	if len(edges) != 14 {
 		t.Error()
 	}
-	if (*edges[1]).Len() != 1 {
+	if e := edges[1]; e.Len() != 1 {
 		t.Error()
 	}
-	if (*edges[14]).Len() != 10 {
+	if e := edges[14]; e.Len() != 10 {
 		t.Error()
 	}
 }
@@ -38,11 +38,11 @@ func TestNewGraph(t *testing.T) {
 		t.Error()
 	}
 
-	if g[0] != g[0].edges[0].neig.edges[0].neig { // beautiful Oo
+	if &g[0] != g[0].edges[0].neig.edges[0].neig { // beautiful Oo
 		t.Error()
 	}
 
-	if g[1] != g[0].edges[0].neig {
+	if &g[1] != g[0].edges[0].neig {
 		t.Error()
 	}
 }

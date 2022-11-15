@@ -4,46 +4,51 @@ import (
 	"math"
 )
 
-func prim(graph []*Node, start int) []*Edge {
-	path := make([]*Edge, 0, len(graph)-1)
+func prim(graph []Node, start int) []Edge {
+	path := make([]Edge, 0, len(graph)-1)
 
-	visited := MakeSet[*Node]()
-	visited.Add(graph[start])
+	visited := make(map[int]*Node, len(graph))
+	visited[graph[start].id] = &graph[start]
 
 	max := math.MaxInt
-	longest := Edge{graph[start], &max}
+	longest := Edge{&graph[start], &max}
 	for len(path) != len(graph)-1 {
-		shortest := &longest
-		for n := range visited.Iter() { // some redundancy...
+		shortest := longest
+		for _, n := range visited { // some redundancy...
 			for _, e := range n.edges {
-				if !visited.Has(e.neig) && *e.weight < *shortest.weight {
+				if _, ok := visited[e.neig.id]; !ok && *e.weight < *shortest.weight {
 					shortest = e
 				}
 			}
 		}
 		path = append(path, shortest)
-		visited.Add(shortest.neig)
+		visited[shortest.neig.id] = shortest.neig
 	}
 
 	return path
 }
 
-func dijkstra(graph []*Node, start int) []*Edge {
-	path := make([]*Edge, 0, len(graph)-1)
+func dijkstra(graph []Node, start int) []Edge {
+	path := make([]Edge, 0, len(graph)-1)
 
-	costs := make(map[*Node]int, len(graph))
-	costs[graph[start]] = 0
+	type cost struct {
+		cost int
+		node *Node
+	}
+
+	costs := make(map[int]cost, len(graph))
+	costs[graph[start].id] = cost{0, &graph[start]}
 
 	for len(path) != len(graph)-1 {
 		lowCost := math.MaxInt
-		var edge *Edge
+		var edge Edge
 
-		for n, nCost := range costs { // some redundancy...
-			for _, e := range n.edges {
-				if _, ok := costs[e.neig]; ok {
+		for _, c := range costs { // some redundancy...
+			for _, e := range c.node.edges {
+				if _, ok := costs[e.neig.id]; ok {
 					continue
 				}
-				cost := nCost + *e.weight
+				cost := c.cost + *e.weight
 				if cost < lowCost {
 					lowCost = cost
 					edge = e
@@ -52,13 +57,13 @@ func dijkstra(graph []*Node, start int) []*Edge {
 		}
 
 		path = append(path, edge)
-		costs[edge.neig] = lowCost
+		costs[edge.neig.id] = cost{lowCost, edge.neig}
 	}
 
 	return path
 }
 
-func cost(path []*Edge) int {
+func cost(path []Edge) int {
 	c := 0
 	for _, e := range path {
 		c = c + *e.weight

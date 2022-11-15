@@ -2,8 +2,8 @@ package main
 
 import "fmt"
 
-func MakeSet[T comparable]() *Set[T] {
-	return &Set[T]{
+func MakeSet[T comparable]() Set[T] {
+	return Set[T]{
 		keys: make(map[T]struct{}),
 	}
 }

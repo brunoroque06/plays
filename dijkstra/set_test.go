@@ -17,7 +17,7 @@ func TestSet(t *testing.T) {
 	if set.Del(8) == nil {
 		t.Error()
 	}
-	set.Del(k)
+	_ = set.Del(k)
 	if set.Len() != 0 {
 		t.Error()
 	}
