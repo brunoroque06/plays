@@ -67,6 +67,9 @@ if submit:
 
         return [f"background-color: {color};"] * len(row)
 
+    st.subheader("Report")
+    st.code(mabc.report(asmt_date, age, hand, agg), language="markdown")
+
     for c in [
         ("Handgeschicklichkeit", "hg"),
         ("Ballfertigkeiten", "bf"),
@@ -82,8 +85,6 @@ if submit:
         .style.apply(color_row, axis=1)
         .format({"percentile": "{:.1f}"})
     )
-    st.subheader("Report")
-    st.code(mabc.report(asmt_date, age, hand, agg), language="markdown")
 
     if 2 < datetime.date.today().month < 12:
         st.balloons()
