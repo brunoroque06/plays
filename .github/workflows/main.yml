@@ -41,6 +41,25 @@ jobs:
       - name: Test
         run: go test -v
 
+  dug:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: dug
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.10.x
+      - name: Install
+        run: pip install black mypy pylint -r requirements.txt
+      - name: Format
+        run: black --check .
+      - name: Lint
+        run: pylint --rcfile=.pylintrc $(git ls-files '*.py') && mypy asmt
+      - name: Test
+        run: python -m pytest .
+
   genetic:
     runs-on: ubuntu-latest
     defaults:
@@ -57,24 +76,5 @@ jobs:
         run: black --check .
       - name: Lint
         run: pylint --rcfile=.pylintrc genetic test && mypy genetic test
-      - name: Test
-        run: python -m pytest .
-
-  zazu:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: zazu
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: 3.10.x
-      - name: Install
-        run: pip install black mypy pylint -r requirements.txt
-      - name: Format
-        run: black --check .
-      - name: Lint
-        run: pylint --rcfile=.pylintrc $(git ls-files '*.py') && mypy asmt
       - name: Test
         run: python -m pytest .

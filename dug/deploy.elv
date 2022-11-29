@@ -18,10 +18,10 @@ git ls-files ^
   }
 
 cd plays
-git checkout -b zazu
+git checkout -b st
 git add -A
 git commit -m 'Release'
-git push --force origin zazu
+git push --force origin st
 
 cd ..
 rm -fr plays
