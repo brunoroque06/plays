@@ -3,78 +3,14 @@ name: CI
 on: [push]
 
 jobs:
-  decision-tree:
+  ci:
+    strategy:
+      matrix:
+        proj: [decision-tree, dijkstra, dug, genetic]
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: decision-tree
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 7.0.x
-      - name: Install
-        run: dotnet tool restore
-      - name: Build
-        run: dotnet build
-      - name: Format
-        run: dotnet tool run fantomas --check .
-      - name: Lint
-        run: dotnet tool run dotnet-fsharplint lint DecisionTree.fsproj
-      - name: Test
-        run: dotnet test
-
-  dijkstra:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: dijkstra
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-go@v3
-        with:
-          go-version: 1.19
-      - name: Build
-        run: go build -v
-      - name: Format
-        run: gofmt -d
-      - name: Test
-        run: go test -v
-
-  dug:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: dug
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: 3.10.x
-      - name: Install
-        run: pip install black mypy pylint -r requirements.txt
-      - name: Format
-        run: black --check .
-      - name: Lint
-        run: pylint --rcfile=.pylintrc $(git ls-files '*.py') && mypy asmt
-      - name: Test
-        run: python -m pytest .
-
-  genetic:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: genetic
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: 3.10.x
-      - name: Install
-        run: pip install black mypy pylint -r requirements.txt
-      - name: Format
-        run: black --check .
-      - name: Lint
-        run: pylint --rcfile=.pylintrc genetic test && mypy genetic test
-      - name: Test
-        run: python -m pytest .
+      - run: curl -L https://dl.dagger.io/dagger-cue/install.sh | sh
+        working-directory: /usr/local
+      - uses: actions/checkout@v3
+      - run: dagger-cue project init && dagger-cue project update
+      - run: dagger-cue do ${{ matrix.proj }}
