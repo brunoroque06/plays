@@ -6,7 +6,7 @@ jobs:
   ci:
     strategy:
       matrix:
-        proj: [decision-tree, dijkstra, dug, genetic]
+        proj: [decisiontree, dijkstra, dug, genetic]
     runs-on: ubuntu-latest
     steps:
       - run: curl -L https://dl.dagger.io/dagger-cue/install.sh | sh
