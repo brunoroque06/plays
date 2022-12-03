@@ -9,12 +9,19 @@ def dates(min_years: int, max_years: int):
 
     today = datetime.date.today()
     asmt = col1.date_input("Assessment", today, max_value=today)
+
+    if not isinstance(asmt, datetime.date):  # thank you mypy
+        raise TypeError("not date")
+
     birth = col2.date_input(
         "Birthday",
         asmt - relativedelta(years=max_years - min_years),
         max_value=asmt - relativedelta(years=min_years),
         min_value=asmt - relativedelta(years=max_years - 1, days=364),
     )
+
+    if not isinstance(birth, datetime.date):
+        raise TypeError("not date")
 
     age = relativedelta(asmt, birth)
 

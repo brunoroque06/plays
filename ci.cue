@@ -138,8 +138,7 @@ dagger.#Plan & {
 			}
 			lint: bash.#Run & {
 				input: img.output
-				script: contents: "pylint --rcfile=.pylintrc $(find . -type f -name '*.py')"
-				// script: contents: "pylint --rcfile=.pylintrc $(find . -type f -name '*.py') && mypy asmt"
+				script: contents: "pylint --rcfile=.pylintrc $(find . -type f -name '*.py') && mypy asmt"
 			}
 			test: bash.#Run & {
 				input: img.output

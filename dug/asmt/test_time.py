@@ -1,6 +1,6 @@
-from asmt import time
-
 from dateutil.relativedelta import relativedelta
+
+from asmt import time
 
 
 def test_delta_idx():

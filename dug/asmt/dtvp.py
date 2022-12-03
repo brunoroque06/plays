@@ -1,9 +1,12 @@
+import typing
+
 import pandas as pd
 from dateutil.relativedelta import relativedelta
 
 from asmt import time
 
 
+@typing.no_type_check
 def load() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     ra = pd.read_csv("data/dtvp-raw-ageeq.csv")
     ra["raw"] = ra.apply(
@@ -84,7 +87,9 @@ def process(
         return f"{a.years};{a.months}"
 
     def scaled(k: str):
-        # todo: finish dtvp-raw-sca
+        print(age)
+        print(k)
+        print(rs)
         # l = rs.loc[k].loc[time.delta_idx(age)].loc[raw[k]]
         # per = l["percentile"]
         # sca = l["scaled"]
@@ -93,7 +98,7 @@ def process(
         return [per, sca, desc_sca(sca)]
 
     sub = pd.DataFrame(
-        [[k, tests[k], raw[k], age_eq(k)] + scaled(k) for k in tests.keys()],
+        [[k, v, raw[k], age_eq(k)] + scaled(k) for k, v in tests.items()],
         columns=["id", "label", "raw", "age_eq", "percentile", "scaled", "descriptive"],
     ).set_index("id")
 
@@ -108,7 +113,11 @@ def process(
             "Motor-reduced Visual Perception",
             sub.loc["fg"]["scaled"] + sub.loc["vc"]["scaled"] + sub.loc["vc"]["scaled"],
         ),
-        ("gvp", "General Visual Perception", sub["scaled"].sum()),
+        (
+            "gvp",
+            "General Visual Perception",
+            sub["scaled"].sum(),  # pylint: disable=unsubscriptable-object
+        ),
     ]
 
     def desc_index(v: int) -> str:

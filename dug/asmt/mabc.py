@@ -1,4 +1,5 @@
 import math
+import typing
 from datetime import date
 from enum import Enum
 
@@ -6,6 +7,7 @@ import pandas as pd
 from dateutil.relativedelta import relativedelta
 
 
+@typing.no_type_check
 def load() -> tuple[pd.DataFrame, pd.DataFrame]:
     map_i = pd.read_csv("data/mabc-i.csv")
     map_i["age"] = map_i.apply(

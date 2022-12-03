@@ -7,7 +7,7 @@ def test_dtvp():
     age = relativedelta(years=4, months=0)
 
     raw = {}
-    for k in dtvp.get_tests().keys():
+    for k in dtvp.get_tests():
         raw[k] = 0
 
     sub, comp = dtvp.process(age, raw)

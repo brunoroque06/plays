@@ -6,5 +6,4 @@ disable=
     missing-module-docstring,
     too-many-arguments,
     too-few-public-methods,
-
-good-names=a,k,v,v0,v1
+    too-many-return-statements,
