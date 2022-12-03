@@ -19,7 +19,7 @@ else:
 
 hand = st.selectbox("Preferred Hand", ("Right", "Left"))
 
-with st.form(key="res"):
+with st.form(key="mabc"):
     comps = mabc.get_comps(age)
     comp_ids = list(comps.keys())
     cols = st.columns(len(comp_ids))
@@ -34,7 +34,7 @@ with st.form(key="res"):
                 label=exe.upper(), min_value=0, max_value=100, step=1
             )
 
-    submit = st.form_submit_button("Submit", type="primary")
+    submit = st.form_submit_button(type="primary")
 
 if submit:
     with st.spinner("Processing..."):
