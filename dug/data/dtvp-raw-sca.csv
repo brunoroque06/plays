@@ -1,0 +1,5 @@
+id,age_min_y,age_min_m,age_max_y,age_max_m,raw_min,raw_max,scaled,percentile
+
+eh,4,0,4,2,0,10,1,0
+
+eh,4,3,4,5,0,17,1,0

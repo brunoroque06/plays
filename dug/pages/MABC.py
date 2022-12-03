@@ -2,29 +2,13 @@ import datetime
 import time
 
 import streamlit as st
-from dateutil.relativedelta import relativedelta
 
-from asmt import mabc
+from asmt import comp, mabc
 
-with st.sidebar:
-    col1, col2 = st.columns(2)
+st.subheader("MABC")
 
-    today = datetime.date.today()
-    asmt_date = col1.date_input("Assessment", today, max_value=today)
-    birth = col2.date_input(
-        "Birthday",
-        asmt_date - relativedelta(years=9),
-        max_value=asmt_date - relativedelta(years=5),
-        min_value=asmt_date - relativedelta(years=15, days=364),
-    )
+asmt_date, birth, age, age_disp = comp.dates(5, 16)
 
-    hand = st.selectbox("Preferred Hand", ("Right", "Left"))
-
-st.subheader("M ABC")
-
-age = relativedelta(asmt_date, birth)
-
-age_disp = f"Age: {age.years} years, {age.months} months, {age.days} days"
 # st.color_picker(..., disabled=True, label_visibility="collapsed") is an alternative
 if age.years < 7:
     st.error(age_disp)
@@ -33,7 +17,9 @@ elif age.years < 11:
 else:
     st.info(age_disp)
 
-with st.form(key="results"):
+hand = st.selectbox("Preferred Hand", ("Right", "Left"))
+
+with st.form(key="res"):
     comps = mabc.get_comps(age)
     comp_ids = list(comps.keys())
     cols = st.columns(len(comp_ids))

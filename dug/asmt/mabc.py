@@ -7,7 +7,7 @@ from dateutil.relativedelta import relativedelta
 
 
 def load() -> tuple[pd.DataFrame, pd.DataFrame]:
-    map_i = pd.read_csv("data/m-abc-i.csv")
+    map_i = pd.read_csv("data/mabc-i.csv")
     map_i["age"] = map_i.apply(
         lambda r: pd.Interval(left=r["age_min"], right=r["age_max"], closed="left"),
         axis=1,
@@ -19,7 +19,7 @@ def load() -> tuple[pd.DataFrame, pd.DataFrame]:
     map_i = map_i.drop(["age_max", "age_min", "rank", "raw_max", "raw_min"], axis=1)
     map_i = map_i.set_index(["age", "id", "raw"], verify_integrity=True).sort_index()
 
-    map_t = pd.read_csv("data/m-abc-t.csv")
+    map_t = pd.read_csv("data/mabc-t.csv")
     map_t["raw"] = map_t.apply(
         lambda r: pd.Interval(left=r["raw_min"], right=r["raw_max"] + 1, closed="left"),
         axis=1,
