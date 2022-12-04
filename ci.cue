@@ -127,7 +127,7 @@ dagger.#Plan & {
 					docker.#Run & {
 						command: {
 							name: "pip"
-							args: ["install", "black", "mypy", "pylint", "-r", "requirements.txt"]
+							args: ["install", "black", "-r", "requirements.txt"]
 						}
 					},
 				]
@@ -142,7 +142,7 @@ dagger.#Plan & {
 			}
 			test: bash.#Run & {
 				input: img.output
-				script: contents: "python -m pytest ."
+				script: contents: "pytest ."
 			}
 		}
 
@@ -166,7 +166,7 @@ dagger.#Plan & {
 					docker.#Run & {
 						command: {
 							name: "pip"
-							args: ["install", "black", "mypy", "pylint", "-r", "requirements.txt"]
+							args: ["install", "black", "-r", "requirements.txt"]
 						}
 					},
 				]
@@ -181,7 +181,7 @@ dagger.#Plan & {
 			}
 			test: bash.#Run & {
 				input: img.output
-				script: contents: "python -m pytest ."
+				script: contents: "pytest ."
 			}
 		}
 
