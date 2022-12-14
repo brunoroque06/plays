@@ -17,7 +17,7 @@ with col2:
     main = st.slider("Maintenance Cost [%]", 0.0, 5.0, 1.0, 0.5)
     opo = st.slider("Cost of Opportunity [%]", 0.0, 5.0, 3.0, 0.5)
 
-cost = st.slider("House Cost [k]", 200, 2_000, 1_000, 50)
+cost = st.slider("House Cost [k]", 200, 2_000, 1_000, 100)
 
 
 def calc_cost(pri):
@@ -29,7 +29,7 @@ st.metric(
     label="Unrecoverable Cost of Owning [/month]", value=round(calc_cost(cost * 1000))
 )
 
-prices = np.arange(200_000, 2_000_000, 50_000)
+prices = np.arange(200_000, 2_000_000, 10_000)
 cutoffs = np.array([round(calc_cost(p)) for p in prices])
 st.line_chart(
     pd.DataFrame(

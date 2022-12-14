@@ -1,8 +1,8 @@
 mypy==0.991
 numpy==1.23.5
-pandas-stubs==1.5.2.221124
+pandas-stubs==1.5.2.221213
 pandas==1.5.2
-pylint==2.15.7
+pylint==2.15.8
 pytest==7.2.0
 python-dateutil==2.8.2
 streamlit==1.15.2

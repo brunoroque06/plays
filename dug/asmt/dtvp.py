@@ -87,14 +87,9 @@ def process(
         return f"{a.years};{a.months}"
 
     def scaled(k: str):
-        print(age)
-        print(k)
-        print(rs)
-        # l = rs.loc[k].loc[time.delta_idx(age)].loc[raw[k]]
-        # per = l["percentile"]
-        # sca = l["scaled"]
-        per = 25
-        sca = 10
+        l = rs.loc[k].loc[time.delta_idx(age)].loc[raw[k]]
+        per = l["percentile"]
+        sca = l["scaled"]
         return [per, sca, desc_sca(sca)]
 
     sub = pd.DataFrame(
@@ -111,7 +106,7 @@ def process(
         (
             "mrvp",
             "Motor-reduced Visual Perception",
-            sub.loc["fg"]["scaled"] + sub.loc["vc"]["scaled"] + sub.loc["vc"]["scaled"],
+            sub.loc["fg"]["scaled"] + sub.loc["vc"]["scaled"] + sub.loc["fc"]["scaled"],
         ),
         (
             "gvp",
