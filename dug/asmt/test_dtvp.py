@@ -12,4 +12,6 @@ def test_dtvp():
 
     assert (sub["age_eq"] == ["4;3", "4;8", "10;5", "5;10", "6;3"]).all()
     assert (sub["scaled"] == [3, 4, 12, 8, 10]).all()
-    assert (comp["index"] == [61, 100, 84]).all()
+    assert (
+        comp["index"] == [61, 100, 84]  # pylint: disable=unsubscriptable-object
+    ).all()
