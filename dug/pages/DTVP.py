@@ -6,7 +6,7 @@ from asmt import comp, dtvp
 
 st.subheader("DTVP")
 
-asmt_date, birth, age, age_disp = comp.dates(4, 12)
+asmt_date, birth, age, age_disp = comp.dates(4, 13)
 
 st.info(age_disp)
 
@@ -21,7 +21,7 @@ with st.form("dtvp"):
 
 if submit:
     with st.spinner("Processing..."):
-        time.sleep(1)  # UX? Oo
+        time.sleep(0.2)  # UX? Oo
         sub, comp = dtvp.process(age, raw)
 
     st.subheader("Subtest Performance")

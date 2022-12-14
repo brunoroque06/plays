@@ -38,7 +38,7 @@ with st.form(key="mabc"):
 
 if submit:
     with st.spinner("Processing..."):
-        time.sleep(1)  # UX? Oo
+        time.sleep(0.2)  # UX? Oo
         comp, agg = mabc.process(age, raw)
 
     def color_row(row):
