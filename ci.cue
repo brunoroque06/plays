@@ -44,7 +44,6 @@ dagger.#Plan & {
 					},
 					docker.#Copy & {
 						contents: client.filesystem."decision-tree".read.contents
-						dest:     "/app"
 					},
 					docker.#Run & {
 						command: {
@@ -89,7 +88,6 @@ dagger.#Plan & {
 					},
 					docker.#Copy & {
 						contents: client.filesystem."dijkstra".read.contents
-						dest:     "/app"
 					},
 				]
 			}
@@ -122,13 +120,16 @@ dagger.#Plan & {
 					},
 					docker.#Copy & {
 						contents: client.filesystem."dug".read.contents
-						dest:     "/app"
+						include: ["requirements.txt"]
 					},
 					docker.#Run & {
 						command: {
 							name: "pip"
 							args: ["install", "black", "-r", "requirements.txt"]
 						}
+					},
+					docker.#Copy & {
+						contents: client.filesystem."dug".read.contents
 					},
 				]
 			}
@@ -161,13 +162,16 @@ dagger.#Plan & {
 					},
 					docker.#Copy & {
 						contents: client.filesystem."genetic".read.contents
-						dest:     "/app"
+						include: ["requirements.txt"]
 					},
 					docker.#Run & {
 						command: {
 							name: "pip"
 							args: ["install", "black", "-r", "requirements.txt"]
 						}
+					},
+					docker.#Copy & {
+						contents: client.filesystem."genetic".read.contents
 					},
 				]
 			}
