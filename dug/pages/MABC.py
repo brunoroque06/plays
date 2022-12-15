@@ -1,4 +1,3 @@
-import datetime
 import time
 
 import streamlit as st
@@ -39,7 +38,7 @@ with st.form(key="mabc"):
 if submit:
     with st.spinner("Processing..."):
         time.sleep(0.2)  # UX? Oo
-        comp, agg = mabc.process(age, raw)
+        comp, agg, rep = mabc.process(age, raw)
 
     def color_row(row):
         std = row["standard"]
@@ -53,26 +52,23 @@ if submit:
 
         return [f"background-color: {color};"] * len(row)
 
-    st.subheader("Report")
-    st.code(mabc.report(asmt_date, age, hand, agg), language="markdown")
+    st.code(rep(asmt_date, age, hand), language="markdown")
 
     for c in [
         ("Handgeschicklichkeit", "hg"),
         ("Ballfertigkeiten", "bf"),
         ("Balance", "bl"),
     ]:
-        st.subheader(c[0])
-        st.table(comp.filter(like=c[1], axis=0).style.apply(color_row, axis=1))
+        st.table(
+            comp.filter(like=c[1], axis=0)
+            .style.apply(color_row, axis=1)
+            .set_caption(c[0])
+        )
 
-    st.subheader("Aggregated")
     order = {"hg": 0, "bf": 1, "bl": 2, "total": 4}
     st.table(
         agg.sort_values(by=["id"], key=lambda x: x.map(order))
         .style.apply(color_row, axis=1)
+        .set_caption("Aggregated")
         .format({"percentile": "{:.1f}"})
     )
-
-    if 2 < datetime.date.today().month < 12:
-        st.balloons()
-    else:
-        st.snow()

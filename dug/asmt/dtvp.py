@@ -1,4 +1,5 @@
 import typing
+from datetime import date
 
 import pandas as pd
 from dateutil.relativedelta import relativedelta
@@ -60,27 +61,44 @@ def get_tests() -> dict[str, str]:
     }
 
 
+def desc_sca(s: int, de: bool = False) -> str:
+    if s < 4:
+        return "weit unterdurchschnittlich" if de else "Very Poor"
+    if s < 6:
+        return "unterdurchschnittlich" if de else "Poor"
+    if s < 8:
+        return "unterdurchschnittlich" if de else "Below Average"
+    if s < 13:
+        return "durchschnittlich" if de else "Average"
+    if s < 15:
+        return "überdurchschnittlich" if de else "Above Average"
+    if s < 17:
+        return "weit überdurchschnittlich" if de else "Superior"
+    return "weit überdurchschnittlich" if de else "Very Superior"
+
+
+def desc_index(i: int, de: bool = False) -> str:
+    if i < 70:
+        return "Weit unter der Norm" if de else "Very Poor"
+    if i < 80:
+        return "Weit unter der Norm" if de else "Poor"
+    if i < 90:
+        return "Unter der Norm" if de else "Below Average"
+    if i < 111:
+        return "Norm" if de else "Average"
+    if i < 121:
+        return "Über der Norm" if de else "Above Average"
+    if i < 131:
+        return "Weit über der Norm" if de else "Superior"
+    return "Weit über der Norm" if de else "Very Superior"
+
+
 def process(
     age: relativedelta, raw: dict[str, int]
-) -> tuple[pd.DataFrame, pd.DataFrame]:
+) -> tuple[pd.DataFrame, pd.DataFrame, typing.Callable[[date], str]]:
     ra, rs, sp = load()
 
     tests = get_tests()
-
-    def desc_sca(v: int) -> str:
-        if v < 4:
-            return "Very Poor"
-        if v < 6:
-            return "Poor"
-        if v < 8:
-            return "Below Average"
-        if v < 13:
-            return "Average"
-        if v < 15:
-            return "Above Average"
-        if v < 17:
-            return "Superior"
-        return "Very Superior"
 
     def age_eq(k: str):
         a = ra.loc[k].loc[raw[k]]["age_eq"]
@@ -115,28 +133,13 @@ def process(
         ),
     ]
 
-    def desc_index(v: int) -> str:
-        if v < 70:
-            return "Very Poor"
-        if v < 80:
-            return "Poor"
-        if v < 90:
-            return "Below Average"
-        if v < 111:
-            return "Average"
-        if v < 121:
-            return "Above Average"
-        if v < 131:
-            return "Superior"
-        return "Very Superior"
-
     comp = pd.DataFrame(
         [
             [
                 l,
                 v,
                 sp.loc[k].loc[v]["percentile"],
-                desc_index(sp.loc[k].loc[v]["percentile"]),
+                desc_index(sp.loc[k].loc[v]["index"]),
                 sp.loc[k].loc[v]["index"],
             ]
             for k, l, v in comps
@@ -144,4 +147,39 @@ def process(
         columns=["id", "sum_scaled", "percentile", "descriptive", "index"],
     ).set_index("id")
 
-    return sub.set_index("label"), comp
+    return sub.set_index("label"), comp, lambda asmt: report(asmt, sub, comp)
+
+
+def report(asmt: date, sub: pd.DataFrame, comp: pd.DataFrame) -> str:
+    def pr(p: int) -> str:
+        return str(p) if p != 0 else "<1"
+
+    def age(a: str) -> str:
+        return "<4-0" if a == "3;11" else a
+
+    return "\n".join(
+        [
+            "Developmental Test of Visual Perception (DTVP-3)",
+            f"{asmt.day}.{asmt.month}.{asmt.year}",
+            "",
+        ]
+        + [
+            f"- {n}: PR {pr(comp['percentile'][i])} - {desc_index(comp['index'][i], True)}"
+            for n, i in [
+                ("Visuomotorische Integration", 0),
+                ("Visuelle Wahrnehmung mit reduzierter motorischer Reaktion", 1),
+                ("Globale visuelle Wahrnehmung", 2),
+            ]
+        ]
+        + ["", "Subtests:"]
+        + [
+            f"- {n}: {age(sub['age_eq'][i])} J ({desc_sca(sub['scaled'][i], True)})"
+            for n, i in [
+                ("Augen-Hand-Koordination", 0),
+                ("Abzeichnen", 1),
+                ("Figur-Grund", 2),
+                ("Gesaltschliessen", 3),
+                ("Formkonstanz", 4),
+            ]
+        ]
+    )
