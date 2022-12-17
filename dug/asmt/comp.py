@@ -15,7 +15,7 @@ def dates(min_years: int, max_years: int):
 
     birth = col2.date_input(
         "Birthday",
-        asmt - relativedelta(years=max_years - min_years),
+        asmt - relativedelta(years=min_years + int((max_years - min_years) / 2)),
         max_value=asmt - relativedelta(years=min_years),
         min_value=asmt - relativedelta(years=max_years - 1, days=364),
     )
