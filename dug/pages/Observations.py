@@ -49,20 +49,20 @@ for i in range(0, len(obs), cols_num):
 int_scores = defaultdict(list)
 for ik, iv in ints.items():
     for ok, ov in obs.items():
-        if ik in obs[ok]["ints"]:
+        if ik in ov["ints"]:
             sc = scores[ok]
             int_scores[ik].append((ok, sc))
 
 
 def avg(vals: list[tuple[str, str]]) -> float:
-    def quant(v: str) -> int:
-        if v == "Bellow":
+    def quant(val: str) -> int:
+        if val == "Bellow":
             return -1
-        if v == "Average":
+        if val == "Average":
             return 0
         return 1
 
-    return sum([quant(val) for _, val in vals]) / len(vals)
+    return sum(quant(val) for _, val in vals) / len(vals)
 
 
 for k, v in int_scores.items():
