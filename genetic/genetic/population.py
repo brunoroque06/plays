@@ -1,9 +1,8 @@
 import functools
+import typing
 from dataclasses import dataclass
 
-import typing
-
-from genetic import container, genetics, individual
+from genetic import genetics, individual, rand
 
 
 @dataclass(frozen=True)
@@ -54,7 +53,7 @@ def create(
 def find_parents(
     inds: typing.List[individual.Individual],
     pool: typing.List[int],
-    rnd_int: typing.Callable[[int, int], int] = container.Container.rand_int,
+    rnd_int: typing.Callable[[int, int], int] = rand.integer,
 ) -> typing.Tuple[str, str]:
     par_x = pool[rnd_int(0, len(pool) - 1)]
     par_y = pool[rnd_int(0, len(pool) - 1)]

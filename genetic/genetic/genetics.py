@@ -1,6 +1,6 @@
 import typing
 
-from genetic import container
+from genetic import rand
 
 
 def calc_fitness(target: str, genes: str) -> float:
@@ -12,8 +12,7 @@ def calc_fitness(target: str, genes: str) -> float:
 
 
 def crossover(
-    parents: typing.Tuple[str, str],
-    rnd_bool: typing.Callable[[], bool] = container.Container.rand_bool,
+    parents: typing.Tuple[str, str], rnd_bool: typing.Callable[[], bool] = rand.boolean
 ) -> str:
     genes = [p_x if rnd_bool() else p_y for p_x, p_y in zip(parents[0], parents[1])]
     return "".join(genes)
@@ -23,7 +22,7 @@ def mutate(
     rnd_char: typing.Callable[[], str],
     mutation_rate: float,
     genes: str,
-    rnd_int: typing.Callable[[int, int], int] = container.Container.rand_int,
+    rnd_int: typing.Callable[[int, int], int] = rand.integer,
 ):
     def does_mutate() -> bool:
         integer = rnd_int(0, 100) / 100

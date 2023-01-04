@@ -165,7 +165,7 @@ dagger.#Plan & {
 					docker.#Run & {
 						command: {
 							name: "pip"
-							args: ["install", "black", "-r", "requirements.txt"]
+							args: ["install", "-r", "requirements.txt"]
 						}
 					},
 					docker.#Copy & {
@@ -179,7 +179,7 @@ dagger.#Plan & {
 			}
 			lint: bash.#Run & {
 				input: img.output
-				script: contents: "pylint --rcfile=.pylintrc genetic test && mypy genetic test"
+				script: contents: "pylint --rcfile=.pylintrc genetic test && pyright ."
 			}
 			test: bash.#Run & {
 				input: img.output
