@@ -52,6 +52,9 @@ if submit:
 
         return [f"background-color: {color};"] * len(row)
 
+    if not isinstance(hand, str):
+        raise TypeError("not str")
+
     st.code(rep(asmt_date, age, hand), language="markdown")
 
     for c in [

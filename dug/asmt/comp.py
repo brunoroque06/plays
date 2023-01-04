@@ -10,7 +10,7 @@ def dates(min_years: int, max_years: int):
     today = datetime.date.today()
     asmt = col1.date_input("Assessment", today, max_value=today)
 
-    if not isinstance(asmt, datetime.date):  # thank you mypy
+    if not isinstance(asmt, datetime.date):
         raise TypeError("not date")
 
     birth = col2.date_input(

@@ -15,22 +15,20 @@ def load() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
         axis=1,
     )
     ra["age_eq"] = ra.apply(
-        lambda r: relativedelta(years=r["age_eq_y"], months=r["age_eq_m"]), axis=1
+        lambda r: relativedelta(years=r["age_eq_y"], months=r["age_eq_m"]), axis=1  # type: ignore
     )
     ra = ra.drop(["raw_min", "raw_max", "age_eq_y", "age_eq_m"], axis=1)
     ra = ra.set_index(["id", "raw"], verify_integrity=True).sort_index()
 
     rs = pd.read_csv("data/dtvp-raw-sca.csv")
-    rs["age_min"] = rs.apply(
-        lambda r: relativedelta(years=r["age_min_y"], months=r["age_min_m"]), axis=1
-    )
-    rs["age_max"] = rs.apply(
-        lambda r: relativedelta(years=r["age_max_y"], months=r["age_max_m"]), axis=1
-    )
     rs["age"] = rs.apply(
         lambda r: pd.Interval(
-            left=time.delta_idx(r["age_min"]),
-            right=time.delta_idx(r["age_max"], inc=True),
+            left=time.delta_idx(
+                relativedelta(years=r["age_min_y"], months=r["age_min_m"])
+            ),
+            right=time.delta_idx(
+                relativedelta(years=r["age_max_y"], months=r["age_max_m"]), inc=True
+            ),
             closed="left",
         ),
         axis=1,
@@ -164,7 +162,7 @@ def report(asmt: date, sub: pd.DataFrame, comp: pd.DataFrame) -> str:
             "",
         ]
         + [
-            f"- {n}: PR {pr(comp['percentile'][i])} - {desc_index(comp['index'][i], True)}"
+            f"- {n}: PR {pr(comp['percentile'][i])} - {desc_index(comp['index'][i], True)}"  # type: ignore
             for n, i in [
                 ("Visuomotorische Integration", 0),
                 ("Visuelle Wahrnehmung mit reduzierter motorischer Reaktion", 1),
@@ -173,7 +171,7 @@ def report(asmt: date, sub: pd.DataFrame, comp: pd.DataFrame) -> str:
         ]
         + ["", "Subtests:"]
         + [
-            f"- {n}: {age(sub['age_eq'][i])} J ({desc_sca(sub['scaled'][i], True)})"
+            f"- {n}: {age(sub['age_eq'][i])} J ({desc_sca(sub['scaled'][i], True)})"  # type: ignore
             for n, i in [
                 ("Augen-Hand-Koordination", 0),
                 ("Abzeichnen", 1),

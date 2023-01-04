@@ -16,7 +16,6 @@ dagger.#Plan & {
 		"dug": read: {
 			contents: dagger.#FS
 			exclude: [
-				".mypy_cache",
 				".pytest_cache",
 				".streamlit",
 				"venv",
@@ -25,7 +24,6 @@ dagger.#Plan & {
 		"genetic": read: {
 			contents: dagger.#FS
 			exclude: [
-				".mypy_cache",
 				".pytest_cache",
 				"venv",
 			]
@@ -125,7 +123,7 @@ dagger.#Plan & {
 					docker.#Run & {
 						command: {
 							name: "pip"
-							args: ["install", "black", "-r", "requirements.txt"]
+							args: ["install", "-r", "requirements.txt"]
 						}
 					},
 					docker.#Copy & {
@@ -139,7 +137,7 @@ dagger.#Plan & {
 			}
 			lint: bash.#Run & {
 				input: img.output
-				script: contents: "pylint --rcfile=.pylintrc $(find . -type f -name '*.py') && mypy asmt"
+				script: contents: "pylint --rcfile=.pylintrc $(find . -type f -name '*.py') && pyright ."
 			}
 			test: bash.#Run & {
 				input: img.output
