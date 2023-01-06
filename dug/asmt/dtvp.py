@@ -101,7 +101,7 @@ def to_pr(p: int) -> str:
 
 def to_age(a: str) -> str:
     if a == "3;11":
-        return "<4-0"
+        return "<4;0"
     if a == "13;0":
         return ">12;9"
     return a
