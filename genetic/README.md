@@ -8,7 +8,7 @@ The first generation is obtained by randomising every individual, where each ind
 
 Crossover consists of the combination of any 2 individuals of a given generation, and it works on combining the good genes already in the population. Individuals are picked to be parents based on their fitness (higher is better). Mutation changes genes randomly of a given individual, and is a method used to bring new genes into the population.
 
-## Input Parameters
+## Parameters
 
 - `Target Set of Genes`, genes that at least one element of the population should obtain;
 - `Population Size`, number of elements of the population;

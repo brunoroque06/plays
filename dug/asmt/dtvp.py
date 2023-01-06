@@ -129,6 +129,7 @@ def process(
         columns=["id", "label", "raw", "age_eq", "percentile", "scaled", "descriptive"],
     ).set_index("id")
 
+    # pylint: disable=unsupported-assignment-operation,unsubscriptable-object
     comps = [
         (
             "vmi",
@@ -143,7 +144,7 @@ def process(
         (
             "gvp",
             "General Visual Perception",
-            sub["scaled"].sum(),  # pylint: disable=unsubscriptable-object
+            sub["scaled"].sum(),
         ),
     ]
 
@@ -161,7 +162,14 @@ def process(
         columns=["id", "sum_scaled", "percentile", "descriptive", "index"],
     ).set_index("id")
 
-    return sub.set_index("label"), comp, report(asmt, sub, comp)
+    rep = report(asmt, sub, comp)
+
+    sub["age_eq"] = sub["age_eq"].apply(to_age)
+    sub["percentile"] = sub["percentile"].apply(to_pr)
+
+    comp["percentile"] = comp["percentile"].apply(to_pr)
+
+    return sub.set_index("label"), comp, rep
 
 
 def report(asmt: date, sub: pd.DataFrame, comp: pd.DataFrame) -> str:
