@@ -91,9 +91,25 @@ def desc_index(i: int, de: bool = False) -> str:
     return "Weit über der Norm" if de else "Very Superior"
 
 
+def to_pr(p: int) -> str:
+    if p == 0:
+        return "<1"
+    if p == 100:
+        return ">99"
+    return str(p)
+
+
+def to_age(a: str) -> str:
+    if a == "3;11":
+        return "<4-0"
+    if a == "13;0":
+        return ">12;9"
+    return a
+
+
 def process(
-    age: relativedelta, raw: dict[str, int]
-) -> tuple[pd.DataFrame, pd.DataFrame, typing.Callable[[date], str]]:
+    age: relativedelta, raw: dict[str, int], asmt: date = date.today()
+) -> tuple[pd.DataFrame, pd.DataFrame, str]:
     ra, rs, sp = load()
 
     tests = get_tests()
@@ -145,24 +161,17 @@ def process(
         columns=["id", "sum_scaled", "percentile", "descriptive", "index"],
     ).set_index("id")
 
-    return sub.set_index("label"), comp, lambda asmt: report(asmt, sub, comp)
+    return sub.set_index("label"), comp, report(asmt, sub, comp)
 
 
 def report(asmt: date, sub: pd.DataFrame, comp: pd.DataFrame) -> str:
-    def pr(p: int) -> str:
-        return str(p) if p != 0 else "<1"
-
-    def age(a: str) -> str:
-        return "<4-0" if a == "3;11" else a
-
     return "\n".join(
         [
-            "Developmental Test of Visual Perception (DTVP-3)",
-            f"{asmt.day}.{asmt.month}.{asmt.year}",
+            f"Developmental Test of Visual Perception (DTVP-3) - {asmt.day}.{asmt.month}.{asmt.year}",
             "",
         ]
         + [
-            f"- {n}: PR {pr(comp['percentile'][i])} - {desc_index(comp['index'][i], True)}"  # type: ignore
+            f"- {n}: PR {to_pr(comp['percentile'][i])} - {desc_index(comp['index'][i], True)}"  # type: ignore
             for n, i in [
                 ("Visuomotorische Integration", 0),
                 ("Visuelle Wahrnehmung mit reduzierter motorischer Reaktion", 1),
@@ -171,7 +180,7 @@ def report(asmt: date, sub: pd.DataFrame, comp: pd.DataFrame) -> str:
         ]
         + ["", "Subtests:"]
         + [
-            f"- {n}: {age(sub['age_eq'][i])} J ({desc_sca(sub['scaled'][i], True)})"  # type: ignore
+            f"- {n}: {to_age(sub['age_eq'][i])} J ({desc_sca(sub['scaled'][i], True)})"  # type: ignore
             for n, i in [
                 ("Augen-Hand-Koordination", 0),
                 ("Abzeichnen", 1),

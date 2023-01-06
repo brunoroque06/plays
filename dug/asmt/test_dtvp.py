@@ -1,5 +1,3 @@
-from datetime import date
-
 from dateutil.relativedelta import relativedelta
 
 from asmt import dtvp
@@ -26,4 +24,4 @@ def test_dtvp():
     assert (comp["descriptive"] == ["Very Poor", "Average", "Below Average"]).all()
     assert (comp["index"] == [61, 100, 84]).all()
 
-    assert len(rep(date.today())) > 0
+    assert len(rep) > 0

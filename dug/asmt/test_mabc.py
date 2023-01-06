@@ -121,10 +121,12 @@ from asmt import mabc
     ],
 )
 def test_mabc(age, raw, comp_res, agg_res):
-    comp, agg, _ = mabc.process(age, raw)
+    comp, agg, rep = mabc.process(age, raw)
 
     for k, v in comp_res:
         assert comp.loc[k].standard == v
 
     for k, v in agg_res:
         assert agg.loc[k].standard == v
+
+    assert len(rep) > 0

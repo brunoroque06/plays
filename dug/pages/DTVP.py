@@ -22,8 +22,8 @@ with st.form("dtvp"):
 if submit:
     with st.spinner("Processing..."):
         time.sleep(0.2)  # UX? Oo
-        sub, comp, rep = dtvp.process(age, raw)
+        sub, comp, rep = dtvp.process(age, raw, asmt_date)
 
-    st.code(rep(asmt_date), language="markdown")
+    st.code(rep, language="markdown")
     st.table(sub.style.set_caption("Subtest"))
     st.table(comp.style.set_caption("Composite"))  # pylint: disable=no-member

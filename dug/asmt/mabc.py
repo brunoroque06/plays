@@ -106,10 +106,11 @@ def rank(std: int) -> Rank:
 
 
 def process(
-    age: relativedelta, raw: dict[str, int]
-) -> tuple[
-    pd.DataFrame, pd.DataFrame, typing.Callable[[date, relativedelta, str], str]
-]:
+    age: relativedelta,
+    raw: dict[str, int],
+    asmt: date = date.today(),
+    hand: str = "Right",
+) -> tuple[pd.DataFrame, pd.DataFrame, str]:
     map_i, map_t = load()
 
     comp = process_comp(map_i, age.years, raw)
@@ -136,7 +137,7 @@ def process(
         .astype({"raw": int, "standard": int})
     )
 
-    return comp_res, agg_res, lambda asmt, age, hand: report(asmt, age, hand, agg_res)
+    return comp_res, agg_res, report(asmt, age, hand, agg_res)
 
 
 def report(asmt: date, age: relativedelta, hand: str, agg: pd.DataFrame) -> str:
@@ -155,11 +156,9 @@ def report(asmt: date, age: relativedelta, hand: str, agg: pd.DataFrame) -> str:
             return "kritisch"
         return "therapiebedürftig"
 
-    # pylint: disable=line-too-long
     return "\n".join(
         [
-            "Movement Assessment Battery for Children 2nd Edition (M-ABC 2)",
-            f"{asmt.day}.{asmt.month}.{asmt.year}",
+            f"Movement Assessment Battery for Children 2nd Edition (M-ABC 2) - {asmt.day}.{asmt.month}.{asmt.year}",
             f"Protokollbogen Altersgruppe: {group} Jahre",
             "",
             f"Handgeschicklichkeit: PR {agg.loc['hg']['percentile']} - {rank_str(agg.loc['hg']['standard'])}",

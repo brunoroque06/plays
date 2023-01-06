@@ -35,10 +35,10 @@ with st.form(key="mabc"):
 
     submit = st.form_submit_button(type="primary")
 
-if submit:
+if submit and isinstance(hand, str):
     with st.spinner("Processing..."):
         time.sleep(0.2)  # UX? Oo
-        comp, agg, rep = mabc.process(age, raw)
+        comp, agg, rep = mabc.process(age, raw, asmt=asmt_date, hand=hand)
 
     def color_row(row):
         std = row["standard"]
@@ -55,7 +55,7 @@ if submit:
     if not isinstance(hand, str):
         raise TypeError("not str")
 
-    st.code(rep(asmt_date, age, hand), language="markdown")
+    st.code(rep, language="markdown")
 
     for c in [
         ("Handgeschicklichkeit", "hg"),
