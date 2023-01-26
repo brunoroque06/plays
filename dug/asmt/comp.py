@@ -4,7 +4,9 @@ import streamlit as st
 from dateutil.relativedelta import relativedelta
 
 
-def dates(min_years: int, max_years: int):
+def dates(
+    min_years: int, max_years: int
+) -> tuple[datetime.date, datetime.date, relativedelta, str]:
     col1, col2 = st.columns(2)
 
     today = datetime.date.today()
