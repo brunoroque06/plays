@@ -6,10 +6,10 @@ from asmt import spm
 
 st.subheader("SPM")
 
+cols = st.columns(2)
 today = datetime.date.today()
-date = st.date_input("Assessment", today, max_value=today)
-
-form = st.selectbox("Form", ("Classroom", "Home"))
+date = cols[0].date_input("Assessment", today, max_value=today)
+form = cols[1].selectbox("Form", ("Classroom", "Home"))
 
 scores = spm.get_scores()
 

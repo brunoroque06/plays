@@ -1,11 +1,13 @@
 import typing
 
 import pandas as pd
+import streamlit as st
 from dateutil.relativedelta import relativedelta
 
 from asmt import time
 
 
+@st.cache
 @typing.no_type_check
 def load() -> tuple[pd.DataFrame, pd.DataFrame]:
     std = pd.read_csv("data/dtvpa-std.csv")

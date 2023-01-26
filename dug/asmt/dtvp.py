@@ -2,11 +2,13 @@ import typing
 from datetime import date
 
 import pandas as pd
+import streamlit as st
 from dateutil.relativedelta import relativedelta
 
 from asmt import time
 
 
+@st.cache
 @typing.no_type_check
 def load() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     ra = pd.read_csv("data/dtvp-raw-ageeq.csv")
