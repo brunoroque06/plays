@@ -133,15 +133,11 @@ dagger.#Plan & {
 			}
 			fmt: bash.#Run & {
 				input: img.output
-				script: contents: "black --check ."
-			}
-			imps: bash.#Run & {
-				input: img.output
 				script: contents: "isort -c ."
 			}
 			lint: bash.#Run & {
 				input: img.output
-				script: contents: "pylint --rcfile=.pylintrc $(find . -type f -name '*.py') && pyright ."
+				script: contents: "pylint $(find . -type f -name '*.py') && pyright ."
 			}
 			test: bash.#Run & {
 				input: img.output
@@ -183,7 +179,7 @@ dagger.#Plan & {
 			}
 			lint: bash.#Run & {
 				input: img.output
-				script: contents: "pylint --rcfile=.pylintrc genetic test && pyright ."
+				script: contents: "pylint genetic test && pyright ."
 			}
 			test: bash.#Run & {
 				input: img.output

@@ -1,8 +1,8 @@
-[MASTER]
-disable=
-    invalid-name,
-    line-too-long,
+[tool.pylint.MASTER]
+disable = """
     missing-class-docstring,
     missing-function-docstring,
     missing-module-docstring,
-    too-many-return-statements,
+    too-many-arguments,
+    too-few-public-methods,
+"""
