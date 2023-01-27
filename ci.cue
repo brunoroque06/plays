@@ -135,6 +135,10 @@ dagger.#Plan & {
 				input: img.output
 				script: contents: "black --check ."
 			}
+			imps: bash.#Run & {
+				input: img.output
+				script: contents: "isort -c ."
+			}
 			lint: bash.#Run & {
 				input: img.output
 				script: contents: "pylint --rcfile=.pylintrc $(find . -type f -name '*.py') && pyright ."
