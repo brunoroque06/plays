@@ -59,7 +59,7 @@ from asmt import spm
 def test_spm(form, raw, ts):
     today = datetime.date.today()
 
-    res, rep = spm.process(today, form, raw)
+    res, rep = spm.process(today, form, "t", raw)
 
     for k, v in ts.items():
         assert res.loc[k].t == v

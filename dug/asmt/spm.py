@@ -7,14 +7,14 @@ import streamlit as st
 
 def get_scores() -> list[tuple[str, str]]:
     return [
-        ("soc", "SOC"),
-        ("vis", "VIS"),
-        ("hea", "HEA"),
-        ("tou", "TOU"),
-        ("items", "Items"),
-        ("bod", "BOD"),
-        ("bal", "BAL"),
-        ("pla", "PLA"),
+        ("soc", "Social"),
+        ("vis", "Vision"),
+        ("hea", "Hearing"),
+        ("tou", "Touch"),
+        ("items", "Taste and Smell"),
+        ("bod", "Body Awareness"),
+        ("bal", "Balance and Motion"),
+        ("pla", "Planning and Ideas"),
     ]
 
 
@@ -49,15 +49,15 @@ def inter(t: int) -> str:
     return "Definite Dysfunction"
 
 
-def report(date: datetime.date, form: str, res: pd.DataFrame) -> str:
+def report(date: datetime.date, form: str, person: str, res: pd.DataFrame) -> str:
     header = [
         "Sensory Processing Measure (SPM): Classroom Form",
-        f"Fragebogen zur sensorischen Verarbeitung ausgefüllt von Kinders LP ({date.month}.{date.year})",
+        f"Fragebogen zur sensorischen Verarbeitung ausgefüllt von Kinders {person} ({date.month}.{date.year})",
     ]
     if form == "home":
         header = [
             "Sensory Processing Measure (SPM): Home Form",
-            f"Elternfragebogen zur sensorischen Verarbeitung ausgefüllt von Km ({date.month}.{date.year})",
+            f"Elternfragebogen zur sensorischen Verarbeitung ausgefüllt von {person} ({date.month}.{date.year})",
             "Die Fähigkeit, sensorische Reize zu verarbeiten, beeinflusst die motorischen und selbstregulativen Fähigkeiten eines Kindes sowie sein soziales Verhalten.",
         ]
 
@@ -73,12 +73,16 @@ def report(date: datetime.date, form: str, res: pd.DataFrame) -> str:
     ]
 
     return "\n".join(
-        header + [f"{d}: \"{res.loc[k]['interpretive']}\"" for k, d in scores]
+        header
+        + [
+            f"{d}: PR {res.loc[k]['percentile']} - \"{res.loc[k]['interpretive']}\""
+            for k, d in scores
+        ]
     )
 
 
 def process(
-    date: datetime.date, form: str, raw: dict[str, int]
+    date: datetime.date, form: str, person: str, raw: dict[str, int]
 ) -> tuple[pd.DataFrame, str]:
     data = load()
 
@@ -89,17 +93,23 @@ def process(
     )
     del raw["items"]
 
+    def per(p: int) -> str:
+        if p == 100:
+            return ">99"
+        return str(p)
+
     res = pd.DataFrame(
         [
             [
                 k,
                 v,
                 data.loc[form].loc[k].loc[v]["t"],
+                per(data.loc[form].loc[k].loc[v]["percentile"]),
                 inter(data.loc[form].loc[k].loc[v]["t"]),
             ]
             for k, v in raw.items()
         ],
-        columns=["id", "raw", "t", "interpretive"],
+        columns=["id", "raw", "t", "percentile", "interpretive"],
     ).set_index("id")
 
-    return res, report(date, form, res)
+    return res, report(date, form, person, res)

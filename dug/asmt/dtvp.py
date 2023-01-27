@@ -181,7 +181,7 @@ def report(asmt: date, sub: pd.DataFrame, comp: pd.DataFrame) -> str:
             "",
         ]
         + [
-            f"- {n}: PR {to_pr(comp['percentile'][i])} - {desc_index(comp['index'][i], True)}"  # type: ignore
+            f"{n}: PR {to_pr(comp['percentile'][i])} - {desc_index(comp['index'][i], True)}"  # type: ignore
             for n, i in [
                 ("Visuomotorische Integration", 0),
                 ("Visuelle Wahrnehmung mit reduzierter motorischer Reaktion", 1),
@@ -190,7 +190,7 @@ def report(asmt: date, sub: pd.DataFrame, comp: pd.DataFrame) -> str:
         ]
         + ["", "Subtests:"]
         + [
-            f"- {n}: {to_age(sub['age_eq'][i])} J ({desc_sca(sub['scaled'][i], True)})"  # type: ignore
+            f"{n}: {to_age(sub['age_eq'][i])} J ({desc_sca(sub['scaled'][i], True)})"  # type: ignore
             for n, i in [
                 ("Augen-Hand-Koordination", 0),
                 ("Abzeichnen", 1),
