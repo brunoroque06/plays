@@ -133,6 +133,10 @@ dagger.#Plan & {
 			}
 			fmt: bash.#Run & {
 				input: img.output
+				script: contents: "black --check ."
+			}
+			imp: bash.#Run & {
+				input: img.output
 				script: contents: "isort -c ."
 			}
 			lint: bash.#Run & {
