@@ -16,9 +16,10 @@ tests = dtvpa.get_tests()
 for k, v in tests.items():
     raw[k] = st.number_input(v, step=1)
 
-sub, comp = dtvpa.process(age, raw)
+sub, comp, rep = dtvpa.process(asmt_date, age, raw)
 
 st.markdown("---")
 
+st.code(rep, language="markdown")
 st.table(sub.style.set_caption("Subtest"))
 st.table(comp.style.set_caption("Composite"))  # pylint: disable=no-member

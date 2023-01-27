@@ -1,10 +1,11 @@
+import datetime
 import typing
 
 import pandas as pd
 import streamlit as st
 from dateutil.relativedelta import relativedelta
 
-from asmt import time
+from asmt import dtvp, time
 
 
 @st.cache
@@ -43,20 +44,59 @@ def get_tests():
     }
 
 
+def report(date: datetime.date, sub: pd.DataFrame, comp: pd.DataFrame) -> str:
+    return "\n".join(
+        [
+            f"Developmental Test of Visual Perception - Adolescent and Adult (DTVP-A) - ({date.day}.{date.month}.{date.year})",
+            "",
+        ]
+        + [
+            f"{n}: PR {comp.loc[i]['%ile']} - {dtvp.desc_index(comp.loc[i]['index'], True)}"  # type: ignore
+            for n, i in [
+                ("Visuomotorische Integration", "General Visual Perception (GVPI)"),
+                (
+                    "Motorik-Reduzierte Wahrnehmung",
+                    "Motor-Reduced Visual Perception (MRPI)",
+                ),
+                ("Globale Visuelle Wahrnehmung", "Visual-Motor Integration (VMII)"),
+            ]
+        ]
+        + [
+            "",
+            "Subtests:",
+        ]
+        + [
+            f"{n}: PR {sub.loc[i]['%ile']} - {dtvp.desc_sca(sub.loc[i]['standard'], True)}"  # type: ignore
+            for n, i in [
+                ("Abzeichnen", "co"),
+                ("Figur-Grund", "fg"),
+                ("Visuomotorisches Suchen", "vse"),
+                ("Gesaltschliessen", "vc"),
+                ("Visuomotorische Geschwindigkeit", "vsp"),
+                ("Formkonstanz", "fc"),
+            ]
+        ]
+    )
+
+
 def process(
-    age: relativedelta, raw: dict[str, int]
-) -> tuple[pd.DataFrame, pd.DataFrame]:
+    date: datetime.date, age: relativedelta, raw: dict[str, int]
+) -> tuple[pd.DataFrame, pd.DataFrame, str]:
     std, sums = load()
 
     tests = get_tests()
 
     def get_std(k: str, r: int):
         l = std.loc[k].loc[time.delta_idx(age)].loc[r]
-        return [l["percentile"], l["standard"]]
+        return [
+            dtvp.to_pr(l["percentile"]),
+            l["standard"],
+            dtvp.desc_sca(l["standard"]),
+        ]
 
     sub = pd.DataFrame(
         [[k, v, raw[k]] + get_std(k, raw[k]) for k, v in tests.items()],
-        columns=["id", "label", "raw", "%ile", "standard"],
+        columns=["id", "label", "raw", "%ile", "standard", "description"],
     ).set_index("id")
 
     comps = [
@@ -90,11 +130,12 @@ def process(
                 l,
                 v,
                 sums.loc[s].loc[v]["index"],
-                sums.loc[s].loc[v]["percentile"],
+                dtvp.to_pr(sums.loc[s].loc[v]["percentile"]),
+                dtvp.desc_index(sums.loc[s].loc[v]["index"]),
             ]
             for k, l, v, s in comps
         ],
-        columns=["id", "sum_standard", "index", "%ile"],
+        columns=["id", "sum_standard", "index", "%ile", "description"],
     ).set_index("id")
 
-    return sub.set_index("label"), comp
+    return sub.set_index("label"), comp, report(date, sub, comp)
