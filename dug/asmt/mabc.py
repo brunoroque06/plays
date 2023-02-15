@@ -8,7 +8,7 @@ import streamlit as st
 from dateutil.relativedelta import relativedelta
 
 
-@st.cache
+@st.cache_data
 @typing.no_type_check
 def load() -> tuple[pd.DataFrame, pd.DataFrame]:
     map_i = pd.read_csv("data/mabc-i.csv")

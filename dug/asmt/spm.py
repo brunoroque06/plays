@@ -18,7 +18,7 @@ def get_scores() -> list[tuple[str, str]]:
     ]
 
 
-@st.cache
+@st.cache_data
 @typing.no_type_check
 def load() -> pd.DataFrame:
     clroom = pd.read_csv("data/spm-classroom.csv")

@@ -1,4 +1,4 @@
 black==23.1.0
-pylint==2.16.1
-pyright==1.1.292
+pylint==2.16.2
+pyright==1.1.294
 pytest==7.2.1
