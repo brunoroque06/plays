@@ -17,7 +17,7 @@ def test_crossover():
         return True
 
     genes = genetics.crossover(
-        rnd_bool=random_bool,
+        rand_bool=random_bool,
         parents=("abc", "def"),
     )
 
@@ -38,8 +38,8 @@ def test_mutate():
         return "_"
 
     genes = genetics.mutate(
-        rnd_int=random_int,
-        rnd_char=char,
+        rand_int=random_int,
+        rand_char=char,
         mutation_rate=0.10,
         genes="abcde",
     )

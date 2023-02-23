@@ -1,6 +1,6 @@
 import functools
-import typing
 from dataclasses import dataclass
+from typing import Callable
 
 from genetic import genetics, individual, rand
 
@@ -17,11 +17,11 @@ class Stats:
 class Population:
     stats: Stats
     gen: int
-    inds: typing.List[individual.Individual]
+    inds: list[individual.Individual]
     max_fitness: float
 
 
-def max_fitness(inds: typing.List[individual.Individual]) -> float:
+def max_fitness(inds: list[individual.Individual]) -> float:
     return functools.reduce(
         lambda a, b: a if a > b else a,
         map(lambda i: i.fitness, inds),
@@ -29,7 +29,7 @@ def max_fitness(inds: typing.List[individual.Individual]) -> float:
 
 
 def create(
-    rnd_str: typing.Callable[[], str],
+    rand_str: Callable[[], str],
     size: int,
     max_gen: int,
     elitism: float,
@@ -42,7 +42,7 @@ def create(
         max_gen=max_gen,
         target=target,
     )
-    genes = [rnd_str() for _ in range(0, size)]
+    genes = [rand_str() for _ in range(0, size)]
     inds = [
         individual.Individual(genes=g, fitness=genetics.calc_fitness(g, target))
         for g in genes
@@ -51,20 +51,20 @@ def create(
 
 
 def find_parents(
-    inds: typing.List[individual.Individual],
-    pool: typing.List[int],
-    rnd_int: typing.Callable[[int, int], int] = rand.integer,
-) -> typing.Tuple[str, str]:
-    par_x = pool[rnd_int(0, len(pool) - 1)]
-    par_y = pool[rnd_int(0, len(pool) - 1)]
+    inds: list[individual.Individual],
+    pool: list[int],
+    rand_int: Callable[[int, int], int] = rand.integer,
+) -> tuple[str, str]:
+    par_x = pool[rand_int(0, len(pool) - 1)]
+    par_y = pool[rand_int(0, len(pool) - 1)]
     return inds[par_x].genes, inds[par_y].genes
 
 
 def next_generation(
-    rnd_char: typing.Callable[[], str],
+    rand_char: Callable[[], str],
     stats: Stats,
-    inds: typing.List[individual.Individual],
-) -> typing.List[individual.Individual]:
+    inds: list[individual.Individual],
+) -> list[individual.Individual]:
     fits = list(map(lambda ind: ind.fitness, inds))
     pool = individual.mating_pool(fits=fits)
     best, snd = individual.top_individuals(fits=fits)
@@ -78,7 +78,7 @@ def next_generation(
         )
         child = genetics.crossover(parents=parents)
         mutated_child = genetics.mutate(
-            rnd_char=rnd_char,
+            rand_char=rand_char,
             mutation_rate=stats.mutation_rate,
             genes=child,
         )
@@ -104,11 +104,11 @@ def print_stats(pop: Population):
 
 
 def resolve(
-    rnd_char: typing.Callable[[], str],
+    rand_char: Callable[[], str],
     pop: Population,
 ) -> Population:
     inds = next_generation(
-        rnd_char=rnd_char,
+        rand_char=rand_char,
         stats=pop.stats,
         inds=pop.inds,
     )
@@ -120,6 +120,6 @@ def resolve(
         print_stats(pop)
 
     if pop.max_fitness != 1 and pop.gen != pop.stats.max_gen:
-        pop = resolve(rnd_char, pop)
+        pop = resolve(rand_char, pop)
 
     return pop

@@ -3,13 +3,13 @@ from genetic import population
 
 
 def test_create_population():
-    def random_str():
+    def rand_str():
         return "a___"
 
     pop = population.create(
         target="algo",
         max_gen=10,
-        rnd_str=random_str,
+        rand_str=rand_str,
         elitism=0.25,
         mutation_rate=0.01,
         size=2,
@@ -23,7 +23,7 @@ def test_create_population():
 def test_find_parents():
     par = 0
 
-    def random_int(_, __):
+    def rand_int(_, __):
         nonlocal par
         par += 1
         return 0 if par < 2 else 1
@@ -34,7 +34,7 @@ def test_find_parents():
             individual.Individual(fitness=1, genes="b"),
         ],
         pool=[0, 1, 2, 3],
-        rnd_int=random_int,
+        rand_int=rand_int,
     )
 
     assert par_x == "a"

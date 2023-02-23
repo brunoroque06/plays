@@ -1,5 +1,4 @@
 import heapq
-import typing
 from dataclasses import dataclass
 
 
@@ -9,13 +8,13 @@ class Individual:
     fitness: float
 
 
-def top_individuals(fits: typing.List[float]) -> typing.Tuple[int, int]:
+def top_individuals(fits: list[float]) -> tuple[int, int]:
     ids = heapq.nlargest(2, range(len(fits)), key=fits.__getitem__)
     return ids[0], ids[1]
 
 
-def mating_pool(fits: typing.List[float]) -> typing.List[int]:
-    pool: typing.List[int] = []
+def mating_pool(fits: list[float]) -> list[int]:
+    pool = []
     fit_sum = sum(fits)
 
     for idx, fit in enumerate(fits, start=0):

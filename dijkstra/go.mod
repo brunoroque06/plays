@@ -1,5 +1,5 @@
 module dijkstra
 
-go 1.19
+go 1.20
 
-require golang.org/x/exp v0.0.0-20230202163644-54bba9f4231b
+require golang.org/x/exp v0.0.0-20230213192124-5e25df0256eb

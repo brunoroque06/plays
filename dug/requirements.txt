@@ -6,6 +6,6 @@ pandas==1.5.3
 pylint==2.16.2
 pytest==7.2.1
 python-dateutil==2.8.2
-pyright==1.1.294
+pyright==1.1.295
 streamlit==1.18.1
-types-python-dateutil==2.8.19.7
+types-python-dateutil==2.8.19.8
