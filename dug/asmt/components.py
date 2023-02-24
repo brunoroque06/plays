@@ -1,7 +1,10 @@
 import datetime
+from typing import Optional, Union
 
+import pandas as pd
 import streamlit as st
 from dateutil.relativedelta import relativedelta
+from pandas.io.formats.style import Styler
 
 
 def dates(
@@ -30,3 +33,31 @@ def dates(
     age_disp = f"Age: {age.years} years, {age.months} months, {age.days} days"
 
     return asmt, birth, age, age_disp
+
+
+def table(dt: Union[pd.DataFrame, Styler], title: Optional[str] = None):
+    if title:
+        st.text(title)
+    st.dataframe(dt, use_container_width=True)
+
+
+def dtvp(title: str, min_age: int, max_age: int, mod):
+    st.subheader(title)
+
+    asmt_date, _, age, age_disp = dates(min_age, max_age)
+
+    st.info(age_disp)
+
+    raw = {}
+    tests = mod.get_tests()
+
+    for k, v in tests.items():
+        raw[k] = st.number_input(v, step=1)
+
+    sub, comp, rep = mod.process(age, raw, asmt_date)
+
+    st.markdown("---")
+
+    st.code(rep, language="markdown")
+    table(sub, "Subtest")
+    table(comp, "Composite")

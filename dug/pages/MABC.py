@@ -1,10 +1,10 @@
 import streamlit as st
 
-from asmt import comp, mabc
+from asmt import components, mabc
 
 st.subheader("MABC")
 
-asmt_date, birth, age, age_disp = comp.dates(5, 16)
+asmt_date, birth, age, age_disp = components.dates(5, 16)
 
 # st.color_picker(..., disabled=True, label_visibility="collapsed") is an alternative
 if age.years < 7:
@@ -58,14 +58,14 @@ for c in [
     ("Ballfertigkeiten", "bf"),
     ("Balance", "bl"),
 ]:
-    st.table(
-        comp.filter(like=c[1], axis=0).style.apply(color_row, axis=1).set_caption(c[0])
+    components.table(
+        comp.filter(like=c[1], axis=0).style.apply(color_row, axis=1), c[0]
     )
 
 order = {"hg": 0, "bf": 1, "bl": 2, "total": 4}
-st.table(
+components.table(
     agg.sort_values(by=["id"], key=lambda x: x.map(order))
     .style.apply(color_row, axis=1)
-    .set_caption("Aggregated")
-    .format({"percentile": "{:.1f}"})
+    .format({"percentile": "{:.1f}"}),
+    "Aggregated",
 )

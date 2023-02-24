@@ -1,25 +1,3 @@
-# pylint:disable=duplicate-code
-# Maybe create a dtvp component?
-import streamlit as st
+from asmt import components, dtvpa
 
-from asmt import comp, dtvpa
-
-st.subheader("DTVPA")
-
-asmt_date, birth, age, age_disp = comp.dates(11, 18)
-
-st.info(age_disp)
-
-raw = {}
-tests = dtvpa.get_tests()
-
-for k, v in tests.items():
-    raw[k] = st.number_input(v, step=1)
-
-sub, comp, rep = dtvpa.process(asmt_date, age, raw)
-
-st.markdown("---")
-
-st.code(rep, language="markdown")
-st.table(sub.style.set_caption("Subtest"))
-st.table(comp.style.set_caption("Composite"))  # pylint: disable=no-member
+components.dtvp("DTVPA", 11, 18, dtvpa)

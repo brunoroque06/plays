@@ -1,5 +1,3 @@
-import datetime
-
 from dateutil.relativedelta import relativedelta
 
 from asmt import dtvpa
@@ -7,7 +5,6 @@ from asmt import dtvpa
 
 def test_dtvpa():
     sub, comp, rep = dtvpa.process(
-        datetime.date.today(),
         relativedelta(years=12),
         {"co": 13, "fg": 4, "vse": 60, "vc": 12, "vsp": 29, "fc": 6},
     )

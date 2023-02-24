@@ -1,5 +1,6 @@
 import datetime
 import typing
+from datetime import date
 
 import pandas as pd
 import streamlit as st
@@ -44,10 +45,10 @@ def get_tests():
     }
 
 
-def report(date: datetime.date, sub: pd.DataFrame, comp: pd.DataFrame) -> str:
+def report(asmt: datetime.date, sub: pd.DataFrame, comp: pd.DataFrame) -> str:
     return "\n".join(
         [
-            f"Developmental Test of Visual Perception - Adolescent and Adult (DTVP-A) - ({date.day}.{date.month}.{date.year})",
+            f"Developmental Test of Visual Perception - Adolescent and Adult (DTVP-A) - ({asmt.day}.{asmt.month}.{asmt.year})",
             "",
         ]
         + [
@@ -80,7 +81,7 @@ def report(date: datetime.date, sub: pd.DataFrame, comp: pd.DataFrame) -> str:
 
 
 def process(
-    date: datetime.date, age: relativedelta, raw: dict[str, int]
+    age: relativedelta, raw: dict[str, int], asmt: date = date.today()
 ) -> tuple[pd.DataFrame, pd.DataFrame, str]:
     std, sums = load()
 
@@ -138,4 +139,4 @@ def process(
         columns=["id", "sum_standard", "index", "%ile", "description"],
     ).set_index("id")
 
-    return sub.set_index("label"), comp, report(date, sub, comp)
+    return sub.set_index("label"), comp, report(asmt, sub, comp)

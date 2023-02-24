@@ -2,7 +2,7 @@ import datetime
 
 import streamlit as st
 
-from asmt import spm
+from asmt import components, spm
 
 st.subheader("SPM")
 
@@ -38,4 +38,4 @@ st.markdown("---")
 
 st.code(rep, language="markdown")
 
-st.table(res)
+components.table(res)
