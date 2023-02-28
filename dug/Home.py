@@ -6,6 +6,6 @@ st.set_page_config(
     page_title="Dug",
 )
 
-st.title("🐶 Dug")
+st.title("Dug")
 
 st.markdown("Please check the pages on the sidebar.")
