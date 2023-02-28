@@ -1,11 +1,12 @@
 import glob
 import os
 from os import path
+from typing import Iterable
 
 import pytest
 
 
-def list_pages() -> list[str]:
+def list_pages() -> Iterable[str]:
     for f in glob.glob(path.join("pages", "*.py")):
         if "test_" in f:
             continue

@@ -1,11 +1,18 @@
+import pytest
 from dateutil.relativedelta import relativedelta
 
 from asmt import time
 
 
-def test_delta_idx():
-    assert time.delta_idx(relativedelta(years=4, months=2)) == 4.02
-    assert time.delta_idx(relativedelta(years=4, months=10)) == 4.10
-    assert time.delta_idx(relativedelta(years=4, months=12)) == 5.0
-    assert time.delta_idx(relativedelta(years=4, months=11), inc=True) == 5.0
-    assert time.delta_idx(relativedelta(years=4, months=13)) == 5.01
+@pytest.mark.parametrize(
+    "year,month,inc,res",
+    [
+        (4, 2, False, 4.02),
+        (4, 10, False, 4.1),
+        (4, 12, False, 5),
+        (4, 11, True, 5),
+        (4, 13, False, 5.01),
+    ],
+)
+def test_delta_idx(year: int, month: int, inc: bool, res: float):
+    assert time.delta_idx(relativedelta(years=year, months=month), inc=inc) == res
