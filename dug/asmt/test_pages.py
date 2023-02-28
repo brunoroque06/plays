@@ -6,8 +6,7 @@ import pytest
 
 
 def list_pages() -> list[str]:
-    dire = path.dirname(path.relpath(__file__, start=os.getcwd()))
-    for f in glob.glob(path.join(dire, "*.py")):
+    for f in glob.glob(path.join("pages", "*.py")):
         if "test_" in f:
             continue
         yield f.split(".")[0].replace(os.sep, ".")
