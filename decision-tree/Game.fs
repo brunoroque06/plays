@@ -4,9 +4,9 @@ open Board
 
 type Position =
     | Playing
-    | CrossWon
+    | XWon
     | Draw
-    | NoughtWon
+    | OWon
 
 let private samePiece board combs =
     Array.map (Array.map (getPiece board)) combs
@@ -31,8 +31,8 @@ let evaluatePosition board =
     match piece with
     | Some p ->
         match p with
-        | Some X -> CrossWon
-        | _ -> NoughtWon
+        | Some X -> XWon
+        | _ -> OWon
     | _ ->
         if (isBoardFull board) then
             Draw

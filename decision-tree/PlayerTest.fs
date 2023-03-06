@@ -1,30 +1,30 @@
-module PlayerTest
+module PlayerFact
 
 open Board
-open NUnit.Framework
 open Player
+open Xunit
 
-[<Test>]
+[<Fact>]
 let pickDummyMoveWithEmptyBoard () =
     let board = createBoard
     let rand _ = 0
     let move = pickDummyMove rand Piece.O board
-    Assert.AreEqual(0, move)
+    Assert.Equal(0, move)
 
-[<Test>]
+[<Fact>]
 let pickDummyMoveWithNonEmptyBoard () =
     let board = List.fold (playMove Piece.X) createBoard [ 0..3 ]
     let rand _ = 0
     let move = pickDummyMove rand Piece.O board
-    Assert.AreEqual(4, move)
+    Assert.Equal(4, move)
 
-[<Test>]
+[<Fact>]
 let decisionTreePicksCenterMoveWithEmptyBoard () =
     let board = createBoard
     let move = pickDecisionTreeMove 1 Piece.O board
-    Assert.AreEqual(4, move)
+    Assert.Equal(4, move)
 
-[<Test>]
+[<Fact>]
 let decisionTreePicksWinningMoves () =
     let board =
         createBoard
@@ -32,18 +32,18 @@ let decisionTreePicksWinningMoves () =
         |> fun b -> playMove Piece.O b 1
 
     let move = pickDecisionTreeMove 5 Piece.X board
-    Assert.AreEqual(4, move)
+    Assert.Equal(4, move)
 
     let board' =
         playMove Piece.X board move
         |> fun b -> playMove Piece.O b 6
 
     let move = pickDecisionTreeMove 3 Piece.X board'
-    Assert.AreEqual(5, move)
+    Assert.Equal(5, move)
 
-[<Test>]
+[<Fact>]
 let decisionTreePicksDefensiveMove () =
     let board = createBoard |> fun b -> playMove Piece.X b 4
 
     let move = pickDecisionTreeMove 6 Piece.O board
-    Assert.AreEqual(0, move)
+    Assert.Equal(0, move)

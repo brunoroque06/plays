@@ -29,8 +29,8 @@ let bestLeaf leaves =
         |> Array.head
 
     match leaves[0].Piece with
-    | X -> findWin CrossWon
-    | _ -> findWin NoughtWon
+    | X -> findWin XWon
+    | _ -> findWin OWon
 
 let pickDecisionTreeMove depth piece board =
     let rec revolveLeaf depth piece board move =

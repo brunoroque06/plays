@@ -2,23 +2,23 @@ module GameTest
 
 open Board
 open Game
-open NUnit.Framework
+open Xunit
 
-[<Test>]
+[<Fact>]
 let evaluateOnGoingGame () =
     let p = createBoard |> evaluatePosition
-    Assert.AreEqual(Position.Playing, p)
+    Assert.Equal(Position.Playing, p)
 
-[<Test>]
-let evaluateCrossWin () =
+[<Fact>]
+let evaluateXWin () =
     let p =
         createBoard
         |> fun board -> List.fold (playMove X) board [ 0; 1; 2 ]
         |> evaluatePosition
 
-    Assert.AreEqual(Position.CrossWon, p)
+    Assert.Equal(Position.XWon, p)
 
-[<Test>]
+[<Fact>]
 let evaluateDraw () =
     let p =
         createBoard
@@ -26,4 +26,4 @@ let evaluateDraw () =
         |> fun board -> List.fold (playMove O) board [ 1; 4; 5; 6 ]
         |> evaluatePosition
 
-    Assert.AreEqual(Position.Draw, p)
+    Assert.Equal(Position.Draw, p)

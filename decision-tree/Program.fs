@@ -6,22 +6,14 @@ open System
 
 let rnd len = Random.Shared.Next(0, len)
 
-playMatch 100 (pickDummyMove rnd) (pickDummyMove rnd)
-|> Array.countBy id
-|> Array.sortBy fst
-|> printfn "%A"
+let players =
+    [| ((pickDummyMove rnd), (pickDummyMove rnd))
+       ((pickDecisionTreeMove 6), (pickDummyMove rnd))
+       ((pickDummyMove rnd), (pickDecisionTreeMove 6))
+       ((pickDummyMove rnd), (pickDecisionTreeMove 5)) |]
 
-playMatch 100 (pickDecisionTreeMove 6) (pickDummyMove rnd)
-|> Array.countBy id
-|> Array.sortBy fst
-|> printfn "%A"
-
-playMatch 100 (pickDummyMove rnd) (pickDecisionTreeMove 6)
-|> Array.countBy id
-|> Array.sortBy fst
-|> printfn "%A"
-
-playMatch 100 (pickDummyMove rnd) (pickDecisionTreeMove 5)
-|> Array.countBy id
-|> Array.sortBy fst
-|> printfn "%A"
+for pX, pO in players do
+    playMatch 100 pX pO
+    |> Array.countBy id
+    |> Array.sortBy fst
+    |> printfn "%A"

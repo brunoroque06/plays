@@ -1,18 +1,18 @@
 module BoardTest
 
 open Board
-open NUnit.Framework
+open Xunit
 
-[<Test>]
+[<Fact>]
 let testCreateBoard () =
     let l = createBoard |> Array.length
-    Assert.AreEqual(9, l)
+    Assert.Equal(9, l)
 
-[<Test>]
+[<Fact>]
 let testBoardFull () =
     let isFull =
         createBoard
         |> fun b -> List.fold (playMove X) b [ 0..8 ]
         |> isBoardFull
 
-    Assert.IsTrue(isFull)
+    Assert.True(isFull)
