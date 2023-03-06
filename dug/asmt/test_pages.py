@@ -1,16 +1,15 @@
-import glob
 import os
-from os import path
-from typing import Iterable
+from collections.abc import Iterable
+from pathlib import Path
 
 import pytest
 
 
 def list_pages() -> Iterable[str]:
-    for f in glob.glob(path.join("pages", "*.py")):
-        if "test_" in f:
+    for f in Path("pages").glob("*.py"):
+        if "test_" in str(f):
             continue
-        yield f.split(".")[0].replace(os.sep, ".")
+        yield str(f).split(".", maxsplit=1)[0].replace(os.sep, ".")
 
 
 @pytest.mark.parametrize("page", list_pages())

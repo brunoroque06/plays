@@ -30,7 +30,10 @@ for i, col in enumerate(cols):
     col.markdown(f"***{comp_id}***")
     for exe in comps[comp_id]:
         raw[exe] = col.number_input(
-            label=exe.upper(), min_value=0, max_value=100, step=1
+            label=exe.upper(),
+            min_value=0,
+            max_value=100,
+            step=1,
         )
 
 comp, agg, rep = mabc.process(age, raw, asmt=asmt_date, hand=hand)
@@ -59,7 +62,8 @@ for c in [
     ("Balance", "bl"),
 ]:
     components.table(
-        comp.filter(like=c[1], axis=0).style.apply(color_row, axis=1), c[0]
+        comp.filter(like=c[1], axis=0).style.apply(color_row, axis=1),
+        c[0],
     )
 
 order = {"hg": 0, "bf": 1, "bl": 2, "total": 4}

@@ -43,11 +43,13 @@ for i in range(0, len(obs), cols_num):
             break
         k, v = obs_items[i + c]
         scores[k] = cols[c].selectbox(
-            v["name"], options=("Bellow", "Average", "Superior"), index=1
+            v["name"],
+            options=("Bellow", "Average", "Superior"),
+            index=1,
         )
 
 int_scores = defaultdict(list)
-for ik, iv in ints.items():
+for ik, _ in ints.items():
     for ok, ov in obs.items():
         if ik in ov["ints"]:
             sc = scores[ok]
@@ -80,7 +82,6 @@ for k, v in int_scores.items():
     with c2:
         st.write("")
         st.write(f"{c}{avg(v):.1f}]")
-    with c3:
-        with st.expander(f"Details ({len(v)})"):
-            for i, s in v:
-                st.write(f"{obs[i]['name']} - {s}")
+    with c3, st.expander(f"Details ({len(v)})"):
+        for i, s in v:
+            st.write(f"{obs[i]['name']} - {s}")

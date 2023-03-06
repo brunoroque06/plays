@@ -6,7 +6,7 @@ from asmt import spm
 
 
 @pytest.mark.parametrize(
-    "form,raw,ts",
+    ("form", "raw", "ts"),
     [
         (
             "Classroom",

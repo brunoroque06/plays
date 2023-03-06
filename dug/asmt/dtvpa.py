@@ -81,8 +81,11 @@ def report(asmt: datetime.date, sub: pd.DataFrame, comp: pd.DataFrame) -> str:
 
 
 def process(
-    age: relativedelta, raw: dict[str, int], asmt: date = date.today()
+    age: relativedelta, raw: dict[str, int], asmt: date | None = None
 ) -> tuple[pd.DataFrame, pd.DataFrame, str]:
+    if asmt is None:
+        asmt = date.today()
+
     std, sums = load()
 
     tests = get_tests()
@@ -96,7 +99,7 @@ def process(
         ]
 
     sub = pd.DataFrame(
-        [[k, v, raw[k]] + get_std(k, raw[k]) for k, v in tests.items()],
+        [[k, v, raw[k], *get_std(k, raw[k])] for k, v in tests.items()],
         columns=["id", "label", "raw", "%ile", "standard", "description"],
     ).set_index("id")
 

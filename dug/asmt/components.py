@@ -1,5 +1,4 @@
 import datetime
-from typing import Optional, Union
 
 import pandas as pd
 import streamlit as st
@@ -35,7 +34,7 @@ def dates(
     return asmt, birth, age, age_disp
 
 
-def table(dt: Union[pd.DataFrame, Styler], title: Optional[str] = None):
+def table(dt: pd.DataFrame | Styler, title: str | None = None):
     if title:
         st.text(title)
     st.dataframe(dt, use_container_width=True)

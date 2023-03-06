@@ -1,6 +1,6 @@
 import functools
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable
 
 from genetic import genetics, individual, rand
 
@@ -24,7 +24,7 @@ class Population:
 def max_fitness(inds: list[individual.Individual]) -> float:
     return functools.reduce(
         lambda a, b: a if a > b else a,
-        map(lambda i: i.fitness, inds),
+        (i.fitness for i in inds),
     )
 
 
@@ -65,7 +65,7 @@ def next_generation(
     stats: Stats,
     inds: list[individual.Individual],
 ) -> list[individual.Individual]:
-    fits = list(map(lambda ind: ind.fitness, inds))
+    fits = [ind.fitness for ind in inds]
     pool = individual.mating_pool(fits=fits)
     best, snd = individual.top_individuals(fits=fits)
     num_elites = round(len(inds) * stats.elitism)
@@ -87,9 +87,7 @@ def next_generation(
             fitness=genetics.calc_fitness(target=stats.target, genes=mutated_child),
         )
 
-    next_inds = [new_ind(i) for i, _ in enumerate(inds)]
-
-    return next_inds
+    return [new_ind(i) for i, _ in enumerate(inds)]
 
 
 def print_stats(pop: Population):
@@ -120,6 +118,6 @@ def resolve(
         print_stats(pop)
 
     if pop.max_fitness != 1 and pop.gen != pop.stats.max_gen:
-        pop = resolve(rand_char, pop)
+        return resolve(rand_char, pop)
 
     return pop

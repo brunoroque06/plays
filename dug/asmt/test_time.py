@@ -5,7 +5,7 @@ from asmt import time
 
 
 @pytest.mark.parametrize(
-    "year,month,inc,res",
+    ("year", "month", "inc", "res"),
     [
         (4, 2, False, 4.02),
         (4, 10, False, 4.1),

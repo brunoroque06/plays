@@ -36,9 +36,7 @@ def load() -> pd.DataFrame:
 
     both = both.drop(["raw_min", "raw_max"], axis=1)
 
-    both = both.set_index(["type", "id", "raw"], verify_integrity=True).sort_index()
-
-    return both
+    return both.set_index(["type", "id", "raw"], verify_integrity=True).sort_index()
 
 
 def inter(t: int) -> str:

@@ -1,11 +1,11 @@
-from typing import Callable
+from collections.abc import Callable
 
 from genetic import rand
 
 
 def calc_fitness(target: str, genes: str) -> float:
     match = 0
-    for tar, gen in zip(target, genes):
+    for tar, gen in zip(target, genes, strict=True):
         if tar == gen:
             match += 1
     return match / len(target)
@@ -14,7 +14,10 @@ def calc_fitness(target: str, genes: str) -> float:
 def crossover(
     parents: tuple[str, str], rand_bool: Callable[[], bool] = rand.boolean
 ) -> str:
-    genes = [p_x if rand_bool() else p_y for p_x, p_y in zip(parents[0], parents[1])]
+    genes = [
+        p_x if rand_bool() else p_y
+        for p_x, p_y in zip(parents[0], parents[1], strict=True)
+    ]
     return "".join(genes)
 
 

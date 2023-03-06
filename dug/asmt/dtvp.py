@@ -110,8 +110,11 @@ def to_age(a: str) -> str:
 
 
 def process(
-    age: relativedelta, raw: dict[str, int], asmt: date = date.today()
+    age: relativedelta, raw: dict[str, int], asmt: date | None = None
 ) -> tuple[pd.DataFrame, pd.DataFrame, str]:
+    if asmt is None:
+        asmt = date.today()
+
     ra, rs, sp = load()
 
     tests = get_tests()
@@ -127,7 +130,7 @@ def process(
         return [per, sca, desc_sca(sca)]
 
     sub = pd.DataFrame(
-        [[k, v, raw[k], age_eq(k)] + scaled(k) for k, v in tests.items()],
+        [[k, v, raw[k], age_eq(k), *scaled(k)] for k, v in tests.items()],
         columns=["id", "label", "raw", "age_eq", "percentile", "scaled", "descriptive"],
     ).set_index("id")
 

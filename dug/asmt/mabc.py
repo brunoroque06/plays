@@ -110,9 +110,12 @@ def rank(std: int) -> Rank:
 def process(
     age: relativedelta,
     raw: dict[str, int],
-    asmt: date = date.today(),
+    asmt: date | None = None,
     hand: str = "Right",
 ) -> tuple[pd.DataFrame, pd.DataFrame, str]:
+    if asmt is None:
+        asmt = date.today()
+
     map_i, map_t = load()
 
     comp = process_comp(map_i, age.years, raw)
@@ -121,7 +124,7 @@ def process(
 
     comp_res = (
         pd.DataFrame(
-            [[k] + list(v) for k, v in comp.items()],
+            [[k, *list(v)] for k, v in comp.items()],
             columns=["id", "raw", "standard"],
         )
         .set_index("id")
@@ -131,7 +134,7 @@ def process(
 
     agg_res = (
         pd.DataFrame(
-            [[k] + list(v) for k, v in agg.items()],
+            [[k, *list(v)] for k, v in agg.items()],
             columns=["id", "raw", "standard", "percentile"],
         )
         .set_index("id")

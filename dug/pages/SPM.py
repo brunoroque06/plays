@@ -11,7 +11,8 @@ today = datetime.date.today()
 date = cols[0].date_input("Assessment", today, max_value=today)
 form = cols[1].selectbox("Form", ("Classroom", "Home"))
 person = cols[2].selectbox(
-    "Filled by", ("Km", "Kv", "Ke") if form == "Home" else ("LP", "BP")
+    "Filled by",
+    ("Km", "Kv", "Ke") if form == "Home" else ("LP", "BP"),
 )
 
 scores = spm.get_scores()

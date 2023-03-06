@@ -1,5 +1,4 @@
-from genetic import individual
-from genetic import population
+from genetic import individual, population
 
 
 def test_create_population():

@@ -5,7 +5,7 @@ from asmt import mabc
 
 
 @pytest.mark.parametrize(
-    "age,raw,comp_res,agg_res",
+    ("age", "raw", "comp_res", "agg_res"),
     [
         (
             relativedelta(years=6),
