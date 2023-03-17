@@ -95,13 +95,16 @@ def process_agg(
 
 class Rank(Enum):
     OK = "ok"
+    UOK = "uok"
     CRI = "cri"
     NOK = "nok"
 
 
 def rank(std: int) -> Rank:
-    if std > 6:
+    if std > 7:
         return Rank.OK
+    if std == 7:
+        return Rank.UOK
     if std == 6:
         return Rank.CRI
     return Rank.NOK
@@ -157,6 +160,8 @@ def report(asmt: date, age: relativedelta, hand: str, agg: pd.DataFrame) -> str:
         rnk = rank(std)
         if rnk == Rank.OK:
             return "unauffällig"
+        if rnk == Rank.UOK:
+            return "unauffällig im untersten Normbereich"
         if rnk == Rank.CRI:
             return "kritisch"
         return "therapiebedürftig"
@@ -169,8 +174,8 @@ def report(asmt: date, age: relativedelta, hand: str, agg: pd.DataFrame) -> str:
             f"Handgeschicklichkeit: PR {agg.loc['hg']['percentile']} - {rank_str(agg.loc['hg']['standard'])}",
             f"Händigkeit: {'Rechts' if hand == 'Right' else 'Links'}",
             f"Ballfertigkeit: PR {agg.loc['bf']['percentile']} - {rank_str(agg.loc['bf']['standard'])}",
-            f"Balance: PR {agg.loc['bl']['percentile']} - {rank_str(agg.loc['bl']['percentile'])}",
+            f"Balance: PR {agg.loc['bl']['percentile']} - {rank_str(agg.loc['bl']['standard'])}",
             "",
-            f"Gesamttestwert: PR {agg.loc['total']['percentile']} - {rank_str(agg.loc['total']['percentile'])}",
+            f"Gesamttestwert: PR {agg.loc['total']['percentile']} - {rank_str(agg.loc['total']['standard'])}",
         ]
     )

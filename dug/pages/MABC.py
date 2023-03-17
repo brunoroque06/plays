@@ -42,7 +42,7 @@ comp, agg, rep = mabc.process(age, raw, asmt=asmt_date, hand=hand)
 def color_row(row):
     std = row["standard"]
     rank = mabc.rank(std)
-    if rank == mabc.Rank.OK:
+    if rank == mabc.Rank.OK or rank == mabc.Rank.UOK:
         color = "rgba(33, 195, 84, 0.1)"
     elif rank == mabc.Rank.CRI:
         color = "rgba(255, 193, 7, 0.1)"
