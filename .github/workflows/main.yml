@@ -11,16 +11,13 @@ jobs:
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 7.0.x
-      - name: Install
-        run: dotnet restore && dotnet tool restore
-      - name: Build
-        run: dotnet build
-      - name: Format
-        run: dotnet tool run fantomas --check .
-      - name: Lint
-        run: dotnet tool run dotnet-fsharplint lint DecisionTree.fsproj
-      - name: Test
-        run: dotnet test
+      - run: |
+          dotnet restore
+          dotnet tool restore
+      - run: dotnet build
+      - run: dotnet tool run fantomas --check .
+      - run: dotnet tool run dotnet-fsharplint lint DecisionTree.fsproj
+      - run: dotnet test
 
   dijkstra:
     runs-on: ubuntu-latest
@@ -32,12 +29,9 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version: 1.19
-      - name: Build
-        run: go build -v
-      - name: Format
-        run: test -z $(gofmt -l .)
-      - name: Test
-        run: go test -v
+      - run: go build -v
+      - run: test -z $(gofmt -l .)
+      - run: go test -v
 
   dug:
     runs-on: ubuntu-latest
@@ -49,18 +43,14 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11.x
-      - name: Install
-        run: pip install -r requirements.txt
-      - name: Format
-        run: |
+      - run: pip install -r requirements.txt
+      - run: |
           black --check .
           isort -c .
-      - name: Lint
-        run: |
+      - run: |
           pylint $(find . -type f -name '*.py')
           pyright .
-      - name: Test
-        run: pytest .
+      - run: pytest .
 
   genetic:
     runs-on: ubuntu-latest
@@ -72,15 +62,11 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11.x
-      - name: Install
-        run: pip install -r requirements.txt
-      - name: Format
-        run: |
+      - run: pip install -r requirements.txt
+      - run: |
           black --check .
           isort -c .
-      - name: Lint
-        run: |
+      - run: |
           pylint genetic test
           pyright .
-      - name: Test
-        run: pytest .
+      - run: pytest .
