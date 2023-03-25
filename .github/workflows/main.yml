@@ -62,8 +62,14 @@ jobs:
           elvish-version: HEAD
       - shell: elvish {0}
         run: |
-          ls -a | sort | from-lines | drop 2 | each { |f| if (not-eq $f dug) { rm -rf $f } }
-          ls -a dug | sort | from-lines | drop 2 | each { |f| mv dug/$f . }
+          ls -a ^
+            | sort ^
+            | from-lines ^
+            | each { |f| if (and (not-eq $f .) (not-eq $f ..) (not-eq $f .git)) { rm -rf $f } }
+          ls -a dug ^
+            | sort ^
+            | from-lines ^
+            | each { |f| if (and (not-eq $f .) (not-eq $f ..)) { mv dug/$f . } }
           rmdir dug
           git checkout -b st
           git add -A
