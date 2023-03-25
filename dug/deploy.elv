@@ -20,6 +20,7 @@ git ls-files ^
 cd plays
 git checkout -b st
 git add -A
+git config --global user.email 'brunoroque06@github.com'
 git commit -m 'Release'
 git push --force origin st
 
