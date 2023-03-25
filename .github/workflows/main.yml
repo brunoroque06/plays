@@ -61,8 +61,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: |
-          apt update
-          apt install elvish
+          sudo apt update
+          sudo apt install elvish
       - run: elvish deploy.elv
 
   genetic:
