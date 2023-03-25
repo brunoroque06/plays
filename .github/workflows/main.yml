@@ -55,15 +55,22 @@ jobs:
   dug-deploy:
     needs: dug
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: dug
     steps:
       - uses: actions/checkout@v3
       - uses: elves/setup-elvish@v1
         with:
           elvish-version: HEAD
-      - run: elvish deploy.elv
+      - shell: elvish {0}
+        run: |
+          ls -a | sort | from-lines | drop 2 | each { |f| if (not-eq $f dug) { rm -rf $f } }
+          mv dug/* .
+          rmdir dug
+          git checkout -b st
+          git add -A
+          git config user.name 'Bruno Roque'
+          git config user.email 'brunoroque06@github.com'
+          git commit -m 'Release'
+          git push --force origin st
 
   genetic:
     runs-on: ubuntu-latest
