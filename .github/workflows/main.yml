@@ -63,7 +63,7 @@ jobs:
       - shell: elvish {0}
         run: |
           ls -a | sort | from-lines | drop 2 | each { |f| if (not-eq $f dug) { rm -rf $f } }
-          mv dug/* .
+          ls -a dug | sort | from-lines | drop 2 | each { |f| mv dug/$f . }
           rmdir dug
           git checkout -b st
           git add -A
