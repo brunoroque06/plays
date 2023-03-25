@@ -52,6 +52,19 @@ jobs:
           pyright .
       - run: pytest .
 
+  dug-deploy:
+    needs: dug
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: dug
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          apt update
+          apt install elvish
+      - run: elvish deploy.elv
+
   genetic:
     runs-on: ubuntu-latest
     defaults:
