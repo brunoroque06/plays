@@ -60,9 +60,9 @@ jobs:
         working-directory: dug
     steps:
       - uses: actions/checkout@v3
-      - run: |
-          sudo apt update
-          sudo apt install elvish
+      - uses: elves/setup-elvish@v1
+        with:
+          elvish-version: HEAD
       - run: elvish deploy.elv
 
   genetic:
