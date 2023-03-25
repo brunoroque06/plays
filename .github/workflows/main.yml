@@ -65,7 +65,7 @@ jobs:
           ls -a ^
             | sort ^
             | from-lines ^
-            | each { |f| if (and (not-eq $f .) (not-eq $f ..) (not-eq $f .git)) { rm -rf $f } }
+            | each { |f| if (and (not-eq $f .) (not-eq $f ..) (not-eq $f dug) (not-eq $f .git)) { rm -rf $f } }
           ls -a dug ^
             | sort ^
             | from-lines ^
