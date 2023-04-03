@@ -62,7 +62,12 @@ for c in [
     ("Balance", "bl"),
 ]:
     components.table(
-        comp.filter(like=c[1], axis=0).style.apply(color_row, axis=1),
+        comp.filter(like=c[1], axis=0)
+        .sort_values(
+            by=["id"],
+            key=lambda s: s.map(lambda i: i if len(i) == 4 else i + "z"),
+        )
+        .style.apply(color_row, axis=1),
         c[0],
     )
 
