@@ -55,7 +55,7 @@ def dtvp(title: str, min_age: int, max_age: int, mod):
 
     sub, comp, rep = mod.process(age, raw, asmt_date)
 
-    st.markdown("---")
+    st.divider()
 
     st.code(rep, language="markdown")
     table(sub, "Subtest")

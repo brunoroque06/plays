@@ -52,7 +52,7 @@ def color_row(row):
     return [f"background-color: {color};"] * len(row)
 
 
-st.markdown("---")
+st.divider()
 
 st.code(rep, language="markdown")
 
