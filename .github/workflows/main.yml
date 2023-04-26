@@ -85,14 +85,12 @@ jobs:
         working-directory: genetic
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-dotnet@v3
         with:
-          python-version: 3.11.x
-      - run: pip install -r requirements.txt
+          dotnet-version: 7.0.x
+      - run: dotnet restore
+      - run: dotnet build
       - run: |
-          black --check .
-          isort -c .
-      - run: |
-          pylint genetic test
-          pyright .
-      - run: pytest .
+          dotnet new tool-manifest
+          dotnet tool install dotnet-csharpier
+          dotnet-csharpier --check .
