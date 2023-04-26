@@ -54,12 +54,12 @@ def report(asmt: datetime.date, sub: pd.DataFrame, comp: pd.DataFrame) -> str:
         + [
             f"{n}: PR {comp.loc[i]['%ile']} - {dtvp.desc_index(comp.loc[i]['index'], True)}"  # type: ignore
             for n, i in [
-                ("Visuomotorische Integration", "General Visual Perception (GVPI)"),
+                ("Visuomotorische Integration", "Visual-Motor Integration (VMII)"),
                 (
                     "Motorik-Reduzierte Wahrnehmung",
                     "Motor-Reduced Visual Perception (MRPI)",
                 ),
-                ("Globale Visuelle Wahrnehmung", "Visual-Motor Integration (VMII)"),
+                ("Globale Visuelle Wahrnehmung", "General Visual Perception (GVPI)"),
             ]
         ]
         + [
