@@ -92,5 +92,5 @@ jobs:
       - run: dotnet build
       - run: |
           dotnet new tool-manifest
-          dotnet tool install dotnet-csharpier
+          dotnet tool install csharpier
           dotnet-csharpier --check .

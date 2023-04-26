@@ -35,7 +35,7 @@ if (
 
 res, rep = spm.process(date, form, person, raw)
 
-st.divider
+st.divider()
 
 st.code(rep, language="markdown")
 
