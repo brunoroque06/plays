@@ -20,19 +20,33 @@ public class Time : Grain, ITime
                     .Range(0, _options.PopulationSize)
                     .Select(i => _client.GetGrain<IGenetics>(i).GetIndividual())
             );
+
             var fitness = individuals.Select(i => i.Fitness).ToArray();
             var maxFitness = fitness.Max();
+            var fittest = individuals[Array.IndexOf(fitness, maxFitness)];
+            var isMaxFitness = await _client.GetGrain<IGenetics>(0).IsMaxFitness(fittest);
 
-            if (gen % 10 == 0)
-            {
-                var maxFitnessInd = Array.IndexOf(fitness, maxFitness);
+            var last = isMaxFitness || gen == _options.MaxGenerations;
+
+            if (gen % _options.ReportInterval == 0 || last)
                 await _client
                     .GetGrain<IReporter>(0)
-                    .ReportGeneration(gen, maxFitness, individuals[maxFitnessInd].Genes);
-            }
+                    .ReportGeneration(gen, maxFitness, fittest.Genes);
 
-            if (Math.Abs(maxFitness - 1.0f) < 1e-10 || gen == _options.MaxGenerations)
+            if (last)
                 return;
+
+            var parents = await _client.GetGrain<IGenetics>(0).MatchParents(individuals);
+
+            await Task.WhenAll(
+                parents
+                    .Zip(
+                        Enumerable
+                            .Range(0, parents.Length)
+                            .Select(i => _client.GetGrain<IGenetics>(i))
+                    )
+                    .Select((z) => z.Second.Breed(z.First))
+            );
         }
     }
 }

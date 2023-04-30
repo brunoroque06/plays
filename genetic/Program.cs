@@ -4,8 +4,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 var options = new Options(
-    20,
+    200,
     10,
+    100,
     0.25f,
     0.01f,
     "To be or not to be, that is the question.",

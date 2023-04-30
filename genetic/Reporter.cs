@@ -14,7 +14,7 @@ public class Reporter : Grain, IReporter
     public Task ReportGeneration(int generation, float fitness, string genes)
     {
         _logger.LogInformation(
-            "Generation: {gen,0:000}, Fitness: {fit,0:0.00}, Genes: {gen}.",
+            "{{ \"Generation\": {gen,4}, \"Fitness\": {fit,0:0.00}, \"Genes\": \"{gen}\" }}",
             generation,
             fitness,
             genes

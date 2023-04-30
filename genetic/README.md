@@ -18,19 +18,22 @@ Crossover consists of the combination of any 2 individuals of a given generation
 
 ## Example (Output)
 
-```shell
-Gen Fit  Genes
-010 0.41 ncibebkd ncq tf oee fhecpzsxtru uTeotibn.
-020 0.51 novbe bd noq tf oee fheupzsxthu uTeotibn.
-030 0.59 novbe bd noq tr oe, fhecpisxthu uTeotisn.
-040 0.66 no be bd noq te oe, thacpistthu i eotion.
-050 0.73 no be br noq te oe, thacpistthu q estion.
-060 0.80 no be br noq te be, thatpistthe q estion.
-070 0.90 no be br not te be, that istthe question.
-080 0.88 no be br not te be, that istthe question.
-090 0.95 no be br not to be, that is the question.
-100 0.98 no be or not to be, that is the question.
-110 0.98 no be or not to be, that is the question.
-120 0.98 no be or not to be, that is the question.
-123 1.00 To be or not to be, that is the question.
+```json
+{ "Generation":   0, "Fitness": 0.15, "Genes": "ztvb,qtneermvnvnob,joqltnTd ,dehqphbrrkqT" }
+{ "Generation":  10, "Fitness": 0.34, "Genes": "aznbojonen m ,o ld,jotlt i, ,hehqiaurqsft" }
+{ "Generation":  20, "Fitness": 0.46, "Genes": "aznbojonenom ,o le,jotat iT ,hehqiastqsau" }
+{ "Generation":  30, "Fitness": 0.54, "Genes": "adnbujonenom ,o be,jotat iT ,he quastqsau" }
+{ "Generation":  40, "Fitness": 0.56, "Genes": "adnbu onenom ,o be,jotat iT ,he quastdsau" }
+{ "Generation":  50, "Fitness": 0.63, "Genes": "adnbf onbnot ,o be,jotat iT ,he quastdan." }
+{ "Generation":  60, "Fitness": 0.71, "Genes": "aonbf onbnot to be,jotat iT ,he quastdon." }
+{ "Generation":  70, "Fitness": 0.78, "Genes": " onbf or not to be,jo.at iT the quastdon." }
+{ "Generation":  80, "Fitness": 0.80, "Genes": "oonbf or not to be,jo.at iT the questdon." }
+{ "Generation":  90, "Fitness": 0.88, "Genes": "oonbe or not to be,jt.at is the questdon." }
+{ "Generation": 110, "Fitness": 0.93, "Genes": "Tonbe or not to be,jt.at is the question." }
+{ "Generation": 120, "Fitness": 0.95, "Genes": "Tonbe or not to be, t.at is the question." }
+{ "Generation": 130, "Fitness": 0.98, "Genes": "To be or not to be, t.at is the question." }
+{ "Generation": 140, "Fitness": 0.98, "Genes": "To be or not to be, tlat is the question." }
+{ "Generation": 150, "Fitness": 0.98, "Genes": "To be or not to be, tlat is the question." }
+{ "Generation": 160, "Fitness": 0.98, "Genes": "To be or not to be, tlat is the question." }
+{ "Generation": 162, "Fitness": 1.00, "Genes": "To be or not to be, that is the question." }
 ```
