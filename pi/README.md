@@ -2,17 +2,13 @@
 
 Given a square containing a circle, with a radius of half the size of the square's side, the following equation is true:
 
-```math
-π * r ^ 2    Pin             Ar * Pin
---------- = ------ => π = --------------
-    Ar      Ptotal        r ^ 2 * Ptotal
-```
+$$ \frac{ π . r^2 }{ A_r } = \frac{ P_i }{ P_t } \implies π = \frac{ A_r . P_i }{ r^2 . P_t }$$
 
 where:
 
-- `r`, circle's radius;
-- `Ar`, rectangle's area;
-- `Pin`, number of points inside the circle;
-- `Ptotal`, total number of points.
+- $r$, circle's radius;
+- $A_r$, rectangle's area;
+- $P_i$, number of points inside the circle;
+- $P_t$, total number of points.
 
 The points above mentioned are randomly placed in the square, and therefore the precision of the estimation increases with the number of points.
