@@ -61,7 +61,7 @@ jobs:
         run: |
           Get-ChildItem -Force `
           | Where-Object { -not ($_.Name -eq '.git' -or $_.Name -eq 'dug') } `
-          | ForEach-Object { Remove-Item -Recurse $_.Name }
+          | ForEach-Object { Remove-Item -Force -Recurse $_.Name }
           Get-ChildItem -Force dug `
           | Move-Item -Destination { $_.Directory.Parent.FullName }
           Remove-Item dug
