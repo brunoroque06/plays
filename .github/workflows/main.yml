@@ -57,20 +57,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: elves/setup-elvish@v1
-        with:
-          elvish-version: HEAD
-      - shell: elvish {0}
+      - shell: pwsh
         run: |
-          ls -a ^
-            | sort ^
-            | from-lines ^
-            | each { |f| if (and (not-eq $f .) (not-eq $f ..) (not-eq $f dug) (not-eq $f .git)) { rm -rf $f } }
-          ls -a dug ^
-            | sort ^
-            | from-lines ^
-            | each { |f| if (and (not-eq $f .) (not-eq $f ..)) { mv dug/$f . } }
-          rmdir dug
+          Get-ChildItem -Force `
+          | Where-Object { -not ($_.Name -eq '.git' -or $_.Name -eq 'dug') } `
+          | ForEach-Object { Remove-Item -Recurse $_.Name }
+          Get-ChildItem -Force dug `
+          | Move-Item -Destination { $_.Directory.Parent.FullName }
+          Remove-Item dug
           git checkout -b st
           git add -A
           git config user.name 'brunoroque06'

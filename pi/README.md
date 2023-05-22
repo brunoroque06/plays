@@ -1,8 +1,8 @@
 # Estimation of π Using Monte Carlo Method
 
-Given a square containing a circle, with a radius of half the size of the square's side, the following equation is true:
+Given a square containing a circle, with a radius of half the size of the square's side, the following is true:
 
-$$ \frac{ π . r^2 }{ A_r } = \frac{ P_i }{ P_t } \implies π = \frac{ A_r . P_i }{ r^2 . P_t }$$
+$$ \frac{ π . r^2 }{ A_r } = \frac{ P_i }{ P_t } \implies π = \frac{ A_r . P_i }{ r^2 . P_t } $$
 
 where:
 

@@ -3,7 +3,7 @@ let args = fsi.CommandLineArgs
 let points =
     match (Array.length args) with
     | l when l > 1 -> args[1] |> int
-    | _ -> 1_000_000
+    | _ -> 100_000_000
 
 printfn $"Number of points: %d{points}"
 
