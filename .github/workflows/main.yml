@@ -63,7 +63,7 @@ jobs:
           | Where-Object { -not ($_.Name -eq '.git' -or $_.Name -eq 'dug') } `
           | ForEach-Object { Remove-Item -Force -Recurse $_.Name }
           Get-ChildItem -Force dug `
-          | Move-Item -Destination { $_.Directory.Parent.FullName }
+          | Move-Item -Force .
           Remove-Item dug
           git checkout -b st
           git add -A
