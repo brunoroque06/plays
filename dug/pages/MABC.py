@@ -1,26 +1,35 @@
+from typing import Callable
+
 import streamlit as st
+from dateutil.relativedelta import relativedelta
 
 from asmt import components, mabc
 
 st.subheader("MABC")
 
-asmt_date, birth, age, age_disp = components.dates(5, 16)
+
+def display_age(a: relativedelta) -> Callable:
+    if a.years < 7:
+        return st.error
+    if a.years < 11:
+        return st.success
+    return st.info
+
+
+asmt_date, birth, age = components.dates(5, 16, display_age)
 
 # st.color_picker(..., disabled=True, label_visibility="collapsed") is an alternative
-if age.years < 7:
-    st.error(age_disp)
-elif age.years < 11:
-    st.success(age_disp)
-else:
-    st.info(age_disp)
 
-hand = st.selectbox("Preferred Hand", ("Right", "Left"))
+cols = st.columns(3)
+with cols[1]:
+    hand = st.selectbox("Preferred Hand", ("Right", "Left"))
 
 if not isinstance(hand, str):
     raise TypeError("not str")
 
 comps = mabc.get_comps(age)
 comp_ids = list(comps.keys())
+
 cols = st.columns(len(comp_ids))
 
 raw = {}
