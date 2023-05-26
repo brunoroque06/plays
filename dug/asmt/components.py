@@ -38,6 +38,7 @@ def dates(
         st.text(" ")
         age_disp = f"Age: {age.years} years, {age.months} months, {age.days} days"
         disp(age)(age_disp, icon="🎂")
+    # st.color_picker(..., disabled=True, label_visibility="collapsed") is an alternative
 
     return asmt, birth, age
 

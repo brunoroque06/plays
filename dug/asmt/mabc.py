@@ -2,6 +2,7 @@ import math
 import typing
 from datetime import date
 from enum import Enum
+from typing import Optional
 
 import pandas as pd
 import streamlit as st
@@ -48,14 +49,18 @@ def get_comps(age: relativedelta) -> dict[str, list[str]]:
     }
 
 
+def get_failed():
+    return ["hg11", "hg12", "hg2", "hg3"]
+
+
 def process_comp(
-    map_i: pd.DataFrame, age: int, raw: dict[str, int]
+    map_i: pd.DataFrame, age: int, raw: dict[str, Optional[int]]
 ) -> dict[str, tuple[int | None, int]]:
     map_i_age = map_i.loc[age]
     comp: dict[str, tuple[int | None, int]] = {}
     for k, v in raw.items():
-        fil = map_i_age.loc[k].loc[v]
-        comp[k] = (v, fil["standard"])
+        std = 1 if v is None else map_i_age.loc[k].loc[v]["standard"]
+        comp[k] = (v, std)
 
     def avg(v0: int, v1: int) -> int:
         a = (v0 + v1) / 2
@@ -112,7 +117,7 @@ def rank(std: int) -> Rank:
 
 def process(
     age: relativedelta,
-    raw: dict[str, int],
+    raw: dict[str, Optional[int]],
     asmt: date | None = None,
     hand: str = "Right",
 ) -> tuple[pd.DataFrame, pd.DataFrame, str]:

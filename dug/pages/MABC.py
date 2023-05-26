@@ -18,17 +18,18 @@ def display_age(a: relativedelta) -> Callable:
 
 asmt_date, birth, age = components.dates(5, 16, display_age)
 
-# st.color_picker(..., disabled=True, label_visibility="collapsed") is an alternative
+comps = mabc.get_comps(age)
+comp_ids = list(comps.keys())
 
-cols = st.columns(3)
-with cols[1]:
+cols = st.columns([1, 2])
+with cols[0]:
     hand = st.selectbox("Preferred Hand", ("Right", "Left"))
 
 if not isinstance(hand, str):
     raise TypeError("not str")
 
-comps = mabc.get_comps(age)
-comp_ids = list(comps.keys())
+with cols[1]:
+    failed = st.multiselect("Failed", mabc.get_failed(), format_func=str.upper)
 
 cols = st.columns(len(comp_ids))
 
@@ -43,7 +44,11 @@ for i, col in enumerate(cols):
             min_value=0,
             max_value=100,
             step=1,
+            disabled=(exe in failed),
         )
+
+for f in failed:
+    raw[f] = None
 
 comp, agg, rep = mabc.process(age, raw, asmt=asmt_date, hand=hand)
 

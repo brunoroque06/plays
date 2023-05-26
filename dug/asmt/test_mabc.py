@@ -12,7 +12,7 @@ from asmt import mabc
             {
                 "hg11": 17,
                 "hg12": 29,
-                "hg2": 32,
+                "hg2": None,
                 "hg3": 0,
                 "bf1": 4,
                 "bf2": 0,
@@ -32,14 +32,14 @@ from asmt import mabc
                 ["hg1", 6],
                 ["hg11", 11],
                 ["hg12", 1],
-                ["hg2", 14],
+                ["hg2", 1],
                 ["hg3", 11],
             ],
             [
                 ["bf", 1],
                 ["bl", 6],
-                ["hg", 11],
-                ["total", 5],
+                ["hg", 5],
+                ["total", 3],
             ],
         ),
         (
