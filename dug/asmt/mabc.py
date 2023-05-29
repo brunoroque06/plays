@@ -22,7 +22,7 @@ def load() -> tuple[pd.DataFrame, pd.DataFrame]:
         axis=1,
     )
     map_i = map_i.drop(["age_max", "age_min", "rank", "raw_max", "raw_min"], axis=1)
-    map_i = map_i.set_index(["age", "id", "raw"], verify_integrity=True).sort_index()
+    map_i = map_i.set_index(["id", "age", "raw"], verify_integrity=True).sort_index()
 
     map_t = pd.read_csv("data/mabc-t.csv")
     map_t["raw"] = map_t.apply(
@@ -56,10 +56,9 @@ def get_failed() -> list[str]:
 def process_comp(
     map_i: pd.DataFrame, age: int, raw: dict[str, Optional[int]]
 ) -> dict[str, tuple[int | None, int]]:
-    map_i_age = map_i.loc[age]
     comp: dict[str, tuple[int | None, int]] = {}
     for k, v in raw.items():
-        std = 1 if v is None else map_i_age.loc[k].loc[v]["standard"]
+        std = 1 if v is None else map_i.loc[k].loc[age].loc[v]["standard"]
         comp[k] = (v, std)
 
     def avg(v0: int, v1: int) -> int:

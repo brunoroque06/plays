@@ -57,13 +57,16 @@ def test_dtvpa_data():
 def test_mabc_data():
     map_i, map_t = mabc.load()
 
-    for y in range(5, 16):
-        age = relativedelta(years=y)
-        age_df = map_i.loc[time.delta_idx(age)]
-        for i in age_df.index.get_level_values(0).unique():
-            maxi = int(age_df.loc[i].index.max().left)
+    for i in map_i.index.get_level_values(0).unique():
+        idx = map_i.loc[i].index.get_level_values(0)
+        miny = int(idx.min().left)
+        maxy = int(idx.max().left)
+        for y in range(miny, maxy + 1):
+            age = relativedelta(years=y)
+            age_df = map_i.loc[i].loc[time.delta_idx(age)]
+            maxi = int(age_df.index.max().left)
             for r in range(0, maxi + 2):
-                for v in age_df.loc[i].loc[r]:
+                for v in age_df.loc[r]:
                     assert not pd.isna(v)
 
     for i in map_t.index.get_level_values(0).unique():
