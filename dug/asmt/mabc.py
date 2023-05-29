@@ -49,7 +49,7 @@ def get_comps(age: relativedelta) -> dict[str, list[str]]:
     }
 
 
-def get_failed():
+def get_failed() -> list[str]:
     return ["hg11", "hg12", "hg2", "hg3"]
 
 
