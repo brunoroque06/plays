@@ -1,7 +1,7 @@
 import pandas as pd
 from dateutil.relativedelta import relativedelta
 
-from asmt import dtvp, dtvpa, mabc, time, spm
+from asmt import dtvp, dtvpa, mabc, spm, time
 
 
 def test_dtvp_data():
