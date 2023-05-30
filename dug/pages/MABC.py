@@ -42,7 +42,7 @@ for i, col in enumerate(cols):
         raw[exe] = col.number_input(
             label=exe.upper(),
             min_value=0,
-            max_value=100,
+            max_value=150,
             step=1,
             disabled=(exe in failed),
         )
