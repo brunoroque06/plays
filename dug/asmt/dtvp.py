@@ -180,7 +180,7 @@ def process(
 def report(asmt: date, sub: pd.DataFrame, comp: pd.DataFrame) -> str:
     return "\n".join(
         [
-            f"Developmental Test of Visual Perception (DTVP-3) - {asmt.day}.{asmt.month}.{asmt.year}",
+            f"Developmental Test of Visual Perception (DTVP-3) - {time.format_date(asmt)}",
             "",
         ]
         + [

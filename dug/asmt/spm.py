@@ -1,8 +1,10 @@
-import datetime
 import typing
+from datetime import date
 
 import pandas as pd
 import streamlit as st
+
+from asmt import time
 
 
 def get_scores() -> list[tuple[str, str]]:
@@ -47,15 +49,16 @@ def inter(t: int) -> str:
     return "Definite Dysfunction"
 
 
-def report(date: datetime.date, form: str, person: str, res: pd.DataFrame) -> str:
+def report(asmt: date, form: str, person: str, res: pd.DataFrame) -> str:
+    asmt_fmt = time.format_date(asmt, False)
     header = [
         "Sensory Processing Measure (SPM): Classroom Form",
-        f"Fragebogen zur sensorischen Verarbeitung ausgefüllt von Kinders {person} ({date.month}.{date.year})",
+        f"Fragebogen zur sensorischen Verarbeitung ausgefüllt von Kinders {person} ({asmt_fmt})",
     ]
     if form == "home":
         header = [
             "Sensory Processing Measure (SPM): Home Form",
-            f"Elternfragebogen zur sensorischen Verarbeitung ausgefüllt von {person} ({date.month}.{date.year})",
+            f"Elternfragebogen zur sensorischen Verarbeitung ausgefüllt von {person} ({asmt_fmt})",
             "Die Fähigkeit, sensorische Reize zu verarbeiten, beeinflusst die motorischen und selbstregulativen Fähigkeiten eines Kindes sowie sein soziales Verhalten.",
         ]
 
@@ -80,7 +83,7 @@ def report(date: datetime.date, form: str, person: str, res: pd.DataFrame) -> st
 
 
 def process(
-    date: datetime.date, form: str, person: str, raw: dict[str, int]
+    asmt: date, form: str, person: str, raw: dict[str, int]
 ) -> tuple[pd.DataFrame, str]:
     data = load()
 
@@ -110,4 +113,4 @@ def process(
         columns=["id", "raw", "t", "percentile", "interpretive"],
     ).set_index("id")
 
-    return res, report(date, form, person, res)
+    return res, report(asmt, form, person, res)

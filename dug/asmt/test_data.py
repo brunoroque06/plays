@@ -70,10 +70,10 @@ def test_mabc_data():
                     assert not pd.isna(v)
 
     for i in map_t.index.get_level_values(0).unique():
-        idxs = map_t.loc[i]
-        maxi = int(idxs.index.max().left)
+        raw = map_t.loc[i]
+        maxi = int(raw.index.max().left)
         for r in range(0, maxi + 2):
-            for v in idxs.loc[r]:
+            for v in raw.loc[r]:
                 assert not pd.isna(v)
 
 

@@ -8,6 +8,8 @@ import pandas as pd
 import streamlit as st
 from dateutil.relativedelta import relativedelta
 
+from asmt import time
+
 
 @st.cache_data
 @typing.no_type_check
@@ -172,7 +174,7 @@ def report(asmt: date, age: relativedelta, hand: str, agg: pd.DataFrame) -> str:
 
     return "\n".join(
         [
-            f"Movement Assessment Battery for Children 2nd Edition (M-ABC 2) - {asmt.day}.{asmt.month}.{asmt.year}",
+            f"Movement Assessment Battery for Children 2nd Edition (M-ABC 2) - {time.format_date(asmt)}",
             f"Protokollbogen Altersgruppe: {group} Jahre",
             "",
             f"Handgeschicklichkeit: PR {agg.loc['hg']['percentile']} - {rank_str(agg.loc['hg']['standard'])}",

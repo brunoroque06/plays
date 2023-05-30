@@ -1,4 +1,3 @@
-import datetime
 import typing
 from datetime import date
 
@@ -45,10 +44,10 @@ def get_tests():
     }
 
 
-def report(asmt: datetime.date, sub: pd.DataFrame, comp: pd.DataFrame) -> str:
+def report(asmt: date, sub: pd.DataFrame, comp: pd.DataFrame) -> str:
     return "\n".join(
         [
-            f"Developmental Test of Visual Perception - Adolescent and Adult (DTVP-A) - ({asmt.day}.{asmt.month}.{asmt.year})",
+            f"Developmental Test of Visual Perception - Adolescent and Adult (DTVP-A) - ({time.format_date(asmt)})",
             "",
         ]
         + [

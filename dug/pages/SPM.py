@@ -1,4 +1,4 @@
-import datetime
+from datetime import date
 
 import streamlit as st
 
@@ -7,8 +7,8 @@ from asmt import components, spm
 st.subheader("SPM")
 
 cols = st.columns(3)
-today = datetime.date.today()
-date = cols[0].date_input("Assessment", today, max_value=today)
+today = date.today()
+asmt = cols[0].date_input("Assessment", today, max_value=today)
 form = cols[1].selectbox("Form", ("Classroom", "Home"))
 person = cols[2].selectbox(
     "Filled by",
@@ -27,13 +27,13 @@ for idx, (s, e) in enumerate(dist):
         raw[scores[i][0]] = cols[idx].number_input(scores[i][1], step=1)
 
 if (
-    not isinstance(date, datetime.date)
+    not isinstance(asmt, date)
     or not isinstance(form, str)
     or not isinstance(person, str)
 ):
     raise TypeError("type error")
 
-res, rep = spm.process(date, form, person, raw)
+res, rep = spm.process(asmt, form, person, raw)
 
 st.divider()
 
