@@ -56,6 +56,12 @@ resource app 'Microsoft.Web/sites@2022-09-01' = {
     serverFarmId: plan.id
     siteConfig: {
       acrUseManagedIdentityCreds: true
+      appSettings: [
+        {
+          name: 'WEBSITES_PORT'
+          value: '8000'
+        }
+      ]
       linuxFxVersion: 'DOCKER|${cr.name}.azurecr.io/dug:latest'
     }
   }
