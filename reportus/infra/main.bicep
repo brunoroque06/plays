@@ -4,7 +4,7 @@ param location string
 
 resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   location: location
-  name: 'rg-dug'
+  name: 'rg-reportus'
 }
 
 module app 'app.bicep' = {

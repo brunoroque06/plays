@@ -8,4 +8,4 @@ COPY data data
 COPY pages pages
 COPY Home.py .
 ENTRYPOINT ["streamlit", "run"]
-CMD ["Home.py", "--browser.gatherUsageStats", "false", "--server.fileWatcherType", "none", "--server.port", "8000"]
+CMD ["Home.py", "--browser.gatherUsageStats", "false", "--server.fileWatcherType", "none", "--server.port", "8080"]

@@ -4,7 +4,7 @@ param location string
 
 resource cr 'Microsoft.ContainerRegistry/registries@2023-01-01-preview' = {
   location: location
-  name: 'crdug'
+  name: 'crreportus'
   properties: {
     adminUserEnabled: true
   }
@@ -47,7 +47,7 @@ resource plan 'Microsoft.Web/serverfarms@2022-09-01' = {
 }
 
 resource app 'Microsoft.Web/sites@2022-09-01' = {
-  name: 'app-dug'
+  name: 'app-reportus'
   identity: {
     type: 'SystemAssigned'
   }
@@ -59,10 +59,10 @@ resource app 'Microsoft.Web/sites@2022-09-01' = {
       appSettings: [
         {
           name: 'WEBSITES_PORT'
-          value: '8000'
+          value: '8080'
         }
       ]
-      linuxFxVersion: 'DOCKER|${cr.name}.azurecr.io/dug:latest'
+      linuxFxVersion: 'DOCKER|${cr.name}.azurecr.io/reportus:latest'
     }
   }
 }
