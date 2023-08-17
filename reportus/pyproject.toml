@@ -1,12 +1,5 @@
 [tool.isort]
 profile = "black"
 
-[tool.pylint.MASTER]
-disable = """
-    invalid-name,
-    line-too-long,
-    missing-class-docstring,
-    missing-function-docstring,
-    missing-module-docstring,
-    too-many-return-statements,
-"""
+[tool.ruff]
+ignore = ["E501", "E741"]

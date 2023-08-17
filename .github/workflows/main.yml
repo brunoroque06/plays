@@ -62,12 +62,10 @@ jobs:
           python-version: 3.11.x
           cache: pip
       - run: pip install -r requirements.txt -r requirements-dev.txt
-      - run: |
-          black --check .
-          isort -c .
-      - run: |
-          pylint $(find . -type f -name '*.py')
-          pyright .
+      - run: black --check .
+      - run: isort -c .
+      - run: ruff check .
+      - run: pyright .
       - run: pytest asmt
       - run: playwright install-deps && playwright install chromium
       - run: pytest e2e
@@ -86,9 +84,9 @@ jobs:
           Get-ChildItem -Force reportus `
           | Move-Item -Destination . -Force
           Remove-Item reportus
-          git checkout -b reportus
+          git checkout -b st
           git add -A
           git config user.name 'brunoroque06'
           git config user.email 'brunoroque06@github.com'
           git commit -m 'Release'
-          git push --force origin reportus
+          git push --force origin st

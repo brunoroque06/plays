@@ -17,7 +17,7 @@ def load() -> tuple[pd.DataFrame, pd.DataFrame]:
             left=time.delta_idx(relativedelta(years=r["age_min"])),
             right=time.delta_idx(relativedelta(years=r["age_max"])),
             closed="left",
-        ),
+        ),  # type: ignore
         axis=1,
     )
     std["raw"] = std.apply(
@@ -106,7 +106,7 @@ def process(
         (
             "gvpi",
             "General Visual Perception (GVPI)",
-            sub["standard"].sum(),  # pylint: disable=unsubscriptable-object
+            sub["standard"].sum(),
             "sum6",
         ),
         (
