@@ -18,7 +18,6 @@ def test_dtvp():
         sub["descriptive"] == ["Very Poor", "Poor", "Average", "Average", "Average"]
     ).all()
 
-    # pylint: disable=unsubscriptable-object
     assert (comp["sum_scaled"] == [7, 30, 37]).all()
     assert (comp["percentile"] == ["<1", "50", "14"]).all()
     assert (comp["descriptive"] == ["Very Poor", "Average", "Below Average"]).all()

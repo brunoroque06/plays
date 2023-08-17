@@ -32,7 +32,7 @@ def load() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
                 relativedelta(years=r["age_max_y"], months=r["age_max_m"]), inc=True
             ),
             closed="left",
-        ),
+        ),  # type: ignore
         axis=1,
     )
     rs["raw"] = rs.apply(
