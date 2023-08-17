@@ -76,7 +76,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - shell: pwsh
-        working-directory: reportus
         run: |
           Get-ChildItem -Force `
           | Where-Object { -not ($_.Name -eq '.git' -or $_.Name -eq 'reportus') } `
