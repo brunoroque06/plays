@@ -4,12 +4,12 @@ open Board
 open Xunit
 
 [<Fact>]
-let testCreateBoard () =
+let ``Create board`` () =
     let l = createBoard |> Array.length
     Assert.Equal(9, l)
 
 [<Fact>]
-let testBoardFull () =
+let ``Board full`` () =
     let isFull =
         createBoard
         |> fun b -> List.fold (playMove X) b [ 0..8 ]

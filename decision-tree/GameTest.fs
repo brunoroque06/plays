@@ -5,12 +5,12 @@ open Game
 open Xunit
 
 [<Fact>]
-let evaluateOnGoingGame () =
+let ``Evaluate ongoing game`` () =
     let p = createBoard |> evaluatePosition
     Assert.Equal(Position.Playing, p)
 
 [<Fact>]
-let evaluateXWin () =
+let ``Evaluate X win`` () =
     let p =
         createBoard
         |> fun board -> List.fold (playMove X) board [ 0; 1; 2 ]
@@ -19,7 +19,7 @@ let evaluateXWin () =
     Assert.Equal(Position.XWon, p)
 
 [<Fact>]
-let evaluateDraw () =
+let ``Evaluate draw`` () =
     let p =
         createBoard
         |> fun board -> List.fold (playMove X) board [ 0; 2; 3; 7; 8 ]

@@ -16,9 +16,7 @@ let inCircle (x, y) =
 
 let count (ins, tot) isIn =
     let i = if isIn then ins + 1 else ins
-
-    let t = tot + 1
-    i, t
+    i, tot + 1
 
 let calc (ins, tot) = 4.0 * (ins |> float) / (tot |> float)
 

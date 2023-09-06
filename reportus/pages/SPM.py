@@ -35,8 +35,6 @@ if (
 
 res, rep = spm.process(asmt, form, person, raw)
 
-st.divider()
-
 st.code(rep, language="markdown")
 
 components.table(res)
