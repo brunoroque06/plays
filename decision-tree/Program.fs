@@ -7,10 +7,10 @@ open System
 let rnd len = Random.Shared.Next(0, len)
 
 let players =
-    [| ((pickDummyMove rnd), (pickDummyMove rnd))
-       ((pickDecisionTreeMove 6), (pickDummyMove rnd))
-       ((pickDummyMove rnd), (pickDecisionTreeMove 6))
-       ((pickDummyMove rnd), (pickDecisionTreeMove 5)) |]
+    [| ((dummyMoveStrategy rnd), (dummyMoveStrategy rnd))
+       ((dummyMoveStrategy rnd), (decisionTreeStrategy 5))
+       ((dummyMoveStrategy rnd), (decisionTreeStrategy 6))
+       ((decisionTreeStrategy 6), (dummyMoveStrategy rnd)) |]
 
 for pX, pO in players do
     playMatch 100 pX pO

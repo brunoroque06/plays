@@ -74,7 +74,7 @@ public class Genetics : Grain, IGenetics
         return Task.FromResult(parents);
     }
 
-    private Individual[] CreateMatingPool(Individual[] individuals)
+    private static Individual[] CreateMatingPool(Individual[] individuals)
     {
         var sum = individuals.Select(i => i.Fitness).Sum();
         var pool = new List<Individual>();

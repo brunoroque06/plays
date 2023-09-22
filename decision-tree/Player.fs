@@ -3,7 +3,7 @@ module Player
 open Board
 open Game
 
-let pickDummyMove rnd _ board =
+let dummyMoveStrategy rnd _ board =
     let moves = legalMoves board
     Array.length moves |> rnd |> Array.get moves
 
@@ -32,7 +32,7 @@ let bestLeaf leaves =
     | X -> findWin XWon
     | _ -> findWin OWon
 
-let pickDecisionTreeMove depth piece board =
+let decisionTreeStrategy depth piece board =
     let rec revolveLeaf depth piece board move =
         let board' = playMove piece board move
         let position = evaluatePosition board'
