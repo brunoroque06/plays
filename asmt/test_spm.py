@@ -66,7 +66,7 @@ def test_spm(form, raw, ts):
 
     res, rep = spm.process(today, form, "t", raw)
 
-    for k, v in ts.items():
-        assert res.filter(pl.col("id") == k).select("t").item() == v
+    for i, t in ts.items():
+        assert res.filter(pl.col("id") == i).select("t").item() == t
 
     assert len(rep) > 0

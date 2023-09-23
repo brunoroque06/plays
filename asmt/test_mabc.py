@@ -1,3 +1,4 @@
+import polars as pl
 import pytest
 from dateutil.relativedelta import relativedelta
 
@@ -124,9 +125,9 @@ def test_mabc(age, raw, comp_res, agg_res):
     comp, agg, rep = mabc.process(age, raw)
 
     for k, v in comp_res:
-        assert comp.loc[k].standard == v
+        assert comp.filter(pl.col("id") == k).select("standard").item() == v
 
     for k, v in agg_res:
-        assert agg.loc[k].standard == v
+        assert agg.filter(pl.col("id") == k).select("standard").item() == v
 
     assert len(rep) > 0

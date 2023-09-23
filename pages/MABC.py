@@ -1,5 +1,6 @@
 from typing import Callable
 
+import pandas as pd
 import streamlit as st
 from dateutil.relativedelta import relativedelta
 
@@ -74,7 +75,10 @@ for c in [
     ("Balance", "bl"),
 ]:
     components.table(
-        comp.filter(like=c[1], axis=0)
+        comp.to_pandas()
+        .astype({"raw": pd.Int64Dtype()})
+        .set_index("id")
+        .filter(like=c[1], axis=0)
         .sort_values(
             by=["id"],
             key=lambda s: s.map(lambda i: i if len(i) == 4 else i + "z"),
@@ -85,7 +89,9 @@ for c in [
 
 order = {"hg": 0, "bf": 1, "bl": 2, "total": 4}
 components.table(
-    agg.sort_values(by=["id"], key=lambda x: x.map(order))
+    agg.to_pandas()
+    .set_index("id")
+    .sort_values(by=["id"], key=lambda x: x.map(order))
     .style.apply(color_row, axis=1)
     .format({"percentile": "{:.1f}"}),
     "Aggregated",

@@ -20,40 +20,44 @@ def get_scores() -> list[tuple[str, str]]:
     ]
 
 
+class Data:
+    def __init__(self, data: pl.DataFrame):
+        self.data = data
+
+    def get_row(self, form: str, i: str, r: int):
+        return self.data.filter(
+            (pl.col("type") == form)
+            & (pl.col("id") == i)
+            & (pl.col("raw_min") <= r)
+            & (pl.col("raw_max") >= r)
+        )
+
+
 @st.cache_data
-def load() -> pl.DataFrame:
+def _load() -> Data:
     classroom = pl.read_csv("data/spm-classroom.csv")
     classroom = classroom.with_columns(pl.lit("classroom").alias("type"))
 
     home = pl.read_csv("data/spm-home.csv")
     home = home.with_columns(pl.lit("home").alias("type"))
 
-    return pl.concat([classroom, home])
-
-
-def get_row(data: pl.DataFrame, form: str, k: str, v: int):
-    return data.filter(
-        (pl.col("type") == form)
-        & (pl.col("id") == k)
-        & (pl.col("raw_min") <= v)
-        & (pl.col("raw_max") >= v)
-    )
+    return Data(pl.concat([classroom, home]))
 
 
 def validate():
-    data = load()
+    data = _load()
     types = ["classroom", "home"]
     ids = ["tot" if s[0] == "items" else s[0] for s in get_scores()]
     raws = range(0, 171)
 
     for t, i, r in itertools.product(types, ids, raws):
-        row = get_row(data, t, i, r)
+        row = data.get_row(t, i, r)
         assert row.is_empty() is False
         for c in ["percentile", "t"]:
             assert row.select(c).item() > 0
 
 
-def report(asmt: date, form: str, person: str, res: pl.DataFrame) -> str:
+def _report(asmt: date, form: str, person: str, res: pl.DataFrame) -> str:
     asmt_fmt = time.format_date(asmt, False)
     header = [
         "Sensory Processing Measure (SPM): Classroom Form",
@@ -80,8 +84,8 @@ def report(asmt: date, form: str, person: str, res: pl.DataFrame) -> str:
     return "\n".join(
         header
         + [
-            f"{d}: PR {res.filter(pl.col('id') == k).select('percentile').item()} - \"{res.filter(pl.col('id') == k).select('interpretive').item()}\""
-            for k, d in scores
+            f"{d}: PR {res.filter(pl.col('id') == i).select('percentile').item()} - \"{res.filter(pl.col('id') == i).select('interpretive').item()}\""
+            for i, d in scores
         ]
     )
 
@@ -89,7 +93,7 @@ def report(asmt: date, form: str, person: str, res: pl.DataFrame) -> str:
 def process(
     asmt: date, form: str, person: str, raw: dict[str, int]
 ) -> tuple[pl.DataFrame, str]:
-    data = load()
+    data = _load()
 
     form = form.lower()
 
@@ -110,19 +114,19 @@ def process(
             return "Some Problems"
         return "Definite Dysfunction"
 
-    def form_row(k: str, v: int):
-        row = get_row(data, form, k, v)
+    def form_row(i: str, r: int):
+        row = data.get_row(form, i, r)
         return [
-            k,
-            v,
+            i,
+            r,
             row.select("t").item(),
             per(row.select("percentile").item()),
             inter(row.select("t").item()),
         ]
 
     res = pl.DataFrame(
-        [form_row(k, v) for k, v in raw.items()],
+        [form_row(i, r) for i, r in raw.items()],
         schema=["id", "raw", "t", "percentile", "interpretive"],
     )
 
-    return res, report(asmt, form, person, res)
+    return res, _report(asmt, form, person, res)

@@ -1,40 +1,40 @@
 import math
-import typing
 from datetime import date
 from enum import Enum
 from typing import Optional
 
-import pandas as pd
+import polars as pl
 import streamlit as st
 from dateutil.relativedelta import relativedelta
 
 from asmt import time
 
 
+class Data:
+    def __init__(self, map_i: pl.DataFrame, map_t: pl.DataFrame):
+        self.map_i = map_i
+        self.map_t = map_t
+
+    def get_i_row(self, i: str, age: int, r: int):
+        return self.map_i.filter(
+            (pl.col("id") == i)
+            & (pl.col("age_min") <= age)
+            & (pl.col("age_max") > age)
+            & (pl.col("raw_min") <= r)
+            & (pl.col("raw_max") >= r)
+        )
+
+    def get_t_row(self, i: str, r: int):
+        return self.map_t.filter(
+            (pl.col("id") == i) & (pl.col("raw_min") <= r) & (pl.col("raw_max") >= r)
+        )
+
+
 @st.cache_data
-@typing.no_type_check
-def load() -> tuple[pd.DataFrame, pd.DataFrame]:
-    map_i = pd.read_csv("data/mabc-i.csv")
-    map_i["age"] = map_i.apply(
-        lambda r: pd.Interval(left=r["age_min"], right=r["age_max"], closed="left"),
-        axis=1,
-    )
-    map_i["raw"] = map_i.apply(
-        lambda r: pd.Interval(left=r["raw_min"], right=r["raw_max"] + 1, closed="left"),
-        axis=1,
-    )
-    map_i = map_i.drop(["age_max", "age_min", "rank", "raw_max", "raw_min"], axis=1)
-    map_i = map_i.set_index(["id", "age", "raw"], verify_integrity=True).sort_index()
-
-    map_t = pd.read_csv("data/mabc-t.csv")
-    map_t["raw"] = map_t.apply(
-        lambda r: pd.Interval(left=r["raw_min"], right=r["raw_max"] + 1, closed="left"),
-        axis=1,
-    )
-    map_t = map_t.drop(["rank", "raw_max", "raw_min"], axis=1)
-    map_t = map_t.set_index(["id", "raw"], verify_integrity=True).sort_index()
-
-    return map_i, map_t
+def _load() -> Data:
+    map_i = pl.read_csv("data/mabc-i.csv")
+    map_t = pl.read_csv("data/mabc-t.csv")
+    return Data(map_i, map_t)
 
 
 def get_comps(age: relativedelta) -> dict[str, list[str]]:
@@ -55,12 +55,12 @@ def get_failed() -> list[str]:
     return ["hg11", "hg12", "hg2", "hg3"]
 
 
-def process_comp(
-    map_i: pd.DataFrame, age: int, raw: dict[str, Optional[int]]
+def _process_comp(
+    data: Data, age: int, raw: dict[str, Optional[int]]
 ) -> dict[str, tuple[int | None, int]]:
     comp: dict[str, tuple[int | None, int]] = {}
     for k, v in raw.items():
-        std = 1 if v is None else map_i.loc[k].loc[age].loc[v]["standard"]
+        std = 1 if v is None else data.get_i_row(k, age, v).select("standard").item()
         comp[k] = (v, std)
 
     def avg(v0: int, v1: int) -> int:
@@ -80,8 +80,8 @@ def process_comp(
     return comp
 
 
-def process_agg(
-    map_t: pd.DataFrame, comp: dict[str, tuple[int | None, int]]
+def _process_agg(
+    data: Data, comp: dict[str, tuple[int | None, int]]
 ) -> dict[str, list[int]]:
     agg = {}
 
@@ -89,12 +89,20 @@ def process_agg(
         score = sum(
             v[1] if len(k) == 3 and k.startswith(cmp) else 0 for k, v in comp.items()
         )
-        row = map_t.loc[cmp].loc[score]
-        agg[cmp] = [score, row["standard"], row["percentile"]]
+        row = data.get_t_row(cmp, score)
+        agg[cmp] = [
+            score,
+            row.select("standard").item(),
+            row.select("percentile").item(),
+        ]
 
     score = sum(v[0] for v in agg.values())
-    row = map_t.loc["gw"].loc[score]
-    agg["total"] = [score, row["standard"], row["percentile"]]
+    row = data.get_t_row("gw", score)
+    agg["total"] = [
+        score,
+        row.select("standard").item(),
+        row.select("percentile").item(),
+    ]
 
     return agg
 
@@ -121,40 +129,30 @@ def process(
     raw: dict[str, Optional[int]],
     asmt: date | None = None,
     hand: str = "Right",
-) -> tuple[pd.DataFrame, pd.DataFrame, str]:
+) -> tuple[pl.DataFrame, pl.DataFrame, str]:
     if asmt is None:
         asmt = date.today()
 
-    map_i, map_t = load()
+    data = _load()
 
-    comp = process_comp(map_i, age.years, raw)
+    comp = _process_comp(data, age.years, raw)
 
-    agg = process_agg(map_t, comp)
+    agg = _process_agg(data, comp)
 
-    comp_res = (
-        pd.DataFrame(
-            [[k, *list(v)] for k, v in comp.items()],
-            columns=["id", "raw", "standard"],
-        )
-        .set_index("id")
-        .sort_index()
-        .astype({"raw": pd.Int64Dtype()})
+    comp_res = pl.DataFrame(
+        [[k, *list(v)] for k, v in comp.items()],
+        schema=["id", "raw", "standard"],
     )
 
-    agg_res = (
-        pd.DataFrame(
-            [[k, *list(v)] for k, v in agg.items()],
-            columns=["id", "raw", "standard", "percentile"],
-        )
-        .set_index("id")
-        .sort_index()
-        .astype({"raw": int, "standard": int})
+    agg_res = pl.DataFrame(
+        [[k, *list(v)] for k, v in agg.items()],
+        schema=["id", "raw", "standard", "percentile"],
     )
 
     return comp_res, agg_res, report(asmt, age, hand, agg_res)
 
 
-def report(asmt: date, age: relativedelta, hand: str, agg: pd.DataFrame) -> str:
+def report(asmt: date, age: relativedelta, hand: str, agg: pl.DataFrame) -> str:
     if age.years < 7:
         group = "3-6"
     elif age.years < 11:
@@ -172,16 +170,24 @@ def report(asmt: date, age: relativedelta, hand: str, agg: pd.DataFrame) -> str:
             return "kritisch"
         return "therapiebedürftig"
 
+    def perc(i: str):
+        return agg.filter(pl.col("id") == i).select("percentile").item()
+
+    def std(i: str):
+        return agg.filter(pl.col("id") == i).select("standard").item()
+
+    tot = agg.filter(pl.col("id") == "total")
+
     return "\n".join(
         [
             f"Movement Assessment Battery for Children 2nd Edition (M-ABC 2) - {time.format_date(asmt)}",
             f"Protokollbogen Altersgruppe: {group} Jahre",
             "",
-            f"Handgeschicklichkeit: PR {agg.loc['hg']['percentile']} - {rank_str(agg.loc['hg']['standard'])}",
+            f"Handgeschicklichkeit: PR {perc('hg')} - {rank_str(std('hg'))}",
             f"Händigkeit: {'Rechts' if hand == 'Right' else 'Links'}",
-            f"Ballfertigkeit: PR {agg.loc['bf']['percentile']} - {rank_str(agg.loc['bf']['standard'])}",
-            f"Balance: PR {agg.loc['bl']['percentile']} - {rank_str(agg.loc['bl']['standard'])}",
+            f"Ballfertigkeit: PR {perc('bf')} - {rank_str(std('bf'))}",
+            f"Balance: PR {perc('bl')} - {rank_str(std('bl'))}",
             "",
-            f"Gesamttestwert: PR {agg.loc['total']['percentile']} - {rank_str(agg.loc['total']['standard'])}",
+            f"Gesamttestwert: PR {tot.select('percentile').item()} - {rank_str(tot.select('standard').item())}",
         ]
     )
