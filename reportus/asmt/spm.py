@@ -22,13 +22,13 @@ def get_scores() -> list[tuple[str, str]]:
 
 @st.cache_data
 def load() -> pl.DataFrame:
-    clroom = pl.read_csv("data/spm-classroom.csv")
-    clroom = clroom.with_columns(pl.lit("classroom").alias("type"))
+    classroom = pl.read_csv("data/spm-classroom.csv")
+    classroom = classroom.with_columns(pl.lit("classroom").alias("type"))
 
     home = pl.read_csv("data/spm-home.csv")
     home = home.with_columns(pl.lit("home").alias("type"))
 
-    return pl.concat([clroom, home])
+    return pl.concat([classroom, home])
 
 
 def get_row(data: pl.DataFrame, form: str, k: str, v: int):
@@ -51,14 +51,6 @@ def validate():
         assert row.is_empty() is False
         for c in ["percentile", "t"]:
             assert row.select(c).item() > 0
-
-
-def inter(t: int) -> str:
-    if t < 60:
-        return "Typical"
-    if t < 70:
-        return "Some Problems"
-    return "Definite Dysfunction"
 
 
 def report(asmt: date, form: str, person: str, res: pl.DataFrame) -> str:
@@ -111,17 +103,25 @@ def process(
             return ">99"
         return str(p)
 
+    def inter(t: int) -> str:
+        if t < 60:
+            return "Typical"
+        if t < 70:
+            return "Some Problems"
+        return "Definite Dysfunction"
+
+    def form_row(k: str, v: int):
+        row = get_row(data, form, k, v)
+        return [
+            k,
+            v,
+            row.select("t").item(),
+            per(row.select("percentile").item()),
+            inter(row.select("t").item()),
+        ]
+
     res = pl.DataFrame(
-        [
-            [
-                k,
-                v,
-                get_row(data, form, k, v).select("t").item(),
-                per(get_row(data, form, k, v).select("percentile").item()),
-                inter(get_row(data, form, k, v).select("t").item()),
-            ]
-            for k, v in raw.items()
-        ],
+        [form_row(k, v) for k, v in raw.items()],
         schema=["id", "raw", "t", "percentile", "interpretive"],
     )
 
