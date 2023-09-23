@@ -49,9 +49,15 @@ def validate():
         raws = range(0, 122)
 
         for i, r in itertools.product(ids, raws):
-            print(i, a, r)
             row = data.get_i_row(i, a, r)
             assert row.select("standard").item() > 0
+
+    ids = ["hg", "bf", "bl", "gw"]
+    raws = range(0, 109)
+    for i, r in itertools.product(ids, raws):
+        row = data.get_t_row(i, r)
+        assert row.select("standard").item() > 0
+        assert row.select("percentile").item() > 0
 
 
 def get_comps(age: relativedelta) -> dict[str, list[str]]:
