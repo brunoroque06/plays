@@ -1,3 +1,4 @@
+import itertools
 import math
 from datetime import date
 from enum import Enum
@@ -35,6 +36,22 @@ def _load() -> Data:
     map_i = pl.read_csv("data/mabc-i.csv")
     map_t = pl.read_csv("data/mabc-t.csv")
     return Data(map_i, map_t)
+
+
+def validate():
+    data = _load()
+    ages = range(
+        data.map_i.select("age_min").min().item(),
+        data.map_i.select("age_max").max().item(),
+    )
+    for a in ages:
+        ids = [i for lst in get_comps(relativedelta(years=a)).values() for i in lst]
+        raws = range(0, 122)
+
+        for i, r in itertools.product(ids, raws):
+            print(i, a, r)
+            row = data.get_i_row(i, a, r)
+            assert row.select("standard").item() > 0
 
 
 def get_comps(age: relativedelta) -> dict[str, list[str]]:
