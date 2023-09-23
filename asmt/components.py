@@ -7,6 +7,10 @@ from dateutil.relativedelta import relativedelta
 from pandas.io.formats.style import Styler
 
 
+def date_input(label: str, date: datetime.date, **kwargs):
+    return st.date_input(label, date, format="DD.MM.YYYY", **kwargs)
+
+
 def dates(
     min_years: int,
     max_years: int,
@@ -16,13 +20,13 @@ def dates(
 
     today = datetime.date.today()
     with col1:
-        asmt = st.date_input("Assessment", today, max_value=today)
+        asmt = date_input("Assessment", today, max_value=today)
 
     if not isinstance(asmt, datetime.date):
         raise TypeError("not date")
 
     with col2:
-        birth = st.date_input(
+        birth = date_input(
             "Birthday",
             asmt - relativedelta(years=min_years + int((max_years - min_years) / 2)),
             max_value=asmt - relativedelta(years=min_years),
