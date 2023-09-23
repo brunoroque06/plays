@@ -1,7 +1,7 @@
-import typing
+import itertools
 from datetime import date
 
-import pandas as pd
+import polars as pl
 import streamlit as st
 
 from asmt import time
@@ -21,24 +21,36 @@ def get_scores() -> list[tuple[str, str]]:
 
 
 @st.cache_data
-@typing.no_type_check
-def load() -> pd.DataFrame:
-    clroom = pd.read_csv("data/spm-classroom.csv")
-    clroom["type"] = "classroom"
+def load() -> pl.DataFrame:
+    clroom = pl.read_csv("data/spm-classroom.csv")
+    clroom = clroom.with_columns(pl.lit("classroom").alias("type"))
 
-    home = pd.read_csv("data/spm-home.csv")
-    home["type"] = "home"
+    home = pl.read_csv("data/spm-home.csv")
+    home = home.with_columns(pl.lit("home").alias("type"))
 
-    both = pd.concat([clroom, home])
+    return pl.concat([clroom, home])
 
-    both["raw"] = both.apply(
-        lambda r: pd.Interval(left=r["raw_min"], right=r["raw_max"] + 1, closed="left"),
-        axis=1,
+
+def get_row(data: pl.DataFrame, form: str, k: str, v: int):
+    return data.filter(
+        (pl.col("type") == form)
+        & (pl.col("id") == k)
+        & (pl.col("raw_min") <= v)
+        & (pl.col("raw_max") >= v)
     )
 
-    both = both.drop(["raw_min", "raw_max"], axis=1)
 
-    return both.set_index(["type", "id", "raw"], verify_integrity=True).sort_index()
+def validate():
+    data = load()
+    types = ["classroom", "home"]
+    ids = ["tot" if s[0] == "items" else s[0] for s in get_scores()]
+    raws = range(0, 171)
+
+    for t, i, r in itertools.product(types, ids, raws):
+        row = get_row(data, t, i, r)
+        assert row.is_empty() is False
+        for c in ["percentile", "t"]:
+            assert row.select(c).item() > 0
 
 
 def inter(t: int) -> str:
@@ -49,7 +61,7 @@ def inter(t: int) -> str:
     return "Definite Dysfunction"
 
 
-def report(asmt: date, form: str, person: str, res: pd.DataFrame) -> str:
+def report(asmt: date, form: str, person: str, res: pl.DataFrame) -> str:
     asmt_fmt = time.format_date(asmt, False)
     header = [
         "Sensory Processing Measure (SPM): Classroom Form",
@@ -76,7 +88,7 @@ def report(asmt: date, form: str, person: str, res: pd.DataFrame) -> str:
     return "\n".join(
         header
         + [
-            f"{d}: PR {res.loc[k]['percentile']} - \"{res.loc[k]['interpretive']}\""
+            f"{d}: PR {res.filter(pl.col('id') == k).select('percentile').item()} - \"{res.filter(pl.col('id') == k).select('interpretive').item()}\""
             for k, d in scores
         ]
     )
@@ -84,7 +96,7 @@ def report(asmt: date, form: str, person: str, res: pd.DataFrame) -> str:
 
 def process(
     asmt: date, form: str, person: str, raw: dict[str, int]
-) -> tuple[pd.DataFrame, str]:
+) -> tuple[pl.DataFrame, str]:
     data = load()
 
     form = form.lower()
@@ -99,18 +111,18 @@ def process(
             return ">99"
         return str(p)
 
-    res = pd.DataFrame(
+    res = pl.DataFrame(
         [
             [
                 k,
                 v,
-                data.loc[form].loc[k].loc[v]["t"],
-                per(data.loc[form].loc[k].loc[v]["percentile"]),
-                inter(data.loc[form].loc[k].loc[v]["t"]),
+                get_row(data, form, k, v).select("t").item(),
+                per(get_row(data, form, k, v).select("percentile").item()),
+                inter(get_row(data, form, k, v).select("t").item()),
             ]
             for k, v in raw.items()
         ],
-        columns=["id", "raw", "t", "percentile", "interpretive"],
-    ).set_index("id")
+        schema=["id", "raw", "t", "percentile", "interpretive"],
+    )
 
     return res, report(asmt, form, person, res)

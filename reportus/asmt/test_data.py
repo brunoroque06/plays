@@ -75,15 +75,3 @@ def test_mabc_data():
         for r in range(0, maxi + 2):
             for v in raw.loc[r]:
                 assert not pd.isna(v)
-
-
-def test_spm_data():
-    df = spm.load()
-
-    for t in df.index.get_level_values(0).unique():
-        for i in df.index.get_level_values(1).unique():
-            raw = df.loc[t].loc[i]
-            maxi = int(raw.index.max().left)
-            for r in range(0, maxi + 2):
-                for v in raw.loc[r]:
-                    assert not pd.isna(v)

@@ -1,8 +1,13 @@
 import datetime
 
+import polars as pl
 import pytest
 
 from asmt import spm
+
+
+def test_data():
+    spm.validate()
 
 
 @pytest.mark.parametrize(
@@ -62,6 +67,6 @@ def test_spm(form, raw, ts):
     res, rep = spm.process(today, form, "t", raw)
 
     for k, v in ts.items():
-        assert res.loc[k].t == v
+        assert res.filter(pl.col("id") == k).select("t").item() == v
 
     assert len(rep) > 0

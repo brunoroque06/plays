@@ -8,12 +8,15 @@ st.subheader("SPM")
 
 cols = st.columns(3)
 today = date.today()
-asmt = cols[0].date_input("Assessment", today, max_value=today)
-form = cols[1].selectbox("Form", ("Classroom", "Home"))
-person = cols[2].selectbox(
-    "Filled by",
-    ("Km", "Kv", "Ke") if form == "Home" else ("LP", "BP"),
-)
+with cols[0]:
+    asmt = components.date_input("Assessment", today, max_value=today)
+with cols[1]:
+    form = st.selectbox("Form", ("Classroom", "Home"))
+with cols[2]:
+    person = st.selectbox(
+        "Filled by",
+        ("Km", "Kv", "Ke") if form == "Home" else ("LP", "BP"),
+    )
 
 scores = spm.get_scores()
 
@@ -37,4 +40,4 @@ res, rep = spm.process(asmt, form, person, raw)
 
 st.code(rep, language="markdown")
 
-components.table(res)
+components.table(res.to_pandas().set_index("id"))
