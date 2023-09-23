@@ -5,6 +5,10 @@ from dateutil.relativedelta import relativedelta
 from asmt import mabc
 
 
+def test_data():
+    mabc.validate()
+
+
 @pytest.mark.parametrize(
     ("age", "raw", "comp_res", "agg_res"),
     [

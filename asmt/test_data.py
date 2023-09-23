@@ -1,7 +1,7 @@
 import pandas as pd
 from dateutil.relativedelta import relativedelta
 
-from asmt import dtvp, dtvpa, mabc, time
+from asmt import dtvp, dtvpa, time
 
 
 def test_dtvp_data():
@@ -51,27 +51,4 @@ def test_dtvpa_data():
         maxi = int(idxs.index.max())
         for r in range(mini, maxi + 1):
             for v in idxs.loc[r]:
-                assert not pd.isna(v)
-
-
-def test_mabc_data():
-    map_i, map_t = mabc.load()
-
-    for i in map_i.index.get_level_values(0).unique():
-        idx = map_i.loc[i].index.get_level_values(0)
-        miny = int(idx.min().left)
-        maxy = int(idx.max().left)
-        for y in range(miny, maxy + 1):
-            age = relativedelta(years=y)
-            age_df = map_i.loc[i].loc[time.delta_idx(age)]
-            maxi = int(age_df.index.max().left)
-            for r in range(0, maxi + 2):
-                for v in age_df.loc[r]:
-                    assert not pd.isna(v)
-
-    for i in map_t.index.get_level_values(0).unique():
-        raw = map_t.loc[i]
-        maxi = int(raw.index.max().left)
-        for r in range(0, maxi + 2):
-            for v in raw.loc[r]:
                 assert not pd.isna(v)
