@@ -1,3 +1,4 @@
+import dataclasses
 import itertools
 from datetime import date
 
@@ -20,9 +21,9 @@ def get_scores() -> list[tuple[str, str]]:
     ]
 
 
+@dataclasses.dataclass(frozen=True)
 class Data:
-    def __init__(self, data: pl.DataFrame):
-        self.data = data
+    data: pl.DataFrame
 
     def get_row(self, form: str, i: str, r: int):
         return self.data.filter(

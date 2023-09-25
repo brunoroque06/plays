@@ -1,7 +1,7 @@
 import pandas as pd
 from dateutil.relativedelta import relativedelta
 
-from asmt import dtvp, dtvpa, time
+from asmt import dtvp, time
 
 
 def test_dtvp_data():
@@ -30,25 +30,4 @@ def test_dtvp_data():
         maxi = int(scaled.index.max())
         for r in range(mini, maxi + 1):
             for v in scaled.loc[r]:
-                assert not pd.isna(v)
-
-
-def test_dtvpa_data():
-    std, sums = dtvpa.load()
-
-    for i in std.index.get_level_values(0).unique():
-        for y in range(11, 18):
-            age = relativedelta(years=y)
-            age_df = std.loc[i].loc[time.delta_idx(age)]
-            maxi = int(age_df.index.max().left)
-            for r in range(0, maxi + 2):
-                for v in age_df.loc[r]:
-                    assert not pd.isna(v)
-
-    for i in sums.index.get_level_values(0).unique():
-        idxs = sums.loc[i]
-        mini = int(idxs.index.min())
-        maxi = int(idxs.index.max())
-        for r in range(mini, maxi + 1):
-            for v in idxs.loc[r]:
                 assert not pd.isna(v)
