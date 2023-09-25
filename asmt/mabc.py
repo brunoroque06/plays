@@ -1,3 +1,4 @@
+import dataclasses
 import itertools
 import math
 from datetime import date
@@ -11,10 +12,10 @@ from dateutil.relativedelta import relativedelta
 from asmt import time
 
 
+@dataclasses.dataclass(frozen=True)
 class Data:
-    def __init__(self, map_i: pl.DataFrame, map_t: pl.DataFrame):
-        self.map_i = map_i
-        self.map_t = map_t
+    map_i: pl.DataFrame
+    map_t: pl.DataFrame
 
     def get_i_row(self, i: str, age: int, r: int):
         return self.map_i.filter(
