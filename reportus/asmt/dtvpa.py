@@ -156,12 +156,8 @@ def process(
         return [idx, dtvp.to_pr(row.select("percentile").item()), dtvp.desc_index(idx)]
 
     comp = pl.DataFrame(
-        [[l, su] + get_comp(i, su) for _, l, su, i in comps],
+        [[l, su, *get_comp(i, su)] for _, l, su, i in comps],
         schema=["id", "sum_standard", "index", "%ile", "description"],
     )
 
-    return (
-        sub.to_pandas().drop(columns=["id"]).set_index("label"),
-        comp.to_pandas().set_index("id"),
-        report(asmt, sub, comp),
-    )
+    return (sub, comp, report(asmt, sub, comp))
