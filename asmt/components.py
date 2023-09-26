@@ -67,6 +67,8 @@ def dtvp(title: str, min_age: int, max_age: int, mod):
             raw[k] = st.number_input(v, step=1)
 
     sub, comp, rep = mod.process(age, raw, asmt_date)
+    sub = sub.to_pandas().drop(columns=["id"]).set_index("label")
+    comp = comp.to_pandas().set_index("id")
 
     st.code(rep, language="markdown")
     table(sub, "Subtest")

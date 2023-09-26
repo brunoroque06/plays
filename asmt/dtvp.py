@@ -1,54 +1,77 @@
-import typing
+import dataclasses
+import itertools
 from datetime import date
 
-import pandas as pd
+import polars as pl
 import streamlit as st
 from dateutil.relativedelta import relativedelta
 
 from asmt import time
 
 
+@dataclasses.dataclass(frozen=True)
+class Data:
+    ra: pl.DataFrame
+    rs: pl.DataFrame
+    sp: pl.DataFrame
+
+    def get_ra(self, i, raw):
+        return self.ra.filter(
+            (pl.col("id") == i)
+            & (pl.col("raw_min") <= raw)
+            & (pl.col("raw_max") >= raw)
+        )
+
+    def get_rs(self, i: str, age: relativedelta, raw: int):
+        months = age.years * 12 + age.months
+        return self.rs.filter(
+            (pl.col("id") == i)
+            & (pl.col("age_min") <= months)
+            & (pl.col("age_max") >= months)
+            & (pl.col("raw_min") <= raw)
+            & (pl.col("raw_max") >= raw)
+        )
+
+    def get_sp(self, i: str, s: int):
+        return self.sp.filter((pl.col("id") == i) & (pl.col("scaled") == s))
+
+
 @st.cache_data
-@typing.no_type_check
-def load() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    ra = pd.read_csv("data/dtvp-raw-ageeq.csv")
-    ra["raw"] = ra.apply(
-        lambda r: pd.Interval(left=r["raw_min"], right=r["raw_max"] + 1, closed="left"),
-        axis=1,
+def _load() -> Data:
+    ra = pl.read_csv("data/dtvp-raw-ageeq.csv")
+    rs = pl.read_csv("data/dtvp-raw-sca.csv")
+    rs = rs.with_columns(
+        age_min=pl.col("age_min_y") * 12 + pl.col("age_min_m"),
+        age_max=pl.col("age_max_y") * 12 + pl.col("age_max_m"),
     )
-    ra["age_eq"] = ra.apply(
-        lambda r: relativedelta(years=r["age_eq_y"], months=r["age_eq_m"]), axis=1  # type: ignore
-    )
-    ra = ra.drop(["raw_min", "raw_max", "age_eq_y", "age_eq_m"], axis=1)
-    ra = ra.set_index(["id", "raw"], verify_integrity=True).sort_index()
+    sp = pl.read_csv("data/dtvp-sca-per.csv")
+    return Data(ra, rs, sp)
 
-    rs = pd.read_csv("data/dtvp-raw-sca.csv")
-    rs["age"] = rs.apply(
-        lambda r: pd.Interval(
-            left=time.delta_idx(
-                relativedelta(years=r["age_min_y"], months=r["age_min_m"])
-            ),
-            right=time.delta_idx(
-                relativedelta(years=r["age_max_y"], months=r["age_max_m"]), inc=True
-            ),
-            closed="left",
-        ),  # type: ignore
-        axis=1,
-    )
-    rs["raw"] = rs.apply(
-        lambda r: pd.Interval(left=r["raw_min"], right=r["raw_max"] + 1, closed="left"),
-        axis=1,
-    )
-    rs = rs.drop(
-        ["age_min_y", "age_min_m", "age_max_y", "age_max_m", "raw_min", "raw_max"],
-        axis=1,
-    )
-    rs = rs.set_index(["id", "age", "raw"], verify_integrity=True).sort_index()
 
-    sp = pd.read_csv("data/dtvp-sca-per.csv")
-    sp = sp.set_index(["id", "scaled"], verify_integrity=True).sort_index()
+def validate():
+    data = _load()
 
-    return ra, rs, sp
+    for i, r in itertools.product(get_tests().keys(), range(0, 188)):
+        row = data.get_ra(i, r)
+        assert row.select("age_eq_y").item() >= 0
+        assert row.select("age_eq_m").item() >= 0
+
+    for i, y, m, r in itertools.product(
+        get_tests().keys(), range(4, 13), range(0, 12, 2), range(0, 194)
+    ):
+        print(i, y, m, r)
+        row = data.get_rs(i, relativedelta(years=y, months=m), r)
+        assert row.select("scaled").item() > 0
+        assert row.select("percentile").item() >= 0
+
+    for i, su in itertools.chain(
+        itertools.product(["vmi"], range(2, 41)),
+        itertools.product(["mrvp"], range(3, 60)),
+        itertools.product(["gvp"], range(5, 99)),
+    ):
+        row = data.get_sp(i, su)
+        assert row.select("percentile").item() >= 0
+        assert row.select("index").item() > 0
 
 
 def get_tests() -> dict[str, str]:
@@ -111,80 +134,82 @@ def to_age(a: str) -> str:
 
 def process(
     age: relativedelta, raw: dict[str, int], asmt: date | None = None
-) -> tuple[pd.DataFrame, pd.DataFrame, str]:
+) -> tuple[pl.DataFrame, pl.DataFrame, str]:
     if asmt is None:
         asmt = date.today()
 
-    ra, rs, sp = load()
+    data = _load()
 
     tests = get_tests()
 
-    def age_eq(k: str):
-        a = ra.loc[k].loc[raw[k]]["age_eq"]
-        return f"{a.years};{a.months}"
+    def age_eq(k: str) -> str:
+        row = data.get_ra(k, raw[k])
+        years = row.select("age_eq_y").item()
+        months = row.select("age_eq_m").item()
+        return f"{years};{months}"
 
     def scaled(k: str):
-        l = rs.loc[k].loc[time.delta_idx(age)].loc[raw[k]]
-        per = l["percentile"]
-        sca = l["scaled"]
+        row = data.get_rs(k, age, raw[k])
+        per = row.select("percentile").item()
+        sca = row.select("scaled").item()
         return [per, sca, desc_sca(sca)]
 
-    sub = pd.DataFrame(
+    sub = pl.DataFrame(
         [[k, v, raw[k], age_eq(k), *scaled(k)] for k, v in tests.items()],
-        columns=["id", "label", "raw", "age_eq", "percentile", "scaled", "descriptive"],
-    ).set_index("id")
+        schema=["id", "label", "raw", "age_eq", "percentile", "scaled", "descriptive"],
+    )
 
-    # pylint: disable=unsupported-assignment-operation,unsubscriptable-object
     comps = [
         (
             "vmi",
             "Visual-Motor Integration",
-            sub.loc["eh"]["scaled"] + sub.loc["co"]["scaled"],
+            sub.filter(pl.col("id") == "eh").select("scaled").item()
+            + sub.filter(pl.col("id") == "co").select("scaled").item(),
         ),
         (
             "mrvp",
             "Motor-reduced Visual Perception",
-            sub.loc["fg"]["scaled"] + sub.loc["vc"]["scaled"] + sub.loc["fc"]["scaled"],
+            sub.filter(pl.col("id") == "fg").select("scaled").item()
+            + sub.filter(pl.col("id") == "vc").select("scaled").item()
+            + sub.filter(pl.col("id") == "fc").select("scaled").item(),
         ),
         (
             "gvp",
             "General Visual Perception",
-            sub["scaled"].sum(),
+            sub.select("scaled").sum().item(),
         ),
     ]
 
-    comp = pd.DataFrame(
-        [
-            [
-                l,
-                v,
-                sp.loc[k].loc[v]["percentile"],
-                desc_index(sp.loc[k].loc[v]["index"]),
-                sp.loc[k].loc[v]["index"],
-            ]
-            for k, l, v in comps
-        ],
-        columns=["id", "sum_scaled", "percentile", "descriptive", "index"],
-    ).set_index("id")
+    def get_sp(i: str, s: int):
+        row = data.get_sp(i, s)
+        return [
+            row.select("percentile").item(),
+            desc_index(row.select("index").item()),
+            row.select("index").item(),
+        ]
+
+    comp = pl.DataFrame(
+        [[l, v, *get_sp(k, v)] for k, l, v in comps],
+        schema=["id", "sum_scaled", "percentile", "descriptive", "index"],
+    )
 
     rep = report(asmt, sub, comp)
 
-    sub["age_eq"] = sub["age_eq"].apply(to_age)
-    sub["percentile"] = sub["percentile"].apply(to_pr)
+    sub = sub.with_columns(pl.col("age_eq").apply(to_age))
+    sub = sub.with_columns(pl.col("percentile").apply(to_pr))
+    comp = comp.with_columns(pl.col("percentile").apply(to_pr))
 
-    comp["percentile"] = comp["percentile"].apply(to_pr)
-
-    return sub.set_index("label"), comp, rep
+    return (sub, comp, rep)
 
 
-def report(asmt: date, sub: pd.DataFrame, comp: pd.DataFrame) -> str:
+def report(asmt: date, sub: pl.DataFrame, comp: pl.DataFrame) -> str:
     return "\n".join(
         [
             f"Developmental Test of Visual Perception (DTVP-3) - {time.format_date(asmt)}",
             "",
         ]
         + [
-            f"{n}: PR {to_pr(comp['percentile'][i])} - {desc_index(comp['index'][i], True)}"  # type: ignore
+            f"{n}: PR {to_pr(comp['percentile'][i])} - {desc_index(comp['index'][i], True)}"
             for n, i in [
                 ("Visuomotorische Integration", 0),
                 ("Visuelle Wahrnehmung mit reduzierter motorischer Reaktion", 1),
@@ -193,7 +218,7 @@ def report(asmt: date, sub: pd.DataFrame, comp: pd.DataFrame) -> str:
         ]
         + ["", "Subtests:"]
         + [
-            f"{n}: {to_age(sub['age_eq'][i])} J ({desc_sca(sub['scaled'][i], True)})"  # type: ignore
+            f"{n}: {to_age(sub['age_eq'][i])} J ({desc_sca(sub['scaled'][i], True)})"
             for n, i in [
                 ("Augen-Hand-Koordination", 0),
                 ("Abzeichnen", 1),
