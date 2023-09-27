@@ -195,9 +195,9 @@ def process(
 
     rep = report(asmt, sub, comp)
 
-    sub = sub.with_columns(pl.col("age_eq").apply(to_age))
-    sub = sub.with_columns(pl.col("percentile").apply(to_pr))
-    comp = comp.with_columns(pl.col("percentile").apply(to_pr))
+    sub = sub.with_columns(pl.col("age_eq").map_elements(to_age))
+    sub = sub.with_columns(pl.col("percentile").map_elements(to_pr))
+    comp = comp.with_columns(pl.col("percentile").map_elements(to_pr))
 
     return (sub, comp, rep)
 
