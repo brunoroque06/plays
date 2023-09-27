@@ -14,27 +14,23 @@ def test_dtvp():
 
     sub, comp, rep = dtvp.process(age, raw)
 
-    assert sub.select("raw").to_series().eq([108, 11, 52, 10, 32]).all()
+    assert sub["raw"].eq([108, 11, 52, 10, 32]).all()  # pyright: ignore
     assert (
-        sub.select("age_eq").to_series().eq(["4;3", "4;8", "10;5", "5;10", "6;3"]).all()
-    )
-    assert sub.select("percentile").to_series().eq(["1", "2", "75", "25", "50"]).all()
-    assert sub.select("scaled").to_series().eq([3, 4, 12, 8, 10]).all()
+        sub["age_eq"].eq(["4;3", "4;8", "10;5", "5;10", "6;3"]).all()
+    )  # pyright: ignore
+    assert sub["percentile"].eq(["1", "2", "75", "25", "50"]).all()  # pyright: ignore
+    assert sub["scaled"].eq([3, 4, 12, 8, 10]).all()  # pyright: ignore
     assert (
-        sub.select("descriptive")
-        .to_series()
+        sub["descriptive"]
         .eq(["Very Poor", "Poor", "Average", "Average", "Average"])
         .all()
-    )
+    )  # pyright: ignore
 
-    assert comp.select("sum_scaled").to_series().eq([7, 30, 37]).all()
-    assert comp.select("percentile").to_series().eq(["<1", "50", "14"]).all()
+    assert comp["sum_scaled"].eq([7, 30, 37]).all()  # pyright: ignore
+    assert comp["percentile"].eq(["<1", "50", "14"]).all()  # pyright: ignore
     assert (
-        comp.select("descriptive")
-        .to_series()
-        .eq(["Very Poor", "Average", "Below Average"])
-        .all()
-    )
-    assert comp.select("index").to_series().eq([61, 100, 84]).all()
+        comp["descriptive"].eq(["Very Poor", "Average", "Below Average"]).all()
+    )  # pyright: ignore
+    assert comp["index"].eq([61, 100, 84]).all()  # pyright: ignore
 
     assert len(rep) > 0
