@@ -2,13 +2,7 @@ package main
 
 import (
 	"math/rand"
-	"time"
 )
-
-func RandSetup() {
-	// https://github.com/golang/go/issues/54880
-	rand.Seed(time.Now().UnixNano())
-}
 
 type RandInt func(min, max int) int
 

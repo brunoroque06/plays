@@ -4,10 +4,6 @@ import (
 	"fmt"
 )
 
-func init() {
-	RandSetup()
-}
-
 func main() {
 	graph := NewGraph(Int, Ints, 1000, 10, 1, 24)
 

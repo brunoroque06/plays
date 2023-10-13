@@ -7,7 +7,7 @@ jobs:
       run:
         working-directory: decision-tree
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 7.0.x
@@ -25,12 +25,14 @@ jobs:
       run:
         working-directory: dijkstra
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-go@v4
         with:
-          go-version: 1.19
+          go-version: 1.21
       - run: go build -v
       - run: test -z $(gofmt -l .)
+      - run: go install honnef.co/go/tools/cmd/staticcheck@latest
+      - run: staticcheck .
       - run: go test -v
 
   genetic:
@@ -39,7 +41,7 @@ jobs:
       run:
         working-directory: genetic
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 7.0.x
@@ -56,7 +58,7 @@ jobs:
       run:
         working-directory: reportus
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11.x
@@ -74,7 +76,7 @@ jobs:
     needs: reportus
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - shell: pwsh
         run: |
           Get-ChildItem -Force `

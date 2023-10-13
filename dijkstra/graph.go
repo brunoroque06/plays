@@ -60,7 +60,7 @@ func NewGraph(int RandInt, ints RandInts, nodeNum, edgeNum, min, max int) []Node
 
 		edg, ok := edges[i]
 
-		if ok == false {
+		if !ok {
 			continue
 		}
 
