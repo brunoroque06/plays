@@ -1,4 +1,4 @@
-module PlayerFact
+module PlayerTest
 
 open Board
 open Player

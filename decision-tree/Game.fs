@@ -8,7 +8,12 @@ type Position =
     | Draw
     | OWon
 
-let private samePiece board combs =
+let files = Array.map (fun s -> Array.map ((+) s) [| 0..2 |]) [| 0; 3; 6 |]
+let ranks = Array.map (fun s -> Array.map ((+) s) [| 0; 3; 6 |]) [| 0; 1; 2 |]
+let diags = [| [| 0; 4; 8 |]; [| 2; 4; 6 |] |]
+let combs = Array.concat [| files; ranks; diags |]
+
+let private samePiece board =
     Array.map (Array.map (getPiece board)) combs
     |> Array.filter (fun f ->
         Option.isSome f[0]
@@ -20,13 +25,7 @@ let private samePiece board combs =
     |> Option.map Array.head
 
 let evaluatePosition board =
-    let files = Array.map (fun s -> Array.map ((+) s) [| 0..2 |]) [| 0; 3; 6 |]
-    let ranks = Array.map (fun s -> Array.map ((+) s) [| 0; 3; 6 |]) [| 0; 1; 2 |]
-    let diags = [| [| 0; 4; 8 |]; [| 2; 4; 6 |] |]
-
-    let combs = Array.concat [| files; ranks; diags |]
-
-    let piece = samePiece board combs
+    let piece = samePiece board
 
     match piece with
     | Some p ->
