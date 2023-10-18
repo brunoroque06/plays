@@ -1,8 +1,8 @@
-black==23.9.1
+black==23.10.0
 isort==5.12.0
 pandas-stubs==2.1.1.230928
-playwright==1.38.0
-pyright==1.1.331
+playwright==1.39.0
+pyright==1.1.332
 pytest-playwright==0.4.3
 pytest==7.4.2
 ruff==0.1.0
