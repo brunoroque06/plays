@@ -91,3 +91,24 @@ jobs:
           git config user.email 'brunoroque06@github.com'
           git commit -m 'Release'
           git push --force origin st
+
+  website:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: website
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm run build
+
+  website-audit:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: website
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npm run audit

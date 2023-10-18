@@ -1,12 +1,22 @@
 # Artifacts
 bin
 build
+dist
 obj
 out
 
 # macOS
 .DS_Store
 
+# Node
+.angular
+.lighthouseci
+node_modules
+website/src/assets/docs/bruno-roque-cover.pdf
+website/src/assets/docs/bruno-roque-cv.pdf
+website/src/assets/imgs/favicon-192.png
+
 # Python
 __pycache__
 venv
+
