@@ -5,7 +5,7 @@
   "scripts": {
     "audit": "lhci autorun",
     "build": "npm run pre && ng build",
-    "deploy": "npm run build && gh-pages --branch website --dist dist/brunoroque06 --no-history",
+    "deploy": "npm run build && gh-pages --branch website --dist dist/brunoroque06 --no-history --repo https://github.com/brunoroque06/brunoroque06.github.io.git",
     "format": "prettier --ignore-path .gitignore -w .",
     "format:check": "prettier --ignore-path .gitignore -l .",
     "pre": "node tools/main.js",
