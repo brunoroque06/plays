@@ -13,7 +13,7 @@ let ranks = Array.map (fun s -> Array.map ((+) s) [| 0; 3; 6 |]) [| 0; 1; 2 |]
 let diags = [| [| 0; 4; 8 |]; [| 2; 4; 6 |] |]
 let combs = Array.concat [| files; ranks; diags |]
 
-let private samePiece board =
+let private findWinningPiece board =
     Array.map (Array.map (getPiece board)) combs
     |> Array.filter (fun f ->
         Option.isSome f[0]
@@ -25,7 +25,7 @@ let private samePiece board =
     |> Option.map Array.head
 
 let evaluatePosition board =
-    let piece = samePiece board
+    let piece = findWinningPiece board
 
     match piece with
     | Some p ->
