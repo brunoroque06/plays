@@ -13,13 +13,11 @@ function type(val: string) {
   imports: [AsyncPipe, NgForOf],
   template: `
     <div class="links">
-      <a
-        *ngFor="let l of links"
-        href="{{ l.ref }}"
-        target="_blank"
-        rel="noopener noreferrer"
-        >{{ l.name }}</a
-      >
+      @for (l of links; track l.ref) {
+      <a href="{{ l.ref }}" target="_blank" rel="noopener noreferrer">{{
+        l.name
+      }}</a>
+      }
     </div>
     <div class="name">
       <div>
@@ -35,8 +33,8 @@ export class AppComponent {
     of("Bruno Roque").pipe(
       delay(1000),
       concatMap((n) => from(type(n))),
-      concatMap((n) => of(n).pipe(delay(100))),
-    ),
+      concatMap((n) => of(n).pipe(delay(100)))
+    )
   );
 
   links = [

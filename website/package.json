@@ -14,24 +14,24 @@
     "watch": "npm run pre && ng build --watch --configuration development"
   },
   "dependencies": {
-    "@angular/common": "16.2.8",
-    "@angular/compiler": "16.2.8",
-    "@angular/core": "16.2.8",
-    "@angular/platform-browser": "16.2.8",
+    "@angular/common": "17.0.0",
+    "@angular/compiler": "17.0.0",
+    "@angular/core": "17.0.0",
+    "@angular/platform-browser": "17.0.0",
     "rxjs": "7.8.1",
     "tslib": "2.6.2",
-    "zone.js": "0.13.3"
+    "zone.js": "0.14.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "16.2.8",
-    "@angular/cli": "16.2.8",
-    "@angular/compiler-cli": "16.2.8",
+    "@angular-devkit/build-angular": "17.0.0",
+    "@angular/cli": "17.0.0",
+    "@angular/compiler-cli": "17.0.0",
     "@lhci/cli": "0.12.0",
     "gh-pages": "6.0.0",
     "nodemon": "3.0.1",
     "playwright": "1.39.0",
     "prettier": "3.0.3",
     "sharp": "0.32.6",
-    "typescript": "5.1.6"
+    "typescript": "5.2.2"
   }
 }
