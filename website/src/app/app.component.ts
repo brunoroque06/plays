@@ -14,9 +14,9 @@ function type(val: string) {
   template: `
     <div class="links">
       @for (l of links; track l.ref) {
-      <a href="{{ l.ref }}" target="_blank" rel="noopener noreferrer">{{
-        l.name
-      }}</a>
+        <a href="{{ l.ref }}" target="_blank" rel="noopener noreferrer">{{
+          l.name
+        }}</a>
       }
     </div>
     <div class="name">
