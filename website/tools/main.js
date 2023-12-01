@@ -35,6 +35,6 @@ async function buildFavicons() {
 });
 
 buildPdf("cover.html", "bruno-roque-cover.pdf")
-  .then(() => buildPdf("cv.html", "bruno-roque-cv.pdf"))
+  .then(() => buildPdf("resume.html", "bruno-roque-resume.pdf"))
   .then(buildFavicons)
   .catch((e) => console.error(e));
