@@ -1,4 +1,3 @@
-import { AsyncPipe, NgForOf } from "@angular/common";
 import { Component } from "@angular/core";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { concatMap, delay, from, of } from "rxjs";
@@ -10,7 +9,6 @@ function type(val: string) {
 @Component({
   selector: "app-root",
   standalone: true,
-  imports: [AsyncPipe, NgForOf],
   template: `
     <div class="name">
       <div>
