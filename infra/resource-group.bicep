@@ -2,9 +2,9 @@ targetScope = 'resourceGroup'
 
 param location string
 
-resource cr 'Microsoft.ContainerRegistry/registries@2023-01-01-preview' = {
+resource cr 'Microsoft.ContainerRegistry/registries@2023-11-01-preview' = {
   location: location
-  name: 'crreportus'
+  name: 'crmaino'
   properties: {
     adminUserEnabled: true
   }
@@ -14,11 +14,6 @@ resource cr 'Microsoft.ContainerRegistry/registries@2023-01-01-preview' = {
 }
 
 var user = '8e5b7c2a-3149-45e7-a7ee-3424704f6e75' // https://github.com/Azure/bicep/issues/645
-
-resource acrPull 'Microsoft.Authorization/roleDefinitions@2022-05-01-preview' existing = {
-  name: '7f951dda-4ed3-4680-a7ca-43fe172d538d' // AcrPull
-  scope: subscription()
-}
 
 resource acrPush 'Microsoft.Authorization/roleDefinitions@2022-05-01-preview' existing = {
   name: '8311e382-0749-4cb8-b61a-304f252e45ec' // AcrPush
@@ -34,9 +29,9 @@ resource crUser 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   scope: cr
 }
 
-resource plan 'Microsoft.Web/serverfarms@2022-09-01' = {
+resource plan 'Microsoft.Web/serverfarms@2023-01-01' = {
   location: location
-  name: 'plan-linux-free'
+  name: 'plan-linux'
   kind: 'linux'
   properties: {
     reserved: true
@@ -46,7 +41,7 @@ resource plan 'Microsoft.Web/serverfarms@2022-09-01' = {
   }
 }
 
-resource app 'Microsoft.Web/sites@2022-09-01' = {
+resource app 'Microsoft.Web/sites@2023-01-01' = {
   name: 'app-reportus'
   identity: {
     type: 'SystemAssigned'
@@ -65,6 +60,11 @@ resource app 'Microsoft.Web/sites@2022-09-01' = {
       linuxFxVersion: 'DOCKER|${cr.name}.azurecr.io/reportus:latest'
     }
   }
+}
+
+resource acrPull 'Microsoft.Authorization/roleDefinitions@2022-05-01-preview' existing = {
+  name: '7f951dda-4ed3-4680-a7ca-43fe172d538d' // AcrPull
+  scope: subscription()
 }
 
 resource crApp 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
