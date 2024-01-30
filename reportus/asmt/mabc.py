@@ -64,14 +64,18 @@ def validate():
 def get_comps(age: relativedelta) -> dict[str, list[str]]:
     return {
         "Handgeschicklichkeit": ["hg11", "hg12", "hg2", "hg3"],
-        "Ballfertigkeiten": ["bf1", "bf2"]
-        if age.years < 11
-        else ["bf11", "bf12", "bf2"],
-        "Balance": ["bl11", "bl12", "bl2", "bl3"]
-        if age.years < 7
-        else ["bl11", "bl12", "bl2", "bl31", "bl32"]
-        if age.years < 11
-        else ["bl1", "bl2", "bl31", "bl32"],
+        "Ballfertigkeiten": (
+            ["bf1", "bf2"] if age.years < 11 else ["bf11", "bf12", "bf2"]
+        ),
+        "Balance": (
+            ["bl11", "bl12", "bl2", "bl3"]
+            if age.years < 7
+            else (
+                ["bl11", "bl12", "bl2", "bl31", "bl32"]
+                if age.years < 11
+                else ["bl1", "bl2", "bl31", "bl32"]
+            )
+        ),
     }
 
 
