@@ -45,7 +45,7 @@ public class Time : Grain, ITime
                             .Range(0, parents.Length)
                             .Select(i => _client.GetGrain<IGenetics>(i))
                     )
-                    .Select((z) => z.Second.Breed(z.First))
+                    .Select(z => z.Second.Breed(z.First))
             );
         }
     }
