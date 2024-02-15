@@ -14,7 +14,10 @@ var options = new Options(
 );
 
 var host = new HostBuilder()
-    .ConfigureLogging(logging => { logging.AddConsole(); })
+    .ConfigureLogging(logging =>
+    {
+        logging.AddConsole();
+    })
     .ConfigureServices(services =>
     {
         services.AddScoped<Options>(_ => options).AddScoped<Random>().AddScoped<Stochastic>();

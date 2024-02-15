@@ -10,8 +10,7 @@ public class Genetics : Grain, IGenetics
     private readonly Stochastic _stochastic;
 
     public Genetics(
-        [PersistentState("individual", "genetics")]
-        IPersistentState<Individual> individual,
+        [PersistentState("individual", "genetics")] IPersistentState<Individual> individual,
         Options options,
         Stochastic stochastic
     )
@@ -36,7 +35,7 @@ public class Genetics : Grain, IGenetics
         var best = individuals.OrderByDescending(i => i.Fitness).Take(2).ToArray();
 
         var parents = new (Individual, Individual)[individuals.Length];
-        var elite = (int) (individuals.Length * _options.Elitism);
+        var elite = (int)(individuals.Length * _options.Elitism);
         var pool = CreateMatingPool(individuals);
         foreach (var i in Enumerable.Range(0, individuals.Length))
             if (i < elite)
@@ -84,7 +83,7 @@ public class Genetics : Grain, IGenetics
     private static float CalcFitness(string target, string genes)
     {
         var matches = Enumerable.Range(0, target.Length).Count(i => target[i].Equals(genes[i]));
-        return (float) matches / target.Length;
+        return (float)matches / target.Length;
     }
 
     private async Task SaveIndividual(string genes)
@@ -100,7 +99,7 @@ public class Genetics : Grain, IGenetics
 
         foreach (var ind in individuals)
         {
-            var weight = (int) (ind.Fitness / sum * individuals.Length * 2);
+            var weight = (int)(ind.Fitness / sum * individuals.Length * 2);
             pool.AddRange(Enumerable.Repeat(ind, weight));
         }
 
