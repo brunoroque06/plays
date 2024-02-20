@@ -9,7 +9,7 @@
 }
 
 html {
-  font-size: 16.2px;
+  font-size: 12.5pt;
 }
 
 body {
@@ -28,17 +28,17 @@ body {
 
 .header {
   text-align: center;
-}
 
-.name {
-  font-size: 2rem;
-  font-weight: 600;
-}
+  .name {
+    font-size: 2em;
+    font-weight: 600;
+  }
 
-.title {
-  font-family: var(--font-mono);
-  font-size: 1.3rem;
-  font-weight: 500;
+  .title {
+    font-family: var(--font-mono);
+    font-size: 1.2em;
+    font-weight: 500;
+  }
 }
 
 @page {

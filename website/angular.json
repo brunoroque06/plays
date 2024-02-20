@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "brunoroque06": {
+    "app": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -19,16 +19,17 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/brunoroque06",
+            "outputPath": "dist",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.json",
             "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles.css"],
+            "styles": ["src/style.css"],
             "scripts": []
           },
           "configurations": {
-            "production": {
+            "prod": {
+              "aot": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -41,28 +42,26 @@
                   "maximumError": "4kb"
                 }
               ],
+              "optimization": true,
               "outputHashing": "all"
             },
-            "development": {
+            "dev": {
+              "namedChunks": true,
               "optimization": false,
-              "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
+              "sourceMap": true
             }
-          },
-          "defaultConfiguration": "production"
+          }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
-            "production": {
-              "buildTarget": "brunoroque06:build:production"
+            "prod": {
+              "buildTarget": "app:build:prod"
             },
-            "development": {
-              "buildTarget": "brunoroque06:build:development"
+            "dev": {
+              "buildTarget": "app:build:dev"
             }
-          },
-          "defaultConfiguration": "development"
+          }
         }
       }
     }

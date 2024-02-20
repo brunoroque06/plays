@@ -1,17 +1,17 @@
 {
-  "name": "brunoroque06",
+  "name": "website",
   "private": true,
   "version": "0.0.0",
   "scripts": {
     "audit": "lhci autorun",
-    "build": "npm run pre && ng build",
-    "deploy": "npm run build && gh-pages --branch website --dist dist/brunoroque06/browser --no-history --repo https://github.com/brunoroque06/brunoroque06.github.io.git",
+    "build": "npm run pre && ng build --configuration prod",
+    "deploy": "npm run build && gh-pages --branch website --dist dist/browser --no-history --repo https://github.com/brunoroque06/brunoroque06.github.io.git",
     "format": "prettier --ignore-path .gitignore -w .",
     "format:check": "prettier --ignore-path .gitignore -l .",
     "pre": "node tools/main.js",
     "pre:watch": "nodemon --ext . --watch tools tools/main.js",
-    "start": "npm run pre && ng serve",
-    "watch": "npm run pre && ng build --watch --configuration development"
+    "start": "npm run pre && ng serve --configuration dev",
+    "watch": "npm run pre && ng build --watch --configuration dev"
   },
   "dependencies": {
     "@angular/common": "17.2.0",

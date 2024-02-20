@@ -10,19 +10,21 @@ function type(val: string) {
   selector: "app-root",
   standalone: true,
   template: `
-    <div class="name">
-      <div>
-        <span>{{ name() }}</span>
-        <span class="caret">&nbsp;</span>
+    <div class="container">
+      <div class="header">
+        <div class="name">
+          <span>{{ name() }}</span>
+          <span class="caret">&nbsp;</span>
+        </div>
+        <div class="title">Software Engineer</div>
       </div>
-      <div class="title">Software Engineer</div>
-    </div>
-    <div class="links">
-      @for (l of links; track l.ref) {
-        <a href="{{ l.ref }}" target="_blank" rel="noopener noreferrer">{{
-          l.name
-        }}</a>
-      }
+      <div class="links">
+        @for (l of links; track l.ref) {
+          <a href="{{ l.ref }}" target="_blank" rel="noopener noreferrer">{{
+            l.name
+          }}</a>
+        }
+      </div>
     </div>
   `,
 })
