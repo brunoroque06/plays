@@ -7,10 +7,10 @@ jobs:
       run:
         working-directory: decision-tree
     steps:
-      - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.0.x
+      - uses: actions/checkout@v4
       - run: dotnet restore
       - run: dotnet build
       - run: |
@@ -25,10 +25,10 @@ jobs:
       run:
         working-directory: dijkstra
     steps:
-      - uses: actions/checkout@v4
       - uses: actions/setup-go@v4
         with:
           go-version: 1.22
+      - uses: actions/checkout@v4
       - run: go build -v
       - run: test -z $(gofmt -l .)
       - run: go install honnef.co/go/tools/cmd/staticcheck@latest
@@ -41,10 +41,10 @@ jobs:
       run:
         working-directory: genetic
     steps:
-      - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.0.x
+      - uses: actions/checkout@v4
       - run: dotnet restore
       - run: dotnet build
       - run: |
@@ -58,14 +58,13 @@ jobs:
       run:
         working-directory: reportus
     steps:
-      - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
         with:
-          python-version: 3.11.x
+          python-version: 3.12.x
           cache: pip
+      - uses: actions/checkout@v4
       - run: pip install -r requirements.txt -r requirements-dev.txt
-      - run: black --check .
-      - run: isort -c .
+      - run: ruff check --select I .
       - run: ruff check .
       - run: pyright .
       - run: pytest asmt
@@ -98,6 +97,9 @@ jobs:
       run:
         working-directory: website
     steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 21.x
       - uses: actions/checkout@v4
       - run: npm ci
       - run: npm run format:check
@@ -110,6 +112,9 @@ jobs:
       run:
         working-directory: website
     steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 21.x
       - uses: actions/checkout@v4
       - run: npm ci
       - run: npm run audit
