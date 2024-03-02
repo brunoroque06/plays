@@ -2,4 +2,4 @@
 profile = "black"
 
 [tool.ruff]
-ignore = ["E501", "E741"]
+lint.ignore = ["E501", "E741"]
