@@ -1,3 +1,3 @@
 # Reportus
 
-<https://brunoroque06.streamlit.app>
+<https://app-reportus.azurewebsites.net>

@@ -39,12 +39,12 @@ export class AppComponent {
 
   links = [
     {
-      name: "Resume",
-      ref: "/assets/docs/bruno-roque-resume.pdf",
-    },
-    {
       name: "GitHub",
       ref: "https://github.com/brunoroque06",
+    },
+    {
+      name: "Resume",
+      ref: "/assets/docs/bruno-roque-resume.pdf",
     },
   ];
 }
