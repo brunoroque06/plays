@@ -3,26 +3,15 @@ using Orleans.Runtime;
 
 namespace Genetic;
 
-public class Genetics : Grain, IGenetics
+public class Genetics(
+    [PersistentState("individual", "genetics")] IPersistentState<Individual> individual,
+    Options options,
+    Stochastic stochastic
+) : Grain, IGenetics
 {
-    private readonly IPersistentState<Individual> _individual;
-    private readonly Options _options;
-    private readonly Stochastic _stochastic;
-
-    public Genetics(
-        [PersistentState("individual", "genetics")] IPersistentState<Individual> individual,
-        Options options,
-        Stochastic stochastic
-    )
-    {
-        _individual = individual;
-        _options = options;
-        _stochastic = stochastic;
-    }
-
     public Task<Individual> GetIndividual()
     {
-        return Task.FromResult(_individual.State);
+        return Task.FromResult(individual.State);
     }
 
     public Task<bool> IsMaxFitness(Individual individual)
@@ -35,7 +24,7 @@ public class Genetics : Grain, IGenetics
         var best = individuals.OrderByDescending(i => i.Fitness).Take(2).ToArray();
 
         var parents = new (Individual, Individual)[individuals.Length];
-        var elite = (int)(individuals.Length * _options.Elitism);
+        var elite = (int)(individuals.Length * options.Elitism);
         var pool = CreateMatingPool(individuals);
         foreach (var i in Enumerable.Range(0, individuals.Length))
             if (i < elite)
@@ -44,8 +33,8 @@ public class Genetics : Grain, IGenetics
             }
             else
             {
-                var x = _stochastic.NextInt(0, pool.Length);
-                var y = _stochastic.NextInt(0, pool.Length);
+                var x = stochastic.NextInt(0, pool.Length);
+                var y = stochastic.NextInt(0, pool.Length);
                 parents[i] = (pool[x], pool[y]);
             }
 
@@ -58,9 +47,9 @@ public class Genetics : Grain, IGenetics
         var genes = new StringBuilder();
 
         foreach (var i in Enumerable.Range(0, x.Genes.Length))
-            if (_stochastic.NextInt(0, 100) / 100.0 < _options.MutationRate)
-                genes.Append(_stochastic.NextChar(_options.Pool));
-            else if (_stochastic.NextBool())
+            if (stochastic.NextInt(0, 100) / 100.0 < options.MutationRate)
+                genes.Append(stochastic.NextChar(options.Pool));
+            else if (stochastic.NextBool())
                 genes.Append(x.Genes[i]);
             else
                 genes.Append(y.Genes[i]);
@@ -70,13 +59,13 @@ public class Genetics : Grain, IGenetics
 
     public override async Task OnActivateAsync(CancellationToken cancellationToken)
     {
-        if (_individual.RecordExists)
+        if (individual.RecordExists)
         {
-            await _individual.ReadStateAsync();
+            await individual.ReadStateAsync();
             return;
         }
 
-        var genes = _stochastic.NextString(_options.Pool, _options.TargetGenes.Length);
+        var genes = stochastic.NextString(options.Pool, options.TargetGenes.Length);
         await SaveIndividual(genes);
     }
 
@@ -88,8 +77,8 @@ public class Genetics : Grain, IGenetics
 
     private async Task SaveIndividual(string genes)
     {
-        _individual.State = new Individual(genes, CalcFitness(_options.TargetGenes, genes));
-        await _individual.WriteStateAsync();
+        individual.State = new Individual(genes, CalcFitness(options.TargetGenes, genes));
+        await individual.WriteStateAsync();
     }
 
     private static Individual[] CreateMatingPool(Individual[] individuals)
