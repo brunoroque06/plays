@@ -8,7 +8,7 @@ jobs:
         working-directory: decision-tree
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.x
       - run: dotnet restore
@@ -26,7 +26,7 @@ jobs:
         working-directory: dijkstra
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: 1.22
       - run: go build -v
@@ -42,7 +42,7 @@ jobs:
         working-directory: genetic
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.x
       - run: dotnet restore
@@ -59,7 +59,7 @@ jobs:
         working-directory: reportus
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: 3.12.x
           cache: pip
