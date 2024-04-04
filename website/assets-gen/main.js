@@ -13,9 +13,9 @@ const imgs = "src/assets/imgs";
 async function buildPdf(src, dest) {
   let browser = await playwright.chromium.launch();
   let page = await browser.newPage();
-  let html = fs.readFileSync(`tools/${src}`, "utf8");
+  let html = fs.readFileSync(`assets-gen/${src}`, "utf8");
   await page.setContent(html, { waitUntil: "domcontentloaded" });
-  await page.addStyleTag({ path: "tools/style.css" });
+  await page.addStyleTag({ path: "assets-gen/style.css" });
   await page.pdf({ format: "A4", path: `${docs}/${dest}` });
   await browser.close();
 }
@@ -24,7 +24,7 @@ async function buildPdf(src, dest) {
  * @returns {Promise<void>}
  */
 async function buildFavicons() {
-  let svg = sharp("tools/logo.svg");
+  let svg = sharp("assets-gen/logo.svg");
   await svg.resize(192).png().toFile(`${imgs}/favicon-192.png`);
 }
 

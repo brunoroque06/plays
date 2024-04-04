@@ -8,29 +8,29 @@
     "deploy": "npm run build && gh-pages --branch website --dist dist/browser --no-history --repo https://github.com/brunoroque06/brunoroque06.github.io.git",
     "format": "prettier --ignore-path .gitignore -w .",
     "format:check": "prettier --ignore-path .gitignore -l .",
-    "pre": "node tools/main.js",
-    "pre:watch": "nodemon --ext . --watch tools tools/main.js",
+    "pre": "node assets-gen/main.js",
+    "pre:watch": "nodemon --ext . --watch assets-gen assets-gen/main.js",
     "start": "npm run pre && ng serve --configuration dev",
     "watch": "npm run pre && ng build --watch --configuration dev"
   },
   "dependencies": {
-    "@angular/common": "17.3.1",
-    "@angular/compiler": "17.3.1",
-    "@angular/core": "17.3.1",
-    "@angular/platform-browser": "17.3.1",
+    "@angular/common": "17.3.3",
+    "@angular/compiler": "17.3.3",
+    "@angular/core": "17.3.3",
+    "@angular/platform-browser": "17.3.3",
     "rxjs": "7.8.1",
     "tslib": "2.6.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "17.3.1",
-    "@angular/cli": "17.3.1",
-    "@angular/compiler-cli": "17.3.1",
+    "@angular-devkit/build-angular": "17.3.3",
+    "@angular/cli": "17.3.3",
+    "@angular/compiler-cli": "17.3.3",
     "@lhci/cli": "0.13.0",
     "gh-pages": "6.1.1",
     "nodemon": "3.1.0",
     "playwright": "1.42.1",
     "prettier": "3.2.5",
     "sharp": "0.33.3",
-    "typescript": "5.4.3"
+    "typescript": "5.4.4"
   }
 }
