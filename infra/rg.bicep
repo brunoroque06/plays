@@ -1,5 +1,6 @@
 targetScope = 'resourceGroup'
 
+@allowed(['westeurope'])
 param location string
 
 resource cr 'Microsoft.ContainerRegistry/registries@2023-11-01-preview' = {
@@ -57,6 +58,7 @@ resource app 'Microsoft.Web/sites@2023-01-01' = {
           value: '8080'
         }
       ]
+      healthCheckPath: '/healthz'
       linuxFxVersion: 'DOCKER|${cr.name}.azurecr.io/reportus:latest'
     }
   }

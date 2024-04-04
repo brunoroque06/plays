@@ -1,5 +1,6 @@
 targetScope = 'subscription'
 
+@allowed(['westeurope'])
 param location string
 
 resource rg 'Microsoft.Resources/resourceGroups@2023-07-01' = {
@@ -7,7 +8,7 @@ resource rg 'Microsoft.Resources/resourceGroups@2023-07-01' = {
   name: 'rg-main'
 }
 
-module reportus 'resource-group.bicep' = {
+module reportus 'rg.bicep' = {
   name: 'apps'
   scope: rg
   params: {

@@ -1,16 +1,16 @@
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = 'Stop'
 
-$loc = 'West Europe'
+$loc = 'westeurope'
 $sub = 'ac8c58b9-a2e7-44c9-bcf2-4b1f930c59b8'
 $ten = '802458a5-5f60-41a0-b729-c79de49878a2'
 
 az login --tenant $ten
 
 az deployment sub create `
-  --location $loc `
-  --parameters location=$loc `
-  --sub $sub `
-  --template-file subscription.bicep
+    --location $loc `
+    --parameters location=$loc `
+    --sub $sub `
+    --template-file sub.bicep
 
 Push-Location ../reportus
 
