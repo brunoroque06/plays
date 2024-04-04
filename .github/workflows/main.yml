@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 8.x
       - run: dotnet restore
       - run: dotnet build
       - run: |
@@ -44,7 +44,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 8.x
       - run: dotnet restore
       - run: dotnet build
       - run: |
@@ -70,26 +70,6 @@ jobs:
       - run: pytest asmt
       - run: playwright install-deps && playwright install chromium
       - run: pytest e2e
-
-  reportus-deploy:
-    needs: reportus
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - shell: pwsh
-        run: |
-          Get-ChildItem -Force `
-          | Where-Object { -not ($_.Name -eq '.git' -or $_.Name -eq 'reportus') } `
-          | ForEach-Object { Remove-Item -Force -Recurse $_.Name }
-          Get-ChildItem -Force reportus `
-          | Move-Item -Destination . -Force
-          Remove-Item reportus
-          git checkout -b st
-          git add -A
-          git config user.name 'brunoroque06'
-          git config user.email 'brunoroque06@github.com'
-          git commit -m 'Release'
-          git push --force origin st
 
   website:
     runs-on: ubuntu-latest
