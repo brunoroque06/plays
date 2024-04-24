@@ -1,4 +1,4 @@
 pandas==2.2.2
-polars==0.20.20
+polars==0.20.22
 python-dateutil==2.9.0.post0
 streamlit==1.33.0
