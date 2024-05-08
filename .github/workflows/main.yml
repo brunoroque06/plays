@@ -16,7 +16,7 @@ jobs:
       - run: |
           dotnet new tool-manifest
           dotnet tool install fantomas
-          fantomas --check .
+          dotnet tool run fantomas --check .
       - run: dotnet test
 
   dijkstra:
