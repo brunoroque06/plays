@@ -11,8 +11,6 @@ let ``Create board`` () =
 [<Fact>]
 let ``Board full`` () =
     let isFull =
-        buildEmptyBoard
-        |> fun b -> List.fold (playMove X) b [ 0..8 ]
-        |> isBoardFull
+        buildEmptyBoard |> (fun b -> List.fold (playMove X) b [ 0..8 ]) |> isBoardFull
 
     Assert.True(isFull)

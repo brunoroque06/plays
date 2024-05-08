@@ -15,13 +15,8 @@ let combs = Array.concat [| files; ranks; diags |]
 
 let private findWinningPiece board =
     Array.map (Array.map (getPiece board)) combs
-    |> Array.filter (fun f ->
-        Option.isSome f[0]
-        && Option.isSome f[1]
-        && Option.isSome f[2])
-    |> Array.tryFind (fun f ->
-        Array.pairwise f
-        |> Array.forall (fun (a, b) -> a.Value = b.Value))
+    |> Array.filter (fun f -> Option.isSome f[0] && Option.isSome f[1] && Option.isSome f[2])
+    |> Array.tryFind (fun f -> Array.pairwise f |> Array.forall (fun (a, b) -> a.Value = b.Value))
     |> Option.map Array.head
 
 let evaluatePosition board =
@@ -32,8 +27,4 @@ let evaluatePosition board =
         match p with
         | Some X -> XWon
         | _ -> OWon
-    | _ ->
-        if (isBoardFull board) then
-            Draw
-        else
-            Playing
+    | _ -> if (isBoardFull board) then Draw else Playing

@@ -15,5 +15,4 @@ let playGame playerX playerO =
     resolveGame buildEmptyBoard playerX playerO Piece.X
 
 let playMatch numberGames playerX playerO =
-    [| 0 .. (numberGames - 1) |]
-    |> Array.map (fun _ -> (playGame playerX playerO))
+    [| 0 .. (numberGames - 1) |] |> Array.map (fun _ -> (playGame playerX playerO))

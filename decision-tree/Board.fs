@@ -9,7 +9,7 @@ let switchPiece piece =
     | Piece.X -> Piece.O
     | _ -> Piece.X
 
-let buildEmptyBoard: Piece option [] = [| 0..8 |] |> Array.map (fun _ -> None)
+let buildEmptyBoard: Piece option[] = [| 0..8 |] |> Array.map (fun _ -> None)
 
 let printBoard board =
     let piece2Char piece =

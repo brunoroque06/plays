@@ -34,9 +34,7 @@ let ``Decision tree picks winning moves`` () =
     let move = decisionTreeStrategy 5 Piece.X board
     Assert.Equal(4, move)
 
-    let board' =
-        playMove Piece.X board move
-        |> fun b -> playMove Piece.O b 6
+    let board' = playMove Piece.X board move |> fun b -> playMove Piece.O b 6
 
     let move = decisionTreeStrategy 3 Piece.X board'
     Assert.Equal(5, move)

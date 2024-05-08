@@ -57,4 +57,3 @@ let decisionTreeStrategy depth piece board =
         |> Array.Parallel.map (revolveLeaf (depth - 1) piece board)
         |> bestLeaf
         |> _.Move
-        

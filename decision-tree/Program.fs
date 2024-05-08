@@ -13,7 +13,4 @@ let players =
        ((decisionTreeStrategy 6), (dummyMoveStrategy rnd)) |]
 
 for pX, pO in players do
-    playMatch 100 pX pO
-    |> Array.countBy id
-    |> Array.sortBy fst
-    |> printfn "%A"
+    playMatch 100 pX pO |> Array.countBy id |> Array.sortBy fst |> printfn "%A"
