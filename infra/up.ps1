@@ -15,3 +15,5 @@ az deployment sub create `
     --parameters location=$loc `
     --sub $sub `
     --template-file sub.bicep
+
+az webapp restart --name app-reportus --resource-group rg-main
