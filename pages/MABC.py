@@ -4,7 +4,7 @@ import pandas as pd
 import streamlit as st
 from dateutil.relativedelta import relativedelta
 
-from asmt import components, mabc
+from reportus import components, mabc
 
 st.subheader("MABC")
 

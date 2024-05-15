@@ -2,7 +2,7 @@ import polars as pl
 import pytest
 from dateutil.relativedelta import relativedelta
 
-from asmt import mabc
+from reportus import mabc
 
 
 def test_data():
