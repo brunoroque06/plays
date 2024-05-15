@@ -6,10 +6,9 @@ from enum import Enum
 from typing import Optional
 
 import polars as pl
-import streamlit as st
 from dateutil.relativedelta import relativedelta
 
-from reportus import time
+from reportus import perf, time
 
 
 @dataclasses.dataclass(frozen=True)
@@ -32,7 +31,7 @@ class Data:
         )
 
 
-@st.cache_data
+@perf.cache
 def _load() -> Data:
     map_i = pl.read_csv("data/mabc-i.csv")
     map_t = pl.read_csv("data/mabc-t.csv")

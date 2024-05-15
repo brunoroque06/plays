@@ -3,10 +3,9 @@ import itertools
 from datetime import date
 
 import polars as pl
-import streamlit as st
 from dateutil.relativedelta import relativedelta
 
-from reportus import dtvp, time
+from reportus import dtvp, perf, time
 
 
 @dataclasses.dataclass(frozen=True)
@@ -27,7 +26,7 @@ class Data:
         return self.sums.filter((pl.col("id") == i) & (pl.col("sum") == su))
 
 
-@st.cache_data
+@perf.cache
 def _load() -> Data:
     std = pl.read_csv("data/dtvpa-std.csv")
     sums = pl.read_csv("data/dtvpa-sum.csv")

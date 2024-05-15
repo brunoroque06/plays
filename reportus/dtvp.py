@@ -3,10 +3,9 @@ import itertools
 from datetime import date
 
 import polars as pl
-import streamlit as st
 from dateutil.relativedelta import relativedelta
 
-from reportus import time
+from reportus import perf, time
 
 
 @dataclasses.dataclass(frozen=True)
@@ -36,7 +35,7 @@ class Data:
         return self.sp.filter((pl.col("id") == i) & (pl.col("scaled") == s))
 
 
-@st.cache_data
+@perf.cache
 def _load() -> Data:
     ra = pl.read_csv("data/dtvp-raw-ageeq.csv")
     rs = pl.read_csv("data/dtvp-raw-sca.csv")
