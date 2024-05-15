@@ -3,7 +3,7 @@ targetScope = 'resourceGroup'
 @allowed(['westeurope'])
 param location string
 
-resource plan 'Microsoft.Web/serverfarms@2023-01-01' = {
+resource plan 'Microsoft.Web/serverfarms@2023-12-01' = {
   location: location
   name: 'plan-linux'
   kind: 'linux'
@@ -15,7 +15,7 @@ resource plan 'Microsoft.Web/serverfarms@2023-01-01' = {
   }
 }
 
-resource app 'Microsoft.Web/sites@2023-01-01' = {
+resource app 'Microsoft.Web/sites@2023-12-01' = {
   name: 'app-reportus'
   identity: {
     type: 'SystemAssigned'
