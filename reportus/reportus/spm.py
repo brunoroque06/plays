@@ -5,7 +5,7 @@ from datetime import date
 import polars as pl
 import streamlit as st
 
-from asmt import time
+from reportus import time
 
 
 def get_scores() -> list[tuple[str, str]]:

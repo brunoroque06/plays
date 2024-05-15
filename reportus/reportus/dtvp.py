@@ -6,7 +6,7 @@ import polars as pl
 import streamlit as st
 from dateutil.relativedelta import relativedelta
 
-from asmt import time
+from reportus import time
 
 
 @dataclasses.dataclass(frozen=True)

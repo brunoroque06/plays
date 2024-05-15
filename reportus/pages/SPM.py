@@ -2,7 +2,7 @@ from datetime import date
 
 import streamlit as st
 
-from asmt import components, spm
+from reportus import components, spm
 
 st.subheader("SPM")
 

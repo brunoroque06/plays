@@ -3,7 +3,7 @@ import datetime
 import polars as pl
 import pytest
 
-from asmt import spm
+from reportus import spm
 
 
 def test_data():

@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from asmt import dtvp
+from reportus import dtvp
 
 
 def test_data():
