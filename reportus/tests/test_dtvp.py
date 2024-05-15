@@ -15,7 +15,9 @@ def test_dtvp():
     sub, comp, rep = dtvp.process(age, raw)
 
     assert sub["raw"].eq([108, 11, 52, 10, 32]).all()  # pyright: ignore
-    assert sub["age_eq"].eq(["4;3", "4;8", "10;5", "5;10", "6;3"]).all()  # pyright: ignore
+    assert (
+        sub["age_eq"].eq(["4;3", "4;8", "10;5", "5;10", "6;3"]).all()
+    )  # pyright: ignore
     assert sub["percentile"].eq(["1", "2", "75", "25", "50"]).all()  # pyright: ignore
     assert sub["scaled"].eq([3, 4, 12, 8, 10]).all()  # pyright: ignore
     assert (
@@ -26,7 +28,9 @@ def test_dtvp():
 
     assert comp["sum_scaled"].eq([7, 30, 37]).all()  # pyright: ignore
     assert comp["percentile"].eq(["<1", "50", "14"]).all()  # pyright: ignore
-    assert comp["descriptive"].eq(["Very Poor", "Average", "Below Average"]).all()  # pyright: ignore
+    assert (
+        comp["descriptive"].eq(["Very Poor", "Average", "Below Average"]).all()
+    )  # pyright: ignore
     assert comp["index"].eq([61, 100, 84]).all()  # pyright: ignore
 
     assert len(rep) > 0
