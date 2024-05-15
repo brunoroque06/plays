@@ -68,7 +68,7 @@ jobs:
       - run: ruff check --select I .
       - run: ruff check .
       - run: pyright .
-      - run: pytest asmt
+      - run: pytest tests
       - run: playwright install-deps && playwright install chromium
       - run: pytest e2e
 
