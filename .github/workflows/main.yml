@@ -65,9 +65,10 @@ jobs:
           python-version: 3.12.x
           cache: pip
       - run: pip install -r requirements.txt -r requirements-dev.txt
-      - run: ruff check --select I .
-      - run: ruff check .
-      - run: pyright .
+      - run: ruff check --select I
+      - run: ruff check
+      - run: ruff format --check
+      - run: pyright
       - run: pytest tests
       - run: playwright install-deps && playwright install chromium
       - run: pytest e2e
