@@ -3,9 +3,8 @@ import itertools
 from datetime import date
 
 import polars as pl
-import streamlit as st
 
-from reportus import time
+from reportus import perf, time
 
 
 def get_scores() -> list[tuple[str, str]]:
@@ -34,7 +33,7 @@ class Data:
         )
 
 
-@st.cache_data
+@perf.cache
 def _load() -> Data:
     classroom = pl.read_csv("data/spm-classroom.csv")
     classroom = classroom.with_columns(pl.lit("classroom").alias("type"))
