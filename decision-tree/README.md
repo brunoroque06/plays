@@ -28,4 +28,4 @@ If the player with the `O` pieces does not play in one of the 4 corners, he will
 | **O**  | **X** |
 | &nbsp; | **X** | **O** |
 
-This variation is forced, and explains the 6 moves that the DTP needs to calculate in order not to lose. There are other positions that lead to the same result.
+This variation is forced, and explains the 6 moves that DTP needs to calculate in order not to lose.
