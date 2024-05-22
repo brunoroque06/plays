@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Genetic;
 
-public class Reporter(ILogger<Reporter> logger) : Grain, IReporter
+public sealed class Reporter(ILogger<Reporter> logger) : Grain, IReporter
 {
     public Task ReportGeneration(int generation, float fitness, string genes)
     {

@@ -1,6 +1,6 @@
 namespace Genetic;
 
-public class Time(IGrainFactory client, Options options) : Grain, ITime
+public sealed class Time(IGrainFactory client, Options options) : Grain, ITime
 {
     public async Task Elapse()
     {
@@ -17,7 +17,7 @@ public class Time(IGrainFactory client, Options options) : Grain, ITime
             var fittest = individuals[Array.IndexOf(fitness, maxFitness)];
             var isMaxFitness = await client.GetGrain<IGenetics>(0).IsMaxFitness(fittest);
 
-            var last = isMaxFitness || gen == options.MaxGenerations;
+            var last = isMaxFitness || gen == options.MaxGenerations - 1;
 
             if (gen % options.ReportInterval == 0 || last)
                 await client

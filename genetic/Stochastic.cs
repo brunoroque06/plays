@@ -2,7 +2,7 @@ using System.Text;
 
 namespace Genetic;
 
-public class Stochastic(Random random)
+public sealed class Stochastic(Random random)
 {
     public bool NextBool()
     {

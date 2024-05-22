@@ -1,6 +1,6 @@
 namespace Genetic;
 
-public record Options(
+public sealed record Options(
     int MaxGenerations,
     int ReportInterval,
     int PopulationSize,

@@ -3,7 +3,7 @@ using Orleans.Runtime;
 
 namespace Genetic;
 
-public class Genetics(
+public sealed class Genetics(
     [PersistentState("individual", "genetics")] IPersistentState<Individual> individual,
     Options options,
     Stochastic stochastic
