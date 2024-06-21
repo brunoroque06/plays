@@ -17,6 +17,6 @@ website/src/assets/docs/bruno-roque-resume.pdf
 website/src/assets/imgs/favicon-192.png
 
 # Python
+.venv
 __pycache__
-venv
 
