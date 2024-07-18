@@ -122,7 +122,7 @@ def process(
     sub = pl.DataFrame(
         [[k, v, raw[k], *get_std(k, raw[k])] for k, v in tests.items()],
         schema=["id", "label", "raw", "%ile", "standard", "description"],
-        orient="row"
+        orient="row",
     )
 
     comps = [

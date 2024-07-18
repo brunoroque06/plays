@@ -169,13 +169,13 @@ def process(
     comp_res = pl.DataFrame(
         [[k, *list(v)] for k, v in comp.items()],
         schema=["id", "raw", "standard"],
-        orient="row"
+        orient="row",
     )
 
     agg_res = pl.DataFrame(
         [[k, *list(v)] for k, v in agg.items()],
         schema=["id", "raw", "standard", "percentile"],
-        orient="row"
+        orient="row",
     )
 
     return comp_res, agg_res, report(asmt, age, hand, agg_res)
