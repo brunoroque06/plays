@@ -8,8 +8,8 @@
     "deploy": "npm run build && gh-pages --branch website --dist dist/browser --no-history --repo https://github.com/brunoroque06/brunoroque06.github.io.git",
     "format": "prettier --ignore-path .gitignore -w .",
     "format:check": "prettier --ignore-path .gitignore -l .",
-    "pre": "playwright install chromium && node assets-gen/main.js",
-    "pre:watch": "nodemon --ext . --watch assets-gen assets-gen/main.js",
+    "pre": "mkdir -p src/assets/docs && typst compile assets-gen/resume.typ src/assets/docs/bruno-roque-resume.pdf && node assets-gen/main.js",
+    "pre:watch": "nodemon --ext . --watch assets-gen --exec 'npm run pre'",
     "start": "npm run pre && ng serve --configuration dev",
     "watch": "npm run pre && ng build --watch --configuration dev"
   },
@@ -28,7 +28,6 @@
     "@lhci/cli": "0.14.0",
     "gh-pages": "6.1.1",
     "nodemon": "3.1.4",
-    "playwright": "1.45.2",
     "prettier": "3.3.3",
     "sharp": "0.33.4",
     "typescript": "5.4.5"

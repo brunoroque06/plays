@@ -85,6 +85,7 @@ jobs:
           node-version: 22
       - run: npm ci
       - run: npm run format:check
+      - run: apt-get install typst
       - run: npm run build
 
   website-audit:
