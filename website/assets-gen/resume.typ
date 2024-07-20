@@ -17,7 +17,7 @@
 
 #let ungap = { v(-0.6em) }
 
-#let info(img, cnt) = { grid.cell([#box(baseline: 20%, image(img, height: 1.2em)); #h(0.4em); #cnt]) }
+#let info(img, cnt) = { grid.cell([#box(baseline: 20%, image("icons/" + img, height: 1.2em)); #h(0.4em); #cnt]) }
 #grid(
   columns: (50%, 50%),
   row-gutter: 0.4em,
@@ -32,7 +32,7 @@
 
 #section[Experience]
 
-#let url(ref, display) = [#link(ref)[#display] #box(baseline: 20%, image("url.svg", height: 1em))]
+#let url(ref, display) = [#link(ref)[#display] #box(baseline: 20%, image("icons/url.svg", height: 1em))]
 
 #let monospace(cnt) = [#text(0.9em, font: mono)[#cnt]]
 
