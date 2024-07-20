@@ -44,11 +44,11 @@
   if (entityUrl != none) { entity = [#url(entityUrl, entity)] }
   let duration = if duration != none [(#duration) ] else []
   [#entity; #h(1fr); #monospace[#duration#start - #end]]
-  if (desc != none) {
-    ungap
-    desc
-  }
   ungap
+  if (desc != none) {
+    desc
+    ungap
+  }
 }
 
 #let exps = (
