@@ -85,7 +85,7 @@ jobs:
           node-version: 22
       - run: npm ci
       - run: npm run format:check
-      - run: snap install typst
+      - run: sudo snap install typst
       - run: npm run build
 
   website-audit:
