@@ -7,7 +7,7 @@ const imgs = "src/assets/imgs";
  * @returns {Promise<void>}
  */
 async function buildFavicons() {
-  let svg = sharp("assets-gen/logo.svg");
+  let svg = sharp("assets-gen/icons/logo.svg");
   await svg.resize(192).png().toFile(`${imgs}/favicon-192.png`);
 }
 

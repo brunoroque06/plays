@@ -9,7 +9,7 @@
     "format": "prettier --ignore-path .gitignore -w .",
     "format:check": "prettier --ignore-path .gitignore -l .",
     "pre": "mkdir -p src/assets/docs && typst compile assets-gen/resume.typ src/assets/docs/bruno-roque-resume.pdf && node assets-gen/main.js",
-    "pre:watch": "nodemon --ext . --watch assets-gen --exec 'npm run pre'",
+    "pre:watch": "typst watch assets-gen/resume.typ src/assets/docs/bruno-roque-resume.pdf",
     "start": "npm run pre && ng serve --configuration dev",
     "watch": "npm run pre && ng build --watch --configuration dev"
   },
@@ -27,7 +27,6 @@
     "@angular/compiler-cli": "18.1.1",
     "@lhci/cli": "0.14.0",
     "gh-pages": "6.1.1",
-    "nodemon": "3.1.4",
     "prettier": "3.3.3",
     "sharp": "0.33.4",
     "typescript": "5.4.5"
