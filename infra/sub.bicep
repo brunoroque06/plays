@@ -3,15 +3,28 @@ targetScope = 'subscription'
 @allowed(['westeurope'])
 param location string
 
-resource rg 'Microsoft.Resources/resourceGroups@2024-03-01' = {
+resource rgPer 'Microsoft.Resources/resourceGroups@2024-03-01' = {
   location: location
-  name: 'rg-main'
+  name: 'rg-personal'
 }
 
-module reportus 'rg.bicep' = {
-  name: 'apps'
-  scope: rg
+module personal 'personal.bicep' = {
+  name: 'personal'
+  scope: rgPer
   params: {
-    location: rg.location
+    location: rgPer.location
+  }
+}
+
+resource rgRep 'Microsoft.Resources/resourceGroups@2024-03-01' = {
+  location: location
+  name: 'rg-reportus'
+}
+
+module reportus 'reportus.bicep' = {
+  name: 'reportus'
+  scope: rgRep
+  params: {
+    location: rgRep.location
   }
 }

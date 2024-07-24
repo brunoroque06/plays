@@ -33,7 +33,7 @@
   info("location.svg", "Zürich, Switzerland"),
   info("mobile.svg", "(+41) 765 174 226", ref: "tel:+41-765-174-226"),
   info("email.svg", "brunroque06@gmail.com", ref: "mailto:brunoroque06@gmail.com"),
-  info("website.svg", "brunoroque06.github.io", ref: "https://brunoroque06.github.io"),
+  info("website.svg", "broque.dev", ref: "https://broque.dev"),
   info("github.svg", "github.com/brunoroque06", ref: "https://github.com/brunoroque06"),
   info("linkedin.svg", "linkedin.com/in/brunoroque06", ref: "https://linkedin.com/in/brunoroque06"),
 )

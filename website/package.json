@@ -5,7 +5,7 @@
   "scripts": {
     "audit": "lhci autorun",
     "build": "npm run pre && ng build --configuration prod",
-    "deploy": "npm run build && gh-pages --branch website --dist dist/browser --no-history --repo https://github.com/brunoroque06/brunoroque06.github.io.git",
+    "deploy": "npm run build && swa deploy dist/browser --app-name stapp-personal --env prod",
     "format": "prettier --ignore-path .gitignore -w .",
     "format:check": "prettier --ignore-path .gitignore -l .",
     "pre": "mkdir -p src/assets/docs && typst compile assets-gen/resume.typ src/assets/docs/bruno-roque-resume.pdf && node assets-gen/main.js",
@@ -14,19 +14,19 @@
     "watch": "npm run pre && ng build --watch --configuration dev"
   },
   "dependencies": {
-    "@angular/common": "18.1.1",
-    "@angular/compiler": "18.1.1",
-    "@angular/core": "18.1.1",
-    "@angular/platform-browser": "18.1.1",
+    "@angular/common": "18.1.2",
+    "@angular/compiler": "18.1.2",
+    "@angular/core": "18.1.2",
+    "@angular/platform-browser": "18.1.2",
     "rxjs": "7.8.1",
     "tslib": "2.6.3"
   },
   "devDependencies": {
-    "@angular/build": "18.1.1",
-    "@angular/cli": "18.1.1",
-    "@angular/compiler-cli": "18.1.1",
+    "@angular/build": "18.1.2",
+    "@angular/cli": "18.1.2",
+    "@angular/compiler-cli": "18.1.2",
+    "@azure/static-web-apps-cli": "2.0.0",
     "@lhci/cli": "0.14.0",
-    "gh-pages": "6.1.1",
     "prettier": "3.3.3",
     "sharp": "0.33.4",
     "typescript": "5.4.5"
