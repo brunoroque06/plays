@@ -20,3 +20,7 @@ website/src/assets/imgs/favicon-192.png
 .venv
 __pycache__
 
+# Terraform
+.terraform
+.terraform.tfstate*
+terraform.tfstate*
