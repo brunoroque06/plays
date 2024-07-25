@@ -61,6 +61,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
+      - run: terraform init
       - run: terraform fmt -check
       - run: terraform validate
 
