@@ -155,6 +155,7 @@ def process(
 
     sub = pl.DataFrame(
         [[k, v, raw[k], age_eq(k), *scaled(k)] for k, v in tests.items()],
+        orient="row",
         schema=["id", "label", "raw", "age_eq", "percentile", "scaled", "descriptive"],
     )
 
@@ -189,6 +190,7 @@ def process(
 
     comp = pl.DataFrame(
         [[l, v, *get_sp(k, v)] for k, l, v in comps],
+        orient="row",
         schema=["id", "sum_scaled", "percentile", "descriptive", "index"],
     )
 

@@ -157,6 +157,7 @@ def process(
 
     comp = pl.DataFrame(
         [[l, su, *get_comp(i, su)] for _, l, su, i in comps],
+        orient="row",
         schema=["id", "sum_standard", "index", "%ile", "description"],
     )
 
