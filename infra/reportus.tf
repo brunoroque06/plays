@@ -1,11 +1,20 @@
 resource "docker_image" "rep" {
   name = "brunoroque06/reportus"
   build {
-    context = "../reportus"
+    context  = "../reportus"
     platform = "linux/amd64"
   }
   triggers = {
     dir_sha1 = sha1(join("", [for f in fileset(path.module, "../reportus/*") : filesha1(f)]))
+  }
+}
+
+resource "terraform_data" "push_rep" {
+  provisioner "local-exec" {
+    command = "docker push ${docker_image.rep.name}"
+  }
+  triggers_replace = {
+    image_id = docker_image.rep.image_id
   }
 }
 
@@ -20,7 +29,7 @@ resource "azurerm_resource_group" "rep" {
 }
 
 resource "azurerm_service_plan" "rep" {
-  name                = "plan-linux"
+  name                = "plan-linux" # rename to plan-reportus
   resource_group_name = azurerm_resource_group.rep.name
   location            = azurerm_resource_group.rep.location
   os_type             = "Linux"
