@@ -2,9 +2,10 @@ resource "docker_image" "rep" {
   name = "brunoroque06/reportus"
   build {
     context = "../reportus"
-    build_arg = {
-      platform : "linux/amd64"
-    }
+    platform = "linux/amd64"
+  }
+  triggers = {
+    dir_sha1 = sha1(join("", [for f in fileset(path.module, "../reportus/*") : filesha1(f)]))
   }
 }
 

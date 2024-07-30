@@ -126,6 +126,7 @@ def process(
 
     res = pl.DataFrame(
         [form_row(i, r) for i, r in raw.items()],
+        orient="row",
         schema=["id", "raw", "t", "percentile", "interpretive"],
     )
 
