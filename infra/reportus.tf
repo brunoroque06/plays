@@ -9,7 +9,7 @@ resource "docker_image" "rep" {
   }
 }
 
-resource "terraform_data" "push_rep" {
+resource "terraform_data" "rep_push" {
   provisioner "local-exec" {
     command = "docker push ${docker_image.rep.name}"
   }
@@ -60,7 +60,7 @@ resource "azurerm_container_app" "rep" {
   template {
     container {
       name   = "reportus"
-      image  = "registry-1.docker.io/brunoroque06/reportus:latest"
+      image  = "registry-1.docker.io/${docker_image.rep.name}:latest"
       cpu    = 0.25
       memory = "0.5Gi"
     }
@@ -70,7 +70,7 @@ resource "azurerm_container_app" "rep" {
 }
 
 # https://github.com/hashicorp/terraform-provider-azurerm/issues/21866
-resource "terraform_data" "add_domain" {
+resource "terraform_data" "rep_add_domain" {
   provisioner "local-exec" {
     command    = "az containerapp hostname add --ids ${azurerm_container_app.rep.id} --hostname reportus.app"
     on_failure = continue
