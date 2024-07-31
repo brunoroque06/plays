@@ -14,14 +14,15 @@ let inCircle (x, y) =
     let pit = x ** 2.0 + y ** 2.0
     pit <= 1.0
 
-let count (ins, tot) isIn =
-    let i = if isIn then ins + 1 else ins
-    i, tot + 1
-
 let calc (ins, tot) = 4.0 * (ins |> float) / (tot |> float)
 
-Seq.init points (fun _ -> rnd (), rnd ())
-|> Seq.map inCircle
-|> Seq.fold count (0, 0)
-|> calc
-|> fun pi -> printfn $"π: %f{pi}"
+let mutable ins, tot = (0, 0)
+
+for i in 1..points do
+    let x, y = rnd (), rnd ()
+    let isIn = inCircle (x, y)
+    if isIn then ins <- ins + 1
+    tot <- tot + 1
+    
+let pi = calc (ins, tot)
+printfn $"π: %f{pi}"
