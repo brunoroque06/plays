@@ -6,7 +6,7 @@ from dateutil.relativedelta import relativedelta
 
 from reportus import components, mabc
 
-st.subheader("MABC")
+components.set_page("MABC")
 
 
 def display_age(a: relativedelta) -> Callable:

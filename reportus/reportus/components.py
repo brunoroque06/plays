@@ -7,6 +7,20 @@ from dateutil.relativedelta import relativedelta
 from pandas.io.formats.style import Styler
 
 
+def set_page(title: str | None = None, root: bool = False, site: str = "Reportus"):
+    if root:
+        title = site
+    else:
+        title = title
+
+    st.set_page_config(
+        initial_sidebar_state="expanded",
+        page_icon=":sparkles:",
+        page_title=f"{site} - {title}",
+    )
+    st.subheader(title)
+
+
 def date_input(label: str, date: datetime.date, **kwargs):
     return st.date_input(label, date, format="DD.MM.YYYY", **kwargs)
 
@@ -53,9 +67,7 @@ def table(dt: pd.DataFrame | Styler, title: str | None = None):
     st.dataframe(dt, use_container_width=True)
 
 
-def dtvp(title: str, min_age: int, max_age: int, mod):
-    st.subheader(title)
-
+def dtvp(min_age: int, max_age: int, mod):
     asmt_date, _, age = dates(min_age, max_age)
 
     raw = {}
