@@ -28,26 +28,57 @@ resource "azurerm_resource_group" "rep" {
   location = var.az_loc
 }
 
-resource "azurerm_service_plan" "rep" {
-  name                = "plan-linux" # rename to plan-reportus
-  resource_group_name = azurerm_resource_group.rep.name
+resource "azurerm_log_analytics_workspace" "rep" {
+  name                = "log-reportus"
   location            = azurerm_resource_group.rep.location
-  os_type             = "Linux"
-  sku_name            = "F1"
+  resource_group_name = azurerm_resource_group.rep.name
+  sku                 = "PerGB2018"
 }
 
-resource "azurerm_linux_web_app" "rep" {
-  name                = "app-reportus"
-  resource_group_name = azurerm_resource_group.rep.name
-  location            = azurerm_service_plan.rep.location
-  service_plan_id     = azurerm_service_plan.rep.id
-  app_settings = {
-    WEBSITES_PORT = "8080"
-  }
-  site_config {
-    always_on = false
-    application_stack {
-      docker_image_name = "brunoroque06/reportus"
+resource "azurerm_container_app_environment" "rep" {
+  name                       = "cae-reportus"
+  location                   = azurerm_resource_group.rep.location
+  resource_group_name        = azurerm_resource_group.rep.name
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.rep.id
+
+}
+
+resource "azurerm_container_app" "rep" {
+  name                         = "ca-reportus"
+  container_app_environment_id = azurerm_container_app_environment.rep.id
+  resource_group_name          = azurerm_resource_group.rep.name
+  ingress {
+    allow_insecure_connections = false
+    external_enabled           = true
+    target_port                = 8080
+    traffic_weight {
+      latest_revision = true
+      percentage      = 100
     }
+  }
+  revision_mode = "Single"
+  template {
+    container {
+      name   = "reportus"
+      image  = "registry-1.docker.io/brunoroque06/reportus:latest"
+      cpu    = 0.25
+      memory = "0.5Gi"
+    }
+    max_replicas = 1
+    min_replicas = 0
+  }
+}
+
+# https://github.com/hashicorp/terraform-provider-azurerm/issues/21866
+resource "terraform_data" "add_domain" {
+  provisioner "local-exec" {
+    command    = "az containerapp hostname add --ids ${azurerm_container_app.rep.id} --hostname reportus.app"
+    on_failure = continue
+  }
+  provisioner "local-exec" {
+    command = "az containerapp hostname bind --ids ${azurerm_container_app.rep.id} --hostname reportus.app -e ${azurerm_container_app_environment.rep.name} --validation-method TXT"
+  }
+  lifecycle {
+    replace_triggered_by = [azurerm_container_app.rep]
   }
 }

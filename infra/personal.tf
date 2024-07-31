@@ -13,5 +13,5 @@ resource "azurerm_static_web_app" "per" {
 resource "azurerm_static_web_app_custom_domain" "per" {
   static_web_app_id = azurerm_static_web_app.per.id
   domain_name       = "broque.dev"
-  validation_type   = "dns-txt-token" // Apex Domains must use "dns-txt-token" validation
+  validation_type   = "dns-txt-token"
 }
