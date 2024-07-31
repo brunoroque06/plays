@@ -1,13 +1,7 @@
 import streamlit as st
 
-title = "Reportus 🪄"
+from reportus import components
 
-st.set_page_config(
-    initial_sidebar_state="expanded",
-    page_icon=None,
-    page_title=title,
-)
-
-st.title(title)
+components.set_page("Home", True)
 
 st.markdown("Please check the pages on the sidebar.")
