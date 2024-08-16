@@ -65,6 +65,19 @@ jobs:
       - run: terraform fmt -check
       - run: terraform validate
 
+  pi:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: pi
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup toolchain install stable --profile minimal
+      - run: cargo build -r
+      - run: cargo check -r
+      - run: rustup component add rustfmt
+      - run: cargo fmt --check
+
   reportus:
     runs-on: ubuntu-latest
     defaults:
