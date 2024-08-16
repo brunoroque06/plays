@@ -72,10 +72,10 @@ jobs:
         working-directory: pi
     steps:
       - uses: actions/checkout@v4
-      - run: rustup toolchain install stable --profile minimal
+      - run: rustup toolchain install stable
       - run: cargo build -r
       - run: cargo check -r
-      - run: rustup component add rustfmt
+      - run: cargo clippy -r
       - run: cargo fmt --check
 
   reportus:
