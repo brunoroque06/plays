@@ -28,7 +28,7 @@
     "@azure/static-web-apps-cli": "2.0.1",
     "@lhci/cli": "0.14.0",
     "prettier": "3.3.3",
-    "sharp": "0.33.4",
+    "sharp": "0.33.5",
     "typescript": "5.4.5"
   }
 }
