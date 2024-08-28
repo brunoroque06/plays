@@ -7,17 +7,7 @@ from dateutil.relativedelta import relativedelta
 from pandas.io.formats.style import Styler
 
 
-def set_page(title: str | None = None, root: bool = False, site: str = "Reportus"):
-    if root:
-        title = site
-    else:
-        title = title
-
-    st.set_page_config(
-        initial_sidebar_state="expanded",
-        page_icon=":sparkles:",
-        page_title=f"{site} - {title}",
-    )
+def header(title: str):
     st.subheader(title)
 
 

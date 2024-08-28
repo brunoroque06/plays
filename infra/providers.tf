@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "3.116.0"
+      version = "4.0.1"
     }
     docker = {
       source  = "kreuzwerker/docker"
@@ -17,7 +17,9 @@ provider "azurerm" {
   features {}
 }
 
-provider "docker" {}
+provider "docker" {
+  host = "unix://${pathexpand("~/.docker/run/docker.sock")}"
+}
 
 variable "az_loc" {
   type    = string

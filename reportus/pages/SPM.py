@@ -4,7 +4,7 @@ import streamlit as st
 
 from reportus import components, spm
 
-components.set_page("SPM")
+components.header("SPM")
 
 cols = st.columns(3)
 today = date.today()
