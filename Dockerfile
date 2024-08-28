@@ -6,6 +6,6 @@ COPY .streamlit .streamlit
 COPY data data
 COPY pages pages
 COPY reportus reportus
-COPY Home.py .
+COPY main.py .
 ENTRYPOINT ["streamlit", "run"]
-CMD ["Home.py", "--browser.gatherUsageStats", "false", "--server.fileWatcherType", "none", "--server.port", "8080"]
+CMD ["main.py", "--browser.gatherUsageStats", "false", "--server.fileWatcherType", "none", "--server.port", "8080"]
