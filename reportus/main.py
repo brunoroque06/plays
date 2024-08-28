@@ -4,6 +4,7 @@ st.set_page_config(
     initial_sidebar_state="expanded", page_icon=":sparkles:", page_title="Reportus"
 )
 
+
 def page(file: str, title: str):
     return st.Page(file, title=title)
 
