@@ -2,7 +2,6 @@ import subprocess
 import time
 import urllib.error
 import urllib.request
-from pathlib import Path
 from typing import Iterable
 
 import pytest
@@ -13,8 +12,7 @@ host = f"http://localhost:{port}"
 
 
 def list_pages() -> Iterable[str]:
-    for f in Path("pages").glob("*.py"):
-        yield f.name.split(".", maxsplit=1)[0]
+    return ["DTVP-3", "DTVP-A", "MABC", "SPM"]
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -23,7 +21,7 @@ def start_app():
         [
             "streamlit",
             "run",
-            "Home.py",
+            "main.py",
             "--browser.serverPort",
             str(port),
             "--server.headless",
