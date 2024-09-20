@@ -1,3 +1,5 @@
+from os import path
+
 import streamlit as st
 
 st.set_page_config(
@@ -6,14 +8,14 @@ st.set_page_config(
 
 
 def page(file: str, title: str):
-    return st.Page(file, title=title)
+    return st.Page(path.join("reportus", "pages", file), title=title)
 
 
 pages = [
-    ("pages/dtvp3.py", "DTVP-3"),
-    ("pages/dtvpa.py", "DTVP-A"),
-    ("pages/mabc.py", "MABC"),
-    ("pages/spm.py", "SPM"),
+    ("dtvp3.py", "DTVP-3"),
+    ("dtvpa.py", "DTVP-A"),
+    ("mabc.py", "MABC"),
+    ("spm.py", "SPM"),
 ]
 pages = [page(file, title) for file, title in pages]
 
