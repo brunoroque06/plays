@@ -4,7 +4,6 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY .streamlit .streamlit
 COPY data data
-COPY pages pages
 COPY reportus reportus
 COPY main.py .
 ENTRYPOINT ["streamlit", "run"]
