@@ -1,69 +1,69 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1,
   "newProjectRoot": "projects",
   "projects": {
     "app": {
-      "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "inlineTemplate": true,
-          "inlineStyle": true,
-          "standalone": true
-        }
-      },
-      "root": "",
-      "sourceRoot": "src",
-      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular/build:application",
-          "options": {
-            "outputPath": "dist",
-            "index": "src/index.html",
-            "browser": "src/main.ts",
-            "tsConfig": "tsconfig.json",
-            "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/style.css"],
-            "scripts": []
-          },
           "configurations": {
-            "prod": {
-              "aot": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all"
-            },
             "dev": {
               "namedChunks": true,
               "optimization": false,
               "sourceMap": true
+            },
+            "prod": {
+              "aot": true,
+              "budgets": [
+                {
+                  "maximumError": "1mb",
+                  "maximumWarning": "500kb",
+                  "type": "initial"
+                },
+                {
+                  "maximumError": "4kb",
+                  "maximumWarning": "2kb",
+                  "type": "anyComponentStyle"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all"
             }
+          },
+          "options": {
+            "assets": ["src/favicon.ico", "src/assets"],
+            "browser": "src/main.ts",
+            "index": "src/index.html",
+            "outputPath": "dist",
+            "scripts": [],
+            "styles": ["src/style.css"],
+            "tsConfig": "tsconfig.json"
           }
         },
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
-            "prod": {
-              "buildTarget": "app:build:prod"
-            },
             "dev": {
               "buildTarget": "app:build:dev"
+            },
+            "prod": {
+              "buildTarget": "app:build:prod"
             }
           }
         }
-      }
+      },
+      "prefix": "app",
+      "projectType": "application",
+      "root": "",
+      "schematics": {
+        "@schematics/angular:component": {
+          "inlineStyle": true,
+          "inlineTemplate": true,
+          "standalone": true
+        }
+      },
+      "sourceRoot": "src"
     }
-  }
+  },
+  "version": 1
 }

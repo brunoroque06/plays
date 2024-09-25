@@ -33,8 +33,8 @@ export class AppComponent {
     of("Bruno Roque").pipe(
       delay(1000),
       concatMap((n) => from(type(n))),
-      concatMap((n) => of(n).pipe(delay(100))),
-    ),
+      concatMap((n) => of(n).pipe(delay(100)))
+    )
   );
 
   links = [
