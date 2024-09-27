@@ -1,6 +1,7 @@
 import dataclasses
 import itertools
 from datetime import date
+from enum import Enum
 
 import polars as pl
 from dateutil.relativedelta import relativedelta
@@ -83,36 +84,46 @@ def get_tests() -> dict[str, str]:
     }
 
 
+class Level(Enum):
+    VERY_POOR = "Very Poor"
+    POOR = "Poor"
+    BELOW_AVERAGE = "Below Average"
+    AVERAGE = "Average"
+    ABOVE_AVERAGE = "Above Average"
+    SUPERIOR = "Superior"
+    VERY_SUPERIOR = "Very Superior"
+
+
 def desc_sca(s: int, de: bool = False) -> str:
     if s < 4:
-        return "weit unterdurchschnittlich" if de else "Very Poor"
+        return "weit unterdurchschnittlich" if de else Level.VERY_POOR.value
     if s < 6:
-        return "unterdurchschnittlich" if de else "Poor"
+        return "unterdurchschnittlich" if de else Level.POOR.value
     if s < 8:
-        return "unterdurchschnittlich" if de else "Below Average"
+        return "unterdurchschnittlich" if de else Level.BELOW_AVERAGE.value
     if s < 13:
-        return "durchschnittlich" if de else "Average"
+        return "durchschnittlich" if de else Level.AVERAGE.value
     if s < 15:
-        return "überdurchschnittlich" if de else "Above Average"
+        return "überdurchschnittlich" if de else Level.ABOVE_AVERAGE.value
     if s < 17:
-        return "weit überdurchschnittlich" if de else "Superior"
-    return "weit überdurchschnittlich" if de else "Very Superior"
+        return "weit überdurchschnittlich" if de else Level.SUPERIOR.value
+    return "weit überdurchschnittlich" if de else Level.VERY_SUPERIOR.value
 
 
 def desc_index(i: int, de: bool = False) -> str:
     if i < 70:
-        return "Weit unter der Norm" if de else "Very Poor"
+        return "Weit unter der Norm" if de else Level.VERY_POOR.value
     if i < 80:
-        return "Weit unter der Norm" if de else "Poor"
+        return "Weit unter der Norm" if de else Level.POOR.value
     if i < 90:
-        return "Unter der Norm" if de else "Below Average"
+        return "Unter der Norm" if de else Level.BELOW_AVERAGE.value
     if i < 111:
-        return "Norm" if de else "Average"
+        return "Norm" if de else Level.AVERAGE.value
     if i < 121:
-        return "Über der Norm" if de else "Above Average"
+        return "Über der Norm" if de else Level.ABOVE_AVERAGE.value
     if i < 131:
-        return "Weit über der Norm" if de else "Superior"
-    return "Weit über der Norm" if de else "Very Superior"
+        return "Weit über der Norm" if de else Level.SUPERIOR.value
+    return "Weit über der Norm" if de else Level.VERY_SUPERIOR.value
 
 
 def to_pr(p: int) -> str:

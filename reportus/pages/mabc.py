@@ -4,10 +4,9 @@ import pandas as pd
 import streamlit as st
 from dateutil.relativedelta import relativedelta
 
-from reportus import components, mabc
-from reportus.table import style_levels, Level
+from reportus import mabc, table, ui
 
-components.header("MABC")
+ui.header("MABC")
 
 
 def display_age(a: relativedelta) -> Callable:
@@ -18,7 +17,7 @@ def display_age(a: relativedelta) -> Callable:
     return st.info
 
 
-asmt_date, birth, age = components.dates(5, 16, display_age)
+asmt_date, birth, age = ui.dates(5, 16, display_age)
 
 comps = mabc.get_comps(age)
 comp_ids = list(comps.keys())
@@ -55,14 +54,14 @@ for f in failed:
 comp, agg, rep = mabc.process(age, raw, asmt=asmt_date, hand=hand)
 
 
-def color_row(row: pd.DataFrame) -> Level:
+def leveler(row: pd.DataFrame) -> table.Level:
     std = row["standard"]
-    rank = mabc.rank(std)
+    rank = mabc.rank(std)  # pyright: ignore
     if rank in (mabc.Rank.OK, mabc.Rank.UOK):
-        return Level.OK
+        return table.Level.OK
     elif rank == mabc.Rank.CRI:
-        return Level.CRI
-    return Level.NOK
+        return table.Level.CRI
+    return table.Level.NOK
 
 
 st.code(rep, language="markdown")
@@ -82,10 +81,10 @@ for c in [
             key=lambda s: s.map(lambda i: i if len(i) == 4 else i + "z"),
         )
     )
-    cat = style_levels(cat, color_row)
-    components.table(cat, c[0])
+    cat = table.style_levels(cat, leveler)
+    ui.table(cat, c[0])
 
 order = {"hg": 0, "bf": 1, "bl": 2, "total": 4}
 agg = agg.to_pandas().set_index("id").sort_values(by=["id"], key=lambda x: x.map(order))
-agg = style_levels(agg, color_row).format({"percentile": "{:.1f}"})
-components.table(agg, "Aggregated")
+agg = table.style_levels(agg, leveler).format({"percentile": "{:.1f}"})
+ui.table(agg, "Aggregated")
