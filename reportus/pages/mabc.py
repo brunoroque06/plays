@@ -1,15 +1,15 @@
-from typing import Callable
+import typing
 
 import pandas as pd
 import streamlit as st
-from dateutil.relativedelta import relativedelta
+from dateutil import relativedelta
 
 from reportus import mabc, ui
 
 ui.header("MABC")
 
 
-def display_age(a: relativedelta) -> Callable:
+def display_age(a: relativedelta.relativedelta) -> typing.Callable:
     if a.years < 7:
         return st.error
     if a.years < 11:

@@ -1,4 +1,4 @@
-from datetime import date
+import datetime
 
 import pandas as pd
 import streamlit as st
@@ -8,7 +8,7 @@ from reportus import spm, ui
 ui.header("SPM")
 
 cols = st.columns(3)
-today = date.today()
+today = datetime.date.today()
 with cols[0]:
     asmt = ui.date_input("Assessment", today, max_value=today)
 with cols[1]:
@@ -31,7 +31,7 @@ for idx, (s, e) in enumerate(dist):
         raw[scores[i][0]] = cols[idx].number_input(scores[i][1], step=1)
 
 if (
-    not isinstance(asmt, date)
+    not isinstance(asmt, datetime.date)
     or not isinstance(form, str)
     or not isinstance(person, str)
 ):

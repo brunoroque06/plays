@@ -1,12 +1,12 @@
 import dataclasses
+import datetime
+import enum
 import itertools
 import math
-from datetime import date
-from enum import Enum
-from typing import Optional
+import typing
 
 import polars as pl
-from dateutil.relativedelta import relativedelta
+from dateutil import relativedelta
 
 from reportus import perf, time
 
@@ -45,7 +45,11 @@ def validate():
         data.map_i.select("age_max").max().item(),
     )
     for a in ages:
-        ids = [i for lst in get_comps(relativedelta(years=a)).values() for i in lst]
+        ids = [
+            i
+            for lst in get_comps(relativedelta.relativedelta(years=a)).values()
+            for i in lst
+        ]
         raws = range(0, 122)
 
         for i, r in itertools.product(ids, raws):
@@ -60,7 +64,7 @@ def validate():
         assert row.select("percentile").item() > 0
 
 
-def get_comps(age: relativedelta) -> dict[str, list[str]]:
+def get_comps(age: relativedelta.relativedelta) -> dict[str, list[str]]:
     return {
         "Handgeschicklichkeit": ["hg11", "hg12", "hg2", "hg3"],
         "Ballfertigkeiten": (
@@ -83,7 +87,7 @@ def get_failed() -> list[str]:
 
 
 def _process_comp(
-    data: Data, age: int, raw: dict[str, Optional[int]]
+    data: Data, age: int, raw: dict[str, typing.Optional[int]]
 ) -> dict[str, tuple[int | None, int]]:
     comp: dict[str, tuple[int | None, int]] = {}
     for k, v in raw.items():
@@ -134,7 +138,7 @@ def _process_agg(
     return agg
 
 
-class Rank(Enum):
+class Rank(enum.Enum):
     OK = "ok"
     UOK = "uok"
     CRI = "cri"
@@ -152,13 +156,13 @@ def rank(std: int) -> Rank:
 
 
 def process(
-    age: relativedelta,
-    raw: dict[str, Optional[int]],
-    asmt: date | None = None,
+    age: relativedelta.relativedelta,
+    raw: dict[str, typing.Optional[int]],
+    asmt: datetime.date | None = None,
     hand: str = "Right",
 ) -> tuple[pl.DataFrame, pl.DataFrame, str]:
     if asmt is None:
-        asmt = date.today()
+        asmt = datetime.date.today()
 
     data = _load()
 
@@ -181,7 +185,9 @@ def process(
     return comp_res, agg_res, report(asmt, age, hand, agg_res)
 
 
-def report(asmt: date, age: relativedelta, hand: str, agg: pl.DataFrame) -> str:
+def report(
+    asmt: datetime.date, age: relativedelta.relativedelta, hand: str, agg: pl.DataFrame
+) -> str:
     if age.years < 7:
         group = "3-6"
     elif age.years < 11:

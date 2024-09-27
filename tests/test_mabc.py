@@ -1,6 +1,6 @@
 import polars as pl
 import pytest
-from dateutil.relativedelta import relativedelta
+from dateutil import relativedelta
 
 from reportus import mabc
 
@@ -13,7 +13,7 @@ def test_data():
     ("age", "raw", "comp_res", "agg_res"),
     [
         (
-            relativedelta(years=6),
+            relativedelta.relativedelta(years=6),
             {
                 "hg11": 17,
                 "hg12": 29,
@@ -48,7 +48,7 @@ def test_data():
             ],
         ),
         (
-            relativedelta(years=9),
+            relativedelta.relativedelta(years=9),
             {
                 "hg11": 28,
                 "hg12": 25,
@@ -86,7 +86,7 @@ def test_data():
             ],
         ),
         (
-            relativedelta(years=12),
+            relativedelta.relativedelta(years=12),
             {
                 "hg11": 17,
                 "hg12": 23,
