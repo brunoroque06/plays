@@ -5,6 +5,7 @@ import streamlit as st
 from dateutil.relativedelta import relativedelta
 
 from reportus import components, mabc
+from reportus.table import style_levels, Level
 
 components.header("MABC")
 
@@ -54,17 +55,14 @@ for f in failed:
 comp, agg, rep = mabc.process(age, raw, asmt=asmt_date, hand=hand)
 
 
-def color_row(row):
+def color_row(row: pd.DataFrame) -> Level:
     std = row["standard"]
     rank = mabc.rank(std)
     if rank in (mabc.Rank.OK, mabc.Rank.UOK):
-        color = "rgba(33, 195, 84, 0.1)"
+        return Level.OK
     elif rank == mabc.Rank.CRI:
-        color = "rgba(255, 193, 7, 0.1)"
-    else:
-        color = "rgba(255, 43, 43, 0.09)"
-
-    return [f"background-color: {color};"] * len(row)
+        return Level.CRI
+    return Level.NOK
 
 
 st.code(rep, language="markdown")
@@ -74,7 +72,7 @@ for c in [
     ("Ballfertigkeiten", "bf"),
     ("Balance", "bl"),
 ]:
-    components.table(
+    cat = (
         comp.to_pandas()
         .astype({"raw": pd.Int64Dtype()})
         .set_index("id")
@@ -83,16 +81,11 @@ for c in [
             by=["id"],
             key=lambda s: s.map(lambda i: i if len(i) == 4 else i + "z"),
         )
-        .style.apply(color_row, axis=1),
-        c[0],
     )
+    cat = style_levels(cat, color_row)
+    components.table(cat, c[0])
 
 order = {"hg": 0, "bf": 1, "bl": 2, "total": 4}
-components.table(
-    agg.to_pandas()
-    .set_index("id")
-    .sort_values(by=["id"], key=lambda x: x.map(order))
-    .style.apply(color_row, axis=1)
-    .format({"percentile": "{:.1f}"}),
-    "Aggregated",
-)
+agg = agg.to_pandas().set_index("id").sort_values(by=["id"], key=lambda x: x.map(order))
+agg = style_levels(agg, color_row).format({"percentile": "{:.1f}"})
+components.table(agg, "Aggregated")
