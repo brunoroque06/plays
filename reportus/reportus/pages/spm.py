@@ -1,5 +1,6 @@
 from datetime import date
 
+import pandas as pd
 import streamlit as st
 
 from reportus import spm, ui
@@ -40,4 +41,17 @@ res, rep = spm.process(asmt, form, person, raw)
 
 st.code(rep, language="markdown")
 
-ui.table(res.to_pandas().set_index("id"))
+res = res.to_pandas().set_index("id")
+
+
+def leveler(row: pd.DataFrame) -> ui.RowLevel:
+    des = row["interpretive"]
+    if des == spm.Level.TYPICAL.value:
+        return ui.RowLevel.OK
+    elif des == spm.Level.DEFINITE_DYSFUNCTION.value:
+        return ui.RowLevel.NOK
+    return ui.RowLevel.CRI
+
+
+res = ui.table_style_levels(res, leveler)
+ui.table(res)
