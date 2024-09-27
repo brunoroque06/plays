@@ -1,6 +1,7 @@
 import dataclasses
 import itertools
 from datetime import date
+from enum import Enum
 
 import polars as pl
 
@@ -90,6 +91,12 @@ def _report(asmt: date, form: str, person: str, res: pl.DataFrame) -> str:
     )
 
 
+class Level(Enum):
+    TYPICAL = "Typical"
+    SOME_PROBLEMS = "Some Problems"
+    DEFINITE_DYSFUNCTION = "Definite Dysfunction"
+
+
 def process(
     asmt: date, form: str, person: str, raw: dict[str, int]
 ) -> tuple[pl.DataFrame, str]:
@@ -109,10 +116,10 @@ def process(
 
     def inter(t: int) -> str:
         if t < 60:
-            return "Typical"
+            return Level.TYPICAL.value
         if t < 70:
-            return "Some Problems"
-        return "Definite Dysfunction"
+            return Level.SOME_PROBLEMS.value
+        return Level.DEFINITE_DYSFUNCTION.value
 
     def form_row(i: str, r: int):
         row = data.get_row(form, i, r)
