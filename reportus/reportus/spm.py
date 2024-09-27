@@ -1,7 +1,7 @@
 import dataclasses
+import datetime
+import enum
 import itertools
-from datetime import date
-from enum import Enum
 
 import polars as pl
 
@@ -58,7 +58,7 @@ def validate():
             assert row.select(c).item() > 0
 
 
-def _report(asmt: date, form: str, person: str, res: pl.DataFrame) -> str:
+def _report(asmt: datetime.date, form: str, person: str, res: pl.DataFrame) -> str:
     asmt_fmt = time.format_date(asmt, False)
     header = [
         "Sensory Processing Measure (SPM): Classroom Form",
@@ -91,14 +91,14 @@ def _report(asmt: date, form: str, person: str, res: pl.DataFrame) -> str:
     )
 
 
-class Level(Enum):
+class Level(enum.Enum):
     TYPICAL = "Typical"
     SOME_PROBLEMS = "Some Problems"
     DEFINITE_DYSFUNCTION = "Definite Dysfunction"
 
 
 def process(
-    asmt: date, form: str, person: str, raw: dict[str, int]
+    asmt: datetime.date, form: str, person: str, raw: dict[str, int]
 ) -> tuple[pl.DataFrame, str]:
     data = _load()
 

@@ -1,17 +1,17 @@
 import subprocess
 import time
+import typing
 import urllib.error
 import urllib.request
-from typing import Iterable
 
 import pytest
-from playwright.sync_api import Page
+from playwright import sync_api
 
 port = 8501
 host = f"http://localhost:{port}"
 
 
-def list_pages() -> Iterable[str]:
+def list_pages() -> typing.Iterable[str]:
     return ["DTVP-3", "DTVP-A", "MABC", "SPM"]
 
 
@@ -41,7 +41,7 @@ def start_app():
 
 
 @pytest.mark.parametrize("url", list_pages())
-def test_pages(page: Page, url: str):
+def test_pages(page: sync_api.Page, url: str):
     page.goto(f"{host}/{url}")
     page.wait_for_selector(".stApp", timeout=5000)
     page.wait_for_timeout(2000)  # what to wait for exactly?

@@ -1,11 +1,11 @@
 import datetime
-from enum import Enum
-from typing import Callable
+import enum
+import typing
 
 import pandas as pd
 import streamlit as st
-from dateutil.relativedelta import relativedelta
-from pandas.io.formats.style import Styler
+from dateutil import relativedelta
+from pandas.io.formats import style
 
 
 def header(title: str):
@@ -19,8 +19,10 @@ def date_input(label: str, date: datetime.date, **kwargs):
 def dates(
     min_years: int,
     max_years: int,
-    disp: Callable[[relativedelta], Callable] = lambda _: st.info,
-) -> tuple[datetime.date, datetime.date, relativedelta]:
+    disp: typing.Callable[
+        [relativedelta.relativedelta], typing.Callable
+    ] = lambda _: st.info,
+) -> tuple[datetime.date, datetime.date, relativedelta.relativedelta]:
     col1, col2, col3 = st.columns([1, 1, 2])
 
     today = datetime.date.today()
@@ -33,15 +35,18 @@ def dates(
     with col2:
         birth = date_input(
             "Birthday",
-            asmt - relativedelta(years=min_years + int((max_years - min_years) / 2)),
-            max_value=asmt - relativedelta(years=min_years),
-            min_value=asmt - relativedelta(years=max_years - 1, days=364),
+            asmt
+            - relativedelta.relativedelta(
+                years=min_years + int((max_years - min_years) / 2)
+            ),
+            max_value=asmt - relativedelta.relativedelta(years=min_years),
+            min_value=asmt - relativedelta.relativedelta(years=max_years - 1, days=364),
         )
 
     if not isinstance(birth, datetime.date):
         raise TypeError("not date")
 
-    age = relativedelta(asmt, birth)
+    age = relativedelta.relativedelta(asmt, birth)
 
     with col3:
         st.text(" ")
@@ -52,15 +57,15 @@ def dates(
     return asmt, birth, age
 
 
-class RowLevel(Enum):
+class RowLevel(enum.Enum):
     OK = 0
     CRI = 1
     NOK = 2
 
 
 def table_style_levels(
-    df: pd.DataFrame, leveler: Callable[[pd.DataFrame], RowLevel]
-) -> Styler:
+    df: pd.DataFrame, leveler: typing.Callable[[pd.DataFrame], RowLevel]
+) -> style.Styler:
     levels = {
         RowLevel.OK: "rgba(33, 195, 84, 0.1)",
         RowLevel.CRI: "rgba(255, 193, 7, 0.1)",
@@ -75,7 +80,7 @@ def table_style_levels(
     return df.style.apply(color_row, axis=1)
 
 
-def table(dt: pd.DataFrame | Styler, title: str | None = None):
+def table(dt: pd.DataFrame | style.Styler, title: str | None = None):
     if title:
         st.text(title)
     st.dataframe(dt, use_container_width=True)

@@ -2,7 +2,6 @@ import pandas as pd
 import streamlit as st
 
 from reportus import dtvp, dtvpa, ui
-from reportus.dtvp import Level
 
 
 def page(rep: str):
@@ -37,9 +36,9 @@ def page(rep: str):
 
     def leveler(row: pd.DataFrame) -> ui.RowLevel:
         des = row[desc]
-        if des in (Level.SUPERIOR.value, Level.VERY_SUPERIOR.value):
+        if des in (dtvp.Level.SUPERIOR.value, dtvp.Level.VERY_SUPERIOR.value):
             return ui.RowLevel.OK
-        elif des in (Level.POOR.value, Level.VERY_POOR.value):
+        elif des in (dtvp.Level.POOR.value, dtvp.Level.VERY_POOR.value):
             return ui.RowLevel.NOK
         return ui.RowLevel.CRI
 

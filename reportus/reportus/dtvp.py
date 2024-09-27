@@ -1,10 +1,10 @@
 import dataclasses
+import datetime
+import enum
 import itertools
-from datetime import date
-from enum import Enum
 
 import polars as pl
-from dateutil.relativedelta import relativedelta
+from dateutil import relativedelta
 
 from reportus import perf, time
 
@@ -22,7 +22,7 @@ class Data:
             & (pl.col("raw_max") >= raw)
         )
 
-    def get_rs(self, i: str, age: relativedelta, raw: int):
+    def get_rs(self, i: str, age: relativedelta.relativedelta, raw: int):
         months = age.years * 12 + age.months
         return self.rs.filter(
             (pl.col("id") == i)
@@ -60,7 +60,7 @@ def validate():
         get_tests().keys(), range(4, 13), range(0, 12, 2), range(0, 194)
     ):
         print(i, y, m, r)
-        row = data.get_rs(i, relativedelta(years=y, months=m), r)
+        row = data.get_rs(i, relativedelta.relativedelta(years=y, months=m), r)
         assert row.select("scaled").item() > 0
         assert row.select("percentile").item() >= 0
 
@@ -84,7 +84,7 @@ def get_tests() -> dict[str, str]:
     }
 
 
-class Level(Enum):
+class Level(enum.Enum):
     VERY_POOR = "Very Poor"
     POOR = "Poor"
     BELOW_AVERAGE = "Below Average"
@@ -143,10 +143,12 @@ def to_age(a: str) -> str:
 
 
 def process(
-    age: relativedelta, raw: dict[str, int], asmt: date | None = None
+    age: relativedelta.relativedelta,
+    raw: dict[str, int],
+    asmt: datetime.date | None = None,
 ) -> tuple[pl.DataFrame, pl.DataFrame, str]:
     if asmt is None:
-        asmt = date.today()
+        asmt = datetime.date.today()
 
     data = _load()
 
@@ -211,10 +213,10 @@ def process(
     sub = sub.with_columns(pl.col("percentile").map_elements(to_pr, pl.String))
     comp = comp.with_columns(pl.col("percentile").map_elements(to_pr, pl.String))
 
-    return (sub, comp, rep)
+    return sub, comp, rep
 
 
-def report(asmt: date, sub: pl.DataFrame, comp: pl.DataFrame) -> str:
+def report(asmt: datetime.date, sub: pl.DataFrame, comp: pl.DataFrame) -> str:
     return "\n".join(
         [
             f"Developmental Test of Visual Perception (DTVP-3) - {time.format_date(asmt)}",

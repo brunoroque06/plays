@@ -1,4 +1,4 @@
-from dateutil.relativedelta import relativedelta
+from dateutil import relativedelta
 
 from reportus import dtvpa
 
@@ -9,7 +9,7 @@ def test_data():
 
 def test_dtvpa():
     sub, comp, rep = dtvpa.process(
-        relativedelta(years=12),
+        relativedelta.relativedelta(years=12),
         {"co": 13, "fg": 4, "vse": 60, "vc": 12, "vsp": 29, "fc": 6},
     )
 

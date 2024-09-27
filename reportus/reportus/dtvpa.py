@@ -1,9 +1,9 @@
 import dataclasses
+import datetime
 import itertools
-from datetime import date
 
 import polars as pl
-from dateutil.relativedelta import relativedelta
+from dateutil import relativedelta
 
 from reportus import dtvp, perf, time
 
@@ -13,7 +13,7 @@ class Data:
     std: pl.DataFrame
     sums: pl.DataFrame
 
-    def get_std(self, i: str, age: relativedelta, r: int):
+    def get_std(self, i: str, age: relativedelta.relativedelta, r: int):
         return self.std.filter(
             (pl.col("id") == i)
             & (pl.col("age_min") <= age.years)
@@ -40,7 +40,7 @@ def validate():
     raws = range(0, 109)
 
     for i, a, r in itertools.product(ids, ages, raws):
-        row = data.get_std(i, relativedelta(years=a), r)
+        row = data.get_std(i, relativedelta.relativedelta(years=a), r)
         assert row.select("standard").item() > 0
         assert row.select("percentile").item() >= 0
 
@@ -64,7 +64,7 @@ def get_tests():
     }
 
 
-def report(asmt: date, sub: pl.DataFrame, comp: pl.DataFrame) -> str:
+def report(asmt: datetime.date, sub: pl.DataFrame, comp: pl.DataFrame) -> str:
     return "\n".join(
         [
             f"Developmental Test of Visual Perception - Adolescent and Adult (DTVP-A) - ({time.format_date(asmt)})",
@@ -100,10 +100,12 @@ def report(asmt: date, sub: pl.DataFrame, comp: pl.DataFrame) -> str:
 
 
 def process(
-    age: relativedelta, raw: dict[str, int], asmt: date | None = None
+    age: relativedelta.relativedelta,
+    raw: dict[str, int],
+    asmt: datetime.date | None = None,
 ) -> tuple[pl.DataFrame, pl.DataFrame, str]:
     if asmt is None:
-        asmt = date.today()
+        asmt = datetime.date.today()
 
     data = _load()
 
@@ -161,4 +163,4 @@ def process(
         schema=["id", "sum_standard", "index", "%ile", "description"],
     )
 
-    return (sub, comp, report(asmt, sub, comp))
+    return sub, comp, report(asmt, sub, comp)
