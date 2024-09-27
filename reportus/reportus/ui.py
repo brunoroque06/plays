@@ -55,23 +55,3 @@ def table(dt: pd.DataFrame | Styler, title: str | None = None):
     if title:
         st.text(title)
     st.dataframe(dt, use_container_width=True)
-
-
-def dtvp(min_age: int, max_age: int, mod):
-    asmt_date, _, age = dates(min_age, max_age)
-
-    raw = {}
-    tests = mod.get_tests()
-
-    cols = st.columns(3)
-    for k, v in tests.items():
-        with cols[1]:
-            raw[k] = st.number_input(v, step=1)
-
-    sub, comp, rep = mod.process(age, raw, asmt_date)
-    sub = sub.to_pandas().drop(columns=["id"]).set_index("label")
-    comp = comp.to_pandas().set_index("id")
-
-    st.code(rep, language="markdown")
-    table(sub, "Subtest")
-    table(comp, "Composite")

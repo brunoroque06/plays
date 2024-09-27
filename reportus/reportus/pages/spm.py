@@ -2,14 +2,14 @@ from datetime import date
 
 import streamlit as st
 
-from reportus import components, spm
+from reportus import spm, ui
 
-components.header("SPM")
+ui.header("SPM")
 
 cols = st.columns(3)
 today = date.today()
 with cols[0]:
-    asmt = components.date_input("Assessment", today, max_value=today)
+    asmt = ui.date_input("Assessment", today, max_value=today)
 with cols[1]:
     form = st.selectbox("Form", ("Classroom", "Home"))
 with cols[2]:
@@ -40,4 +40,4 @@ res, rep = spm.process(asmt, form, person, raw)
 
 st.code(rep, language="markdown")
 
-components.table(res.to_pandas().set_index("id"))
+ui.table(res.to_pandas().set_index("id"))

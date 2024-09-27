@@ -1,5 +1,3 @@
-from reportus import components, dtvpa
+from reportus.pages import dtvp
 
-components.header("DTVP-A")
-
-components.dtvp(11, 18, dtvpa)
+dtvp.page("dtvpa")
