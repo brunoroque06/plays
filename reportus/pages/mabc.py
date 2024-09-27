@@ -4,7 +4,7 @@ import pandas as pd
 import streamlit as st
 from dateutil.relativedelta import relativedelta
 
-from reportus import mabc, table, ui
+from reportus import mabc, ui
 
 ui.header("MABC")
 
@@ -54,14 +54,14 @@ for f in failed:
 comp, agg, rep = mabc.process(age, raw, asmt=asmt_date, hand=hand)
 
 
-def leveler(row: pd.DataFrame) -> table.Level:
+def leveler(row: pd.DataFrame) -> ui.RowLevel:
     std = row["standard"]
     rank = mabc.rank(std)  # pyright: ignore
     if rank in (mabc.Rank.OK, mabc.Rank.UOK):
-        return table.Level.OK
+        return ui.RowLevel.OK
     elif rank == mabc.Rank.CRI:
-        return table.Level.CRI
-    return table.Level.NOK
+        return ui.RowLevel.CRI
+    return ui.RowLevel.NOK
 
 
 st.code(rep, language="markdown")
@@ -81,10 +81,10 @@ for c in [
             key=lambda s: s.map(lambda i: i if len(i) == 4 else i + "z"),
         )
     )
-    cat = table.style_levels(cat, leveler)
+    cat = ui.table_style_levels(cat, leveler)
     ui.table(cat, c[0])
 
 order = {"hg": 0, "bf": 1, "bl": 2, "total": 4}
 agg = agg.to_pandas().set_index("id").sort_values(by=["id"], key=lambda x: x.map(order))
-agg = table.style_levels(agg, leveler).format({"percentile": "{:.1f}"})
+agg = ui.table_style_levels(agg, leveler).format({"percentile": "{:.1f}"})
 ui.table(agg, "Aggregated")

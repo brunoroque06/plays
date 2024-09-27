@@ -1,7 +1,7 @@
 import pandas as pd
 import streamlit as st
 
-from reportus import dtvp, dtvpa, table, ui
+from reportus import dtvp, dtvpa, ui
 from reportus.dtvp import Level
 
 
@@ -35,18 +35,18 @@ def page(rep: str):
 
     sub, comp, rep = mod.process(age, raw, asmt_date)
 
-    def leveler(row: pd.DataFrame) -> table.Level:
+    def leveler(row: pd.DataFrame) -> ui.RowLevel:
         des = row[desc]
         if des in (Level.SUPERIOR.value, Level.VERY_SUPERIOR.value):
-            return table.Level.OK
+            return ui.RowLevel.OK
         elif des in (Level.POOR.value, Level.VERY_POOR.value):
-            return table.Level.NOK
-        return table.Level.CRI
+            return ui.RowLevel.NOK
+        return ui.RowLevel.CRI
 
     sub = sub.to_pandas().drop(columns=["id"]).set_index("label")
-    sub = table.style_levels(sub, leveler)
+    sub = ui.table_style_levels(sub, leveler)
     comp = comp.to_pandas().set_index("id")
-    comp = table.style_levels(comp, leveler)
+    comp = ui.table_style_levels(comp, leveler)
 
     st.code(rep, language="markdown")
     ui.table(sub, "Subtest")
