@@ -1,19 +1,14 @@
 import { Component } from "@angular/core";
-import { toSignal } from "@angular/core/rxjs-interop";
-import { concatMap, delay, from, of } from "rxjs";
-
-function type(val: string) {
-  return [...Array(val.length + 1).keys()].map((i) => val.substring(0, i));
-}
+import { TypingDirective } from "./typing.directive";
 
 @Component({
   selector: "app-root",
   standalone: true,
   template: `
-    <div class="container">
+    <main>
       <div class="header">
         <div class="name">
-          <span>{{ name() }}</span>
+          <span typing>Bruno Roque</span>
           <span class="caret">&nbsp;</span>
         </div>
         <div class="title">Software Engineer</div>
@@ -25,18 +20,11 @@ function type(val: string) {
           }}</a>
         }
       </div>
-    </div>
+    </main>
   `,
+  imports: [TypingDirective],
 })
 export class AppComponent {
-  name = toSignal(
-    of("Bruno Roque").pipe(
-      delay(1000),
-      concatMap((n) => from(type(n))),
-      concatMap((n) => of(n).pipe(delay(100))),
-    ),
-  );
-
   links = [
     {
       name: "GitHub",
