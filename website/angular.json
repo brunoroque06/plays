@@ -31,7 +31,9 @@
             }
           },
           "options": {
-            "assets": ["src/favicon.ico", "src/assets"],
+            "assets": [
+              { "glob": "*.{pdf,png}", "input": "assets", "output": "." }
+            ],
             "browser": "src/main.ts",
             "index": "src/index.html",
             "outputPath": "dist",

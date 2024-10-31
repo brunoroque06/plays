@@ -1,16 +1,16 @@
 {
   "dependencies": {
-    "@angular/common": "18.2.9",
-    "@angular/compiler": "18.2.9",
-    "@angular/core": "18.2.9",
-    "@angular/platform-browser": "18.2.9",
+    "@angular/common": "18.2.10",
+    "@angular/compiler": "18.2.10",
+    "@angular/core": "18.2.10",
+    "@angular/platform-browser": "18.2.10",
     "rxjs": "7.8.1",
     "tslib": "2.8.0"
   },
   "devDependencies": {
-    "@angular/build": "18.2.9",
-    "@angular/cli": "18.2.9",
-    "@angular/compiler-cli": "18.2.9",
+    "@angular/build": "18.2.10",
+    "@angular/cli": "18.2.10",
+    "@angular/compiler-cli": "18.2.10",
     "@azure/static-web-apps-cli": "2.0.1",
     "@lhci/cli": "0.14.0",
     "prettier": "3.3.3",
@@ -22,11 +22,11 @@
   "scripts": {
     "audit": "lhci autorun",
     "build": "npm run pre && ng build --configuration prod",
-    "deploy": "npm run build && swa deploy dist/browser --app-name stapp-personal --env prod",
+    "deploy": "npm run build && az account set -s ac8c58b9-a2e7-44c9-bcf2-4b1f930c59b8 && swa deploy dist/browser -S ac8c58b9-a2e7-44c9-bcf2-4b1f930c59b8 --app-name stapp-personal --env prod",
     "format": "prettier --ignore-path .gitignore -w .",
     "format:check": "prettier --ignore-path .gitignore -l .",
-    "pre": "mkdir -p src/assets/docs && typst compile assets-gen/resume.typ src/assets/docs/bruno-roque-resume.pdf && node assets-gen/main.js",
-    "pre:watch": "typst watch assets-gen/resume.typ src/assets/docs/bruno-roque-resume.pdf",
+    "pre": "typst compile assets/resume.typ assets/bruno-roque-resume.pdf && node assets/main.js",
+    "pre:watch": "typst watch assets/resume.typ assets/bruno-roque-resume.pdf",
     "start": "npm run pre && ng serve --configuration dev",
     "watch": "npm run pre && ng build --watch --configuration dev"
   },

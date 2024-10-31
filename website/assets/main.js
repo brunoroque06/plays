@@ -1,13 +1,13 @@
 let fs = require("fs");
 let sharp = require("sharp");
 
-const imgs = "src/assets/imgs";
+const imgs = "assets";
 
 /**
  * @returns {Promise<void>}
  */
 async function buildFavicons() {
-  let svg = sharp("assets-gen/icons/logo.svg");
+  let svg = sharp("assets/icons/logo.svg");
   await svg.resize(192).png().toFile(`${imgs}/favicon-192.png`);
 }
 

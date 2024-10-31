@@ -32,7 +32,7 @@ export class AppComponent {
     },
     {
       name: "Resume",
-      ref: "/assets/docs/bruno-roque-resume.pdf",
+      ref: "/bruno-roque-resume.pdf",
     },
   ];
 }

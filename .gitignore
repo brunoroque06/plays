@@ -5,6 +5,10 @@ dist
 obj
 out
 
+# Binaries
+*.pdf
+*.png
+
 # macOS
 .DS_Store
 
@@ -12,9 +16,6 @@ out
 .angular
 .lighthouseci
 node_modules
-website/src/assets/docs/bruno-roque-cover.pdf
-website/src/assets/docs/bruno-roque-resume.pdf
-website/src/assets/imgs/favicon-192.png
 
 # Python
 .venv
