@@ -3,7 +3,6 @@ import { TypingDirective } from "./typing.directive";
 
 @Component({
   selector: "app-root",
-  standalone: true,
   template: `
     <main>
       <div class="header">
