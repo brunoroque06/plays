@@ -105,6 +105,7 @@
     start: datetime(year: 2023, month: 3, day: 1),
     end: none,
     desc: "..."
+    // desc: "Development of a trading system that aggregates Capacity Auctions from different Providers, with a monthly trading volume of ~1 M€ and ~1 TWh. Tech: C#, Python, MS SQL, Angular, Azure DevOps, Azure, Terraform."
   ),
   (
     title: "Senior Software Developer",
