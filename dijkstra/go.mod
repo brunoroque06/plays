@@ -2,4 +2,4 @@ module dijkstra
 
 go 1.23
 
-require golang.org/x/exp v0.0.0-20241009180824-f66d83c29e7c
+require golang.org/x/exp v0.0.0-20241108190413-2d47ceb2692f
