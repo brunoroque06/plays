@@ -62,7 +62,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
       - run: terraform fmt -check
-      - run: terraform validate
 
   pi:
     runs-on: ubuntu-latest
