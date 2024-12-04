@@ -1,8 +1,14 @@
 terraform {
+  backend "azurerm" {
+    resource_group_name  = "rg-tfstate"
+    storage_account_name = "st4tfstate"
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
+  }
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "4.10.0"
+      version = "4.12.0"
     }
     docker = {
       source  = "kreuzwerker/docker"
