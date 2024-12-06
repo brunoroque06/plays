@@ -36,11 +36,15 @@ def page(rep: str):
 
     def leveler(row: pd.DataFrame) -> ui.RowLevel:
         des = row[desc]
-        if des in (dtvp.Level.SUPERIOR.value, dtvp.Level.VERY_SUPERIOR.value):
+        if des in (
+            dtvp.Level.ABOVE_AVERAGE.value,
+            dtvp.Level.SUPERIOR.value,
+            dtvp.Level.VERY_SUPERIOR.value,
+        ):
             return ui.RowLevel.OK
-        elif des in (dtvp.Level.POOR.value, dtvp.Level.VERY_POOR.value):
-            return ui.RowLevel.NOK
-        return ui.RowLevel.CRI
+        elif des == dtvp.Level.AVERAGE.value:
+            return ui.RowLevel.CRI
+        return ui.RowLevel.NOK
 
     sub = sub.to_pandas().drop(columns=["id"]).set_index("label")
     sub = ui.table_style_levels(sub, leveler)
