@@ -1,7 +1,7 @@
 pandas-stubs==2.2.3.241126
-playwright==1.49.0
-pyright==1.1.389
+playwright==1.49.1
+pyright==1.1.391
 pytest-playwright==0.6.2
 pytest==8.3.4
-ruff==0.8.1
-types-python-dateutil==2.9.0.20241003
+ruff==0.8.6
+types-python-dateutil==2.9.0.20241206
