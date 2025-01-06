@@ -7,9 +7,7 @@ pub(crate) struct Rnd {
 
 impl Rnd {
     pub(crate) fn new() -> Rnd {
-        Rnd {
-            seed: rand::thread_rng(),
-        }
+        Rnd { seed: rand::rng() }
     }
 
     pub(crate) fn random(&mut self) -> f64 {
