@@ -1,6 +1,15 @@
 on: [push]
 
 jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: pip install zizmor
+      - run: zizmor .github/workflows/main.yml
+
   decision-tree:
     runs-on: ubuntu-latest
     defaults:
@@ -8,6 +17,8 @@ jobs:
         working-directory: decision-tree
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9
@@ -26,6 +37,8 @@ jobs:
         working-directory: dijkstra
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-go@v5
         with:
           cache-dependency-path: dijkstra/go.sum
@@ -43,6 +56,8 @@ jobs:
         working-directory: genetic
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9
@@ -60,6 +75,8 @@ jobs:
         working-directory: infra
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: hashicorp/setup-terraform@v3
       - run: terraform fmt -check
 
@@ -70,6 +87,8 @@ jobs:
         working-directory: pi
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - run: rustup toolchain install stable
       - run: cargo build -r
       - run: cargo check -r
@@ -83,6 +102,8 @@ jobs:
         working-directory: reportus
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: 3.13
@@ -103,6 +124,8 @@ jobs:
         working-directory: website
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -119,6 +142,8 @@ jobs:
         working-directory: website
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: 22
