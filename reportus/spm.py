@@ -85,7 +85,7 @@ def _report(asmt: datetime.date, form: str, person: str, res: pl.DataFrame) -> s
     return "\n".join(
         header
         + [
-            f"{d}: PR {res.filter(pl.col('id') == i).select('percentile').item()} - \"{res.filter(pl.col('id') == i).select('interpretive').item()}\""
+            f'{d}: PR {res.filter(pl.col("id") == i).select("percentile").item()} - "{res.filter(pl.col("id") == i).select("interpretive").item()}"'
             for i, d in scores
         ]
     )
