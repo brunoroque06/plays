@@ -4,7 +4,7 @@ import "testing"
 
 var randInts = func(max, n int) *Set[int] {
 	nums := MakeSet[int]()
-	for i := 0; i < n; i++ {
+	for i := range n {
 		nums.Add(i)
 	}
 	return &nums
