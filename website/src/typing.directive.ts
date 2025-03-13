@@ -1,4 +1,11 @@
-import { Directive, ElementRef, Input, OnDestroy, OnInit } from "@angular/core";
+import {
+  Directive,
+  ElementRef,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+} from "@angular/core";
 import { concatMap, delay, from, of, Subscription, tap } from "rxjs";
 
 function type(val: string) {
@@ -10,25 +17,12 @@ function type(val: string) {
   standalone: true,
 })
 export class TypingDirective implements OnInit, OnDestroy {
-  @Input() delay = 1000;
-  @Input() interval = 100;
+  private readonly el = inject(ElementRef);
+
+  readonly delay = input(1000);
+  readonly interval = input(100);
 
   private sub?: Subscription;
-
-  constructor(private el: ElementRef) {}
-
-  ngOnInit() {
-    this.sub = of(this.el.nativeElement.innerText)
-      .pipe(
-        tap(() => (this.el.nativeElement.innerText = "")),
-        delay(this.delay),
-        concatMap((n) => from(type(n))),
-        concatMap((n) => of(n).pipe(delay(this.interval))),
-      )
-      .subscribe((v) => {
-        this.el.nativeElement.innerText = v;
-      });
-  }
 
   ngOnDestroy() {
     this.sub?.unsubscribe();
