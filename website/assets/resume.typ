@@ -21,7 +21,10 @@
 #let ungap = { v(-0.6em) }
 
 #let info(img, disp, ref: none) = {
-  let cell = [#box(baseline: 20%, image("icons/" + img, height: 1.2em)); #h(0.2em); #disp]
+  let cell = [#box(
+      baseline: 20%,
+      image("icons/" + img, height: 1.2em),
+    ); #h(0.2em); #disp]
   if ref != none {
     cell = link(ref)[#cell]
   }
@@ -32,10 +35,24 @@
   row-gutter: 0.4em,
   info("location.svg", "Zürich, Switzerland"),
   info("mobile.svg", "(+41) 765 174 226", ref: "tel:+41-765-174-226"),
-  info("email.svg", "brunroque06@gmail.com", ref: "mailto:brunoroque06@gmail.com"),
+
+  info(
+    "email.svg",
+    "brunroque06@gmail.com",
+    ref: "mailto:brunoroque06@gmail.com",
+  ),
   info("website.svg", "broque.dev", ref: "https://broque.dev"),
-  info("github.svg", "github.com/brunoroque06", ref: "https://github.com/brunoroque06"),
-  info("linkedin.svg", "linkedin.com/in/brunoroque06", ref: "https://linkedin.com/in/brunoroque06"),
+
+  info(
+    "github.svg",
+    "github.com/brunoroque06",
+    ref: "https://github.com/brunoroque06",
+  ),
+  info(
+    "linkedin.svg",
+    "linkedin.com/in/brunoroque06",
+    ref: "https://linkedin.com/in/brunoroque06",
+  ),
 )
 #ungap
 
@@ -74,7 +91,17 @@
   [(#yrsStr#sep#mosStr) ]
 }
 
-#let stage(title, entity, city, country, start, end, entityRef: none, duration: true, desc: none) = {
+#let stage(
+  title,
+  entity,
+  city,
+  country,
+  start,
+  end,
+  entityRef: none,
+  duration: true,
+  desc: none,
+) = {
   v(0%)
   text(1.2em, weight: 600)[#title]
   v(-0.8em)
@@ -104,8 +131,7 @@
     country: "Switzerland",
     start: datetime(year: 2023, month: 3, day: 1),
     end: none,
-    desc: "..."
-    // desc: "Development of a trading system that aggregates Capacity Auctions from different Providers, with a monthly trading volume of ~1 M€ and ~1 TWh. Tech: C#, Python, MS SQL, Angular, Azure DevOps, Azure, Terraform."
+    desc: "...",
   ),
   (
     title: "Senior Software Developer",
@@ -114,7 +140,7 @@
     country: "Switzerland",
     start: datetime(year: 2019, month: 6, day: 1),
     end: datetime(year: 2022, month: 12, day: 1),
-    desc: "Development of an analytics system for time-series data. It enabled the correlation of events across machines in production lines. Tech: C#, Python, PostgreSQL, Angular, Bazel, Docker, Azure DevOps, Azure, Pulumi."
+    desc: "Development of an analytics system for time-series data. It enabled the correlation of events across machines in production lines. Tech: C#, Python, PostgreSQL, Angular, Bazel, Docker, Azure DevOps, Azure, Pulumi.",
   ),
   (
     title: "Software Developer",
@@ -132,7 +158,9 @@
     country: "Scotland",
     start: datetime(year: 2017, month: 4, day: 1),
     end: datetime(year: 2017, month: 8, day: 1),
-    desc: "Development of a desktop application to automate the planning of neighbors in cellular networks. Improved the drop call rate in northern areas of the UK by 30%. Tech: C#, WPF, MS SQL.",
+    desc: "Development of a desktop application to automate the planning of neighbors in cellular networks. Improved the drop call rate in northern areas of the UK by 30%. Tech: C#, WPF, MS SQL.".trim(
+      regex(" Tech:(.*)"),
+    ),
   ),
   (
     title: "Software Engineer R&D",
@@ -151,7 +179,7 @@
     start: datetime(year: 2015, month: 1, day: 1),
     end: datetime(year: 2015, month: 9, day: 1),
     desc: "Software development of video processing algorithms: detection of black frames, black margins, flashes, block effect, removal of subtitles and inpaint. Tech: C++, OpenCV, Matlab.",
-  )
+  ),
 )
 
 #for e in exps.slice(0, 4) {
@@ -184,12 +212,12 @@
   (
     "Genetic Algorithm, Decision Tree Player, and other side projects",
     "https://github.com/brunoroque06/plays/tree/main/genetic",
-    none
+    none,
   ),
   (
     "Tool to help my wife fill out reports",
     "https://github.com/brunoroque06/plays/tree/main/reportus",
-    none
+    none,
   ),
   (
     "Architecture Clinic, Michael Montgomery, IDesign",
@@ -205,7 +233,7 @@
     "Project Design Master Class, Juval Löwy, IDesign",
     "https://www.idesign.net/Training/Project-Design-Master-Class",
     datetime(year: 2020, month: 3, day: 1),
-  )
+  ),
 )
 
 #for d in devs.slice(0, 4) {
