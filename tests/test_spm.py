@@ -61,7 +61,7 @@ def test_data():
         ),
     ],
 )
-def test_spm(form, raw, ts):
+def test_spm(form: str, raw: dict[str, int], ts: dict[str, int]):
     today = datetime.date.today()
 
     res, rep = spm.process(today, form, "t", raw)

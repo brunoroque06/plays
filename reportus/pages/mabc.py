@@ -9,12 +9,12 @@ from reportus import mabc, ui
 ui.header("MABC")
 
 
-def display_age(a: relativedelta.relativedelta) -> typing.Callable:
+def display_age(a: relativedelta.relativedelta) -> ui.Color:
     if a.years < 7:
-        return st.error
+        return ui.Color.RED
     if a.years < 11:
-        return st.success
-    return st.info
+        return ui.Color.GREEN
+    return ui.Color.BLUE
 
 
 asmt_date, birth, age = ui.dates(5, 16, display_age)
@@ -26,15 +26,12 @@ cols = st.columns([1, 2])
 with cols[0]:
     hand = st.selectbox("Preferred Hand", ("Right", "Left"))
 
-if not isinstance(hand, str):
-    raise TypeError("not str")
-
 with cols[1]:
     failed = st.multiselect("Failed", mabc.get_failed(), format_func=str.upper)
 
 cols = st.columns(len(comp_ids))
 
-raw = {}
+raw: dict[str, typing.Optional[int]] = {}
 
 for i, col in enumerate(cols):
     comp_id = comp_ids[i]
@@ -55,8 +52,8 @@ comp, agg, rep = mabc.process(age, raw, asmt=asmt_date, hand=hand)
 
 
 def leveler(row: pd.DataFrame) -> ui.RowLevel:
-    std = row["standard"]
-    rank = mabc.rank(std)  # pyright: ignore
+    std = typing.cast(int, row["standard"])
+    rank = mabc.rank(std)
     if rank in (mabc.Rank.OK, mabc.Rank.UOK):
         return ui.RowLevel.OK
     elif rank == mabc.Rank.CRI:
@@ -73,18 +70,18 @@ for c in [
 ]:
     cat = (
         comp.to_pandas()
-        .astype({"raw": pd.Int64Dtype()})
-        .set_index("id")
-        .filter(like=c[1], axis=0)
+        .astype({"raw": pd.Int64Dtype()})  # type: ignore
+        .set_index("id")  # type: ignore
+        .filter(like=c[1], axis=0)  # type: ignore
         .sort_values(
             by=["id"],
-            key=lambda s: s.map(lambda i: i if len(i) == 4 else i + "z"),
+            key=lambda s: s.map(lambda i: i if len(i) == 4 else i + "z"),  # type: ignore
         )
     )
     cat = ui.table_style_levels(cat, leveler)
     ui.table(cat, c[0])
 
 order = {"hg": 0, "bf": 1, "bl": 2, "total": 4}
-agg = agg.to_pandas().set_index("id").sort_values(by=["id"], key=lambda x: x.map(order))
-agg = ui.table_style_levels(agg, leveler).format({"percentile": "{:.1f}"})
+agg = agg.to_pandas().set_index("id").sort_values(by=["id"], key=lambda x: x.map(order))  # type: ignore
+agg = ui.table_style_levels(agg, leveler).format({"percentile": "{:.1f}"})  # type: ignore
 ui.table(agg, "Aggregated")

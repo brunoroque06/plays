@@ -114,7 +114,7 @@ def _process_comp(
 def _process_agg(
     data: Data, comp: dict[str, tuple[int | None, int]]
 ) -> dict[str, list[int]]:
-    agg = {}
+    agg: dict[str, list[int]] = {}
 
     for cmp in ["hg", "bf", "bl"]:
         score = sum(

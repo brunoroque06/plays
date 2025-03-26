@@ -15,7 +15,7 @@ class Data:
     rs: pl.DataFrame
     sp: pl.DataFrame
 
-    def get_ra(self, i, raw):
+    def get_ra(self, i: str, raw: int):
         return self.ra.filter(
             (pl.col("id") == i)
             & (pl.col("raw_min") <= raw)
