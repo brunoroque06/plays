@@ -152,7 +152,7 @@ def process(
         ),
     ]
 
-    def get_comp(i, su):
+    def get_comp(i: str, su: int):
         row = data.get_sum(i, su)
         idx = row.select("index").item()
         return [idx, dtvp.to_pr(row.select("percentile").item()), dtvp.desc_index(idx)]

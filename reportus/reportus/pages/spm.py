@@ -1,4 +1,5 @@
 import datetime
+import typing
 
 import pandas as pd
 import streamlit as st
@@ -21,7 +22,7 @@ with cols[2]:
 
 scores = spm.get_scores()
 
-raw = {}
+raw: dict[str, int] = {}
 
 dist = [(0, 3), (3, len(scores))]
 cols = st.columns(len(dist))
@@ -30,22 +31,16 @@ for idx, (s, e) in enumerate(dist):
     for i in range(s, e):
         raw[scores[i][0]] = cols[idx].number_input(scores[i][1], step=1)
 
-if (
-    not isinstance(asmt, datetime.date)
-    or not isinstance(form, str)
-    or not isinstance(person, str)
-):
-    raise TypeError("type error")
-
 res, rep = spm.process(asmt, form, person, raw)
 
 st.code(rep, language="markdown")
 
-res = res.to_pandas().set_index("id")
+
+res = res.to_pandas().set_index("id")  # type: ignore
 
 
 def leveler(row: pd.DataFrame) -> ui.RowLevel:
-    des = row["interpretive"]
+    des = typing.cast(str, row["interpretive"])
     if des == spm.Level.TYPICAL.value:
         return ui.RowLevel.OK
     elif des == spm.Level.DEFINITE_DYSFUNCTION.value:

@@ -1,3 +1,5 @@
+import typing
+
 import pandas as pd
 import streamlit as st
 
@@ -24,7 +26,7 @@ def page(rep: str):
 
     asmt_date, _, age = ui.dates(min_age, max_age)
 
-    raw = {}
+    raw: dict[str, int] = {}
     tests = mod.get_tests()
 
     cols = st.columns(3)
@@ -35,7 +37,7 @@ def page(rep: str):
     sub, comp, rep = mod.process(age, raw, asmt_date)
 
     def leveler(row: pd.DataFrame) -> ui.RowLevel:
-        des = row[desc]
+        des = typing.cast(str, row[desc])
         if des in (
             dtvp.Level.ABOVE_AVERAGE.value,
             dtvp.Level.SUPERIOR.value,
@@ -46,9 +48,9 @@ def page(rep: str):
             return ui.RowLevel.CRI
         return ui.RowLevel.NOK
 
-    sub = sub.to_pandas().drop(columns=["id"]).set_index("label")
+    sub = sub.to_pandas().drop(columns=["id"]).set_index("label")  # type: ignore
     sub = ui.table_style_levels(sub, leveler)
-    comp = comp.to_pandas().set_index("id")
+    comp = comp.to_pandas().set_index("id")  # type: ignore
     comp = ui.table_style_levels(comp, leveler)
 
     st.code(rep, language="markdown")
