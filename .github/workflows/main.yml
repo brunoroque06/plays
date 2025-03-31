@@ -12,64 +12,6 @@ jobs:
       - run: pip install zizmor
       - run: zizmor .github/workflows/main.yml
 
-  decision-tree:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: decision-tree
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 9
-      - run: dotnet restore
-      - run: dotnet build
-      - run: |
-          dotnet new tool-manifest
-          dotnet tool install fantomas
-          dotnet tool run fantomas --check .
-      - run: dotnet test
-
-  dijkstra:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: dijkstra
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - uses: actions/setup-go@v5
-        with:
-          cache-dependency-path: dijkstra/go.sum
-          go-version: 1.24
-      - run: go build -v
-      - run: test -z $(gofmt -l .)
-      - run: go install honnef.co/go/tools/cmd/staticcheck@latest
-      - run: staticcheck .
-      - run: go test -v
-
-  genetic:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: genetic
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 9
-      - run: dotnet restore
-      - run: dotnet build
-      - run: |
-          dotnet new tool-manifest
-          dotnet tool install csharpier
-          dotnet dotnet-csharpier --check .
-
   infra:
     runs-on: ubuntu-latest
     defaults:
@@ -81,21 +23,6 @@ jobs:
           persist-credentials: false
       - uses: hashicorp/setup-terraform@v3
       - run: terraform fmt -check
-
-  pi:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: pi
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - run: rustup toolchain install stable
-      - run: cargo build -r
-      - run: cargo check -r
-      - run: cargo clippy -r
-      - run: cargo fmt --check
 
   reportus:
     runs-on: ubuntu-latest
