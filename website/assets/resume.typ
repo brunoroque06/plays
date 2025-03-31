@@ -210,12 +210,7 @@
 
 #let devs = (
   (
-    "Genetic Algorithm, Decision Tree Player, and other side projects",
-    "https://github.com/brunoroque06/plays/tree/main/genetic",
-    none,
-  ),
-  (
-    "Tool to help my wife fill out reports",
+    "Application to help my wife fill out reports at her work",
     "https://github.com/brunoroque06/plays/tree/main/reportus",
     none,
   ),
