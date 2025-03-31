@@ -1,6 +1,5 @@
 import subprocess
 import time
-import typing
 import urllib.error
 import urllib.request
 
@@ -9,10 +8,6 @@ from playwright import sync_api
 
 port = 8501
 host = f"http://localhost:{port}"
-
-
-def list_pages() -> typing.Iterable[str]:
-    return ["DTVP-3", "DTVP-A", "MABC", "SPM"]
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -40,7 +35,7 @@ def start_app():
         app.terminate()
 
 
-@pytest.mark.parametrize("url", list_pages())
+@pytest.mark.parametrize("url", ["DTVP-3", "DTVP-A", "MABC", "SPM"])
 def test_pages(page: sync_api.Page, url: str):
     page.goto(f"{host}/{url}")
     page.wait_for_selector(".stApp", timeout=5000)
