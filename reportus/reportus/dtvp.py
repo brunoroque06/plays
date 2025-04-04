@@ -59,7 +59,6 @@ def validate():
     for i, y, m, r in itertools.product(
         get_tests().keys(), range(4, 13), range(0, 12, 2), range(0, 194)
     ):
-        print(i, y, m, r)
         row = data.get_rs(i, relativedelta.relativedelta(years=y, months=m), r)
         assert row.select("scaled").item() > 0
         assert row.select("percentile").item() >= 0
