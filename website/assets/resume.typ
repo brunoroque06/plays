@@ -20,13 +20,17 @@
 
 #let ungap = { v(-0.6em) }
 
+#let linki(ref, disp) = {
+  link(ref)[#disp #text("↗")]
+}
+
 #let info(img, disp, ref: none) = {
   let cell = [#box(
       baseline: 20%,
       image("icons/" + img, height: 1.2em),
     ); #h(0.2em); #disp]
   if ref != none {
-    cell = link(ref)[#cell]
+    cell = linki(ref, cell)
   }
   grid.cell(cell)
 }
@@ -57,10 +61,6 @@
 #ungap
 
 #section[Experience]
-
-#let addRef(ref, disp) = {
-  link(ref)[#disp #box(baseline: 20%, image("icons/url.svg", height: 1em))]
-}
 
 #let dateStr(date) = {
   if (date == none) {
@@ -107,7 +107,7 @@
   v(-0.8em)
   let place = [#entity - #city, #country]
   if (entityRef != none) {
-    place = addRef(entityRef, place)
+    place = linki(entityRef, place)
   }
   place
   h(1fr)
@@ -202,7 +202,7 @@
 
 #let dev(disp, u, date) = {
   v(0%)
-  addRef(u, disp)
+  linki(u, disp)
   h(1fr)
   period(dateStr(date))
   ungap
@@ -246,21 +246,24 @@
 
 #let technologies() = {
   section[Technologies]
-  let techs = (
-    ".NET (C#)",
-    "Python",
-    "Angular",
-    "PostgreSQL",
-    "Shell",
+
+  let techsRow(techs) = {
+    stack(
+      dir: ltr,
+      spacing: 1fr,
+      ..techs.map(t => block(inset: 0.35em, stroke: 0.1em, t)),
+    )
+  }
+
+  techsRow((".NET (C#)", "Python", "Angular", "PostgreSQL"))
+  ungap
+  techsRow((
+    linki("https://github.com/brunoroque06/dots", "Shell"),
     "Bazel",
     "Docker",
     "Azure",
     "Terraform",
-  )
-  for t in techs {
-    box(block(inset: 0.3em, stroke: 0.1em, t))
-    h(1fr)
-  }
+  ))
 }
 
 #grid(
