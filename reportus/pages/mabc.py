@@ -11,10 +11,10 @@ ui.header("MABC")
 
 def display_age(a: relativedelta.relativedelta) -> ui.Color:
     if a.years < 7:
-        return ui.Color.RED
+        return "red"
     if a.years < 11:
-        return ui.Color.GREEN
-    return ui.Color.BLUE
+        return "green"
+    return "blue"
 
 
 asmt_date, birth, age = ui.dates(5, 16, display_age)
@@ -50,17 +50,6 @@ for f in failed:
 
 comp, agg, rep = mabc.process(age, raw, asmt=asmt_date, hand=hand)
 
-
-def leveler(row: pd.DataFrame) -> ui.RowLevel:
-    std = typing.cast(int, row["standard"])
-    rank = mabc.rank(std)
-    if rank in (mabc.Rank.OK, mabc.Rank.UOK):
-        return ui.RowLevel.OK
-    elif rank == mabc.Rank.CRI:
-        return ui.RowLevel.CRI
-    return ui.RowLevel.NOK
-
-
 st.code(rep, language="markdown")
 
 for c in [
@@ -78,10 +67,9 @@ for c in [
             key=lambda s: s.map(lambda i: i if len(i) == 4 else i + "z"),  # type: ignore
         )
     )
-    cat = ui.table_style_levels(cat, leveler)
     ui.table(cat, c[0])
 
 order = {"hg": 0, "bf": 1, "bl": 2, "total": 4}
 agg = agg.to_pandas().set_index("id").sort_values(by=["id"], key=lambda x: x.map(order))  # type: ignore
-agg = ui.table_style_levels(agg, leveler).format({"percentile": "{:.1f}"})  # type: ignore
-ui.table(agg, "Aggregated")
+agg = agg.style.format({"percentile": "{:.1f}"})  # type: ignore
+ui.table(agg, "Aggregated")  # type: ignore

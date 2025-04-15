@@ -1,6 +1,5 @@
 import dataclasses
 import datetime
-import enum
 import itertools
 import math
 import typing
@@ -138,21 +137,14 @@ def _process_agg(
     return agg
 
 
-class Rank(enum.Enum):
-    OK = "ok"
-    UOK = "uok"
-    CRI = "cri"
-    NOK = "nok"
-
-
-def rank(std: int) -> Rank:
+def level(std: int) -> typing.Literal[0, 1, 2, 3]:
     if std > 7:
-        return Rank.OK
+        return 0
     if std == 7:
-        return Rank.UOK
+        return 1
     if std == 6:
-        return Rank.CRI
-    return Rank.NOK
+        return 2
+    return 3
 
 
 def process(
@@ -171,14 +163,14 @@ def process(
     agg = _process_agg(data, comp)
 
     comp_res = pl.DataFrame(
-        [[k, *list(v)] for k, v in comp.items()],
-        schema=["id", "raw", "standard"],
+        [[k, *list(v), level(v[1])] for k, v in comp.items()],
+        schema=["id", "raw", "standard", "level"],
         orient="row",
     )
 
     agg_res = pl.DataFrame(
-        [[k, *list(v)] for k, v in agg.items()],
-        schema=["id", "raw", "standard", "percentile"],
+        [[k, *list(v), level(v[1])] for k, v in agg.items()],
+        schema=["id", "raw", "standard", "percentile", "level"],
         orient="row",
     )
 
@@ -195,13 +187,13 @@ def report(
     else:
         group = "11-16"
 
-    def rank_str(std: int) -> str:
-        rnk = rank(std)
-        if rnk == Rank.OK:
+    def level_str(std: int) -> str:
+        lvl = level(std)
+        if lvl == 0:
             return "unauffällig"
-        if rnk == Rank.UOK:
+        if lvl == 1:
             return "unauffällig im untersten Normbereich"
-        if rnk == Rank.CRI:
+        if lvl == 2:
             return "kritisch"
         return "therapiebedürftig"
 
@@ -218,11 +210,11 @@ def report(
             f"Movement Assessment Battery for Children 2nd Edition (M-ABC 2) - {time.format_date(asmt)}",
             f"Protokollbogen Altersgruppe: {group} Jahre",
             "",
-            f"Handgeschicklichkeit: PR {perc('hg')} - {rank_str(std('hg'))}",
+            f"Handgeschicklichkeit: PR {perc('hg')} - {level_str(std('hg'))}",
             f"Händigkeit: {'Rechts' if hand == 'Right' else 'Links'}",
-            f"Ballfertigkeit: PR {perc('bf')} - {rank_str(std('bf'))}",
-            f"Balance: PR {perc('bl')} - {rank_str(std('bl'))}",
+            f"Ballfertigkeit: PR {perc('bf')} - {level_str(std('bf'))}",
+            f"Balance: PR {perc('bl')} - {level_str(std('bl'))}",
             "",
-            f"Gesamttestwert: PR {tot.select('percentile').item()} - {rank_str(tot.select('standard').item())}",
+            f"Gesamttestwert: PR {tot.select('percentile').item()} - {level_str(tot.select('standard').item())}",
         ]
     )
