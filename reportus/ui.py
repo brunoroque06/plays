@@ -68,7 +68,10 @@ def table(df: pd.DataFrame | style.Styler, title: str | None = None):
             2: "rgba(255, 43, 43, 0.09)",
             3: "rgba(255, 43, 43, 0.09)",
         }
-        color = levels[row["level"]]  # type: ignore
+        lvl: int | None = row["level"]  # type: ignore
+        if pd.isna(lvl):
+            return [""] * len(row)
+        color = levels[lvl]
         return [f"background-color: {color};"] * len(row)
 
     df = df.apply(color_row, axis=1)  # type: ignore
