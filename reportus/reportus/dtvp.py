@@ -1,6 +1,5 @@
 import dataclasses
 import datetime
-import enum
 import itertools
 
 import polars as pl
@@ -83,46 +82,45 @@ def get_tests() -> dict[str, str]:
     }
 
 
-class Level(enum.Enum):
-    VERY_POOR = "Very Poor"
-    POOR = "Poor"
-    BELOW_AVERAGE = "Below Average"
-    AVERAGE = "Average"
-    ABOVE_AVERAGE = "Above Average"
-    SUPERIOR = "Superior"
-    VERY_SUPERIOR = "Very Superior"
+VERY_POOR = "Very Poor"
+POOR = "Poor"
+BELOW_AVERAGE = "Below Average"
+AVERAGE = "Average"
+ABOVE_AVERAGE = "Above Average"
+SUPERIOR = "Superior"
+VERY_SUPERIOR = "Very Superior"
 
 
-def desc_sca(s: int, de: bool = False) -> str:
+def lvl_sca(s: int, de: bool = False) -> tuple[str, int]:
     if s < 4:
-        return "weit unterdurchschnittlich" if de else Level.VERY_POOR.value
+        return ("weit unterdurchschnittlich" if de else VERY_POOR, 2)
     if s < 6:
-        return "unterdurchschnittlich" if de else Level.POOR.value
+        return ("unterdurchschnittlich" if de else POOR, 2)
     if s < 8:
-        return "unterdurchschnittlich" if de else Level.BELOW_AVERAGE.value
+        return ("unterdurchschnittlich" if de else BELOW_AVERAGE, 2)
     if s < 13:
-        return "durchschnittlich" if de else Level.AVERAGE.value
+        return ("durchschnittlich" if de else AVERAGE, 1)
     if s < 15:
-        return "überdurchschnittlich" if de else Level.ABOVE_AVERAGE.value
+        return ("überdurchschnittlich" if de else ABOVE_AVERAGE, 0)
     if s < 17:
-        return "weit überdurchschnittlich" if de else Level.SUPERIOR.value
-    return "weit überdurchschnittlich" if de else Level.VERY_SUPERIOR.value
+        return ("weit überdurchschnittlich" if de else SUPERIOR, 0)
+    return ("weit überdurchschnittlich" if de else VERY_SUPERIOR, 0)
 
 
-def desc_index(i: int, de: bool = False) -> str:
+def lvl_idx(i: int, de: bool = False) -> tuple[str, int]:
     if i < 70:
-        return "Weit unter der Norm" if de else Level.VERY_POOR.value
+        return ("Weit unter der Norm" if de else VERY_POOR, 2)
     if i < 80:
-        return "Weit unter der Norm" if de else Level.POOR.value
+        return ("Weit unter der Norm" if de else POOR, 2)
     if i < 90:
-        return "Unter der Norm" if de else Level.BELOW_AVERAGE.value
+        return ("Unter der Norm" if de else BELOW_AVERAGE, 2)
     if i < 111:
-        return "Norm" if de else Level.AVERAGE.value
+        return ("Norm" if de else AVERAGE, 1)
     if i < 121:
-        return "Über der Norm" if de else Level.ABOVE_AVERAGE.value
+        return ("Über der Norm" if de else ABOVE_AVERAGE, 0)
     if i < 131:
-        return "Weit über der Norm" if de else Level.SUPERIOR.value
-    return "Weit über der Norm" if de else Level.VERY_SUPERIOR.value
+        return ("Weit über der Norm" if de else SUPERIOR, 0)
+    return ("Weit über der Norm" if de else VERY_SUPERIOR, 0)
 
 
 def to_pr(p: int) -> str:
@@ -163,12 +161,21 @@ def process(
         row = data.get_rs(k, age, raw[k])
         per = row.select("percentile").item()
         sca = row.select("scaled").item()
-        return [per, sca, desc_sca(sca)]
+        return [per, sca, *lvl_sca(sca)]
 
     sub = pl.DataFrame(
         [[k, v, raw[k], age_eq(k), *scaled(k)] for k, v in tests.items()],
         orient="row",
-        schema=["id", "label", "raw", "age_eq", "percentile", "scaled", "descriptive"],
+        schema=[
+            "id",
+            "label",
+            "raw",
+            "age_eq",
+            "percentile",
+            "scaled",
+            "descriptive",
+            "level",
+        ],
     )
 
     comps = [
@@ -196,14 +203,14 @@ def process(
         row = data.get_sp(i, s)
         return [
             row.select("percentile").item(),
-            desc_index(row.select("index").item()),
+            *lvl_idx(row.select("index").item()),
             row.select("index").item(),
         ]
 
     comp = pl.DataFrame(
         [[l, v, *get_sp(k, v)] for k, l, v in comps],
         orient="row",
-        schema=["id", "sum_scaled", "percentile", "descriptive", "index"],
+        schema=["id", "sum_scaled", "percentile", "descriptive", "level", "index"],
     )
 
     rep = report(asmt, sub, comp)
@@ -222,7 +229,7 @@ def report(asmt: datetime.date, sub: pl.DataFrame, comp: pl.DataFrame) -> str:
             "",
         ]
         + [
-            f"{n}: PR {to_pr(comp['percentile'][i])} - {desc_index(comp['index'][i], True)}"
+            f"{n}: PR {to_pr(comp['percentile'][i])} - {lvl_idx(comp['index'][i], True)[0]}"
             for n, i in [
                 ("Visuomotorische Integration", 0),
                 ("Visuelle Wahrnehmung mit reduzierter motorischer Reaktion", 1),
@@ -231,7 +238,7 @@ def report(asmt: datetime.date, sub: pl.DataFrame, comp: pl.DataFrame) -> str:
         ]
         + ["", "Subtests:"]
         + [
-            f"{n}: {to_age(sub['age_eq'][i])} J ({desc_sca(sub['scaled'][i], True)})"
+            f"{n}: {to_age(sub['age_eq'][i])} J ({lvl_sca(sub['scaled'][i], True)[0]})"
             for n, i in [
                 ("Augen-Hand-Koordination", 0),
                 ("Abzeichnen", 1),

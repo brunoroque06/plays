@@ -1,5 +1,4 @@
 import datetime
-import enum
 import typing
 
 import pandas as pd
@@ -16,16 +15,13 @@ def date_input(label: str, date: datetime.date, **kwargs: typing.Any):
     return st.date_input(label, date, format="DD.MM.YYYY", **kwargs)
 
 
-class Color(enum.Enum):
-    BLUE = 0
-    GREEN = 1
-    RED = 2
+Color = typing.Literal["blue", "green", "red"]
 
 
 def dates(
     min_years: int,
     max_years: int,
-    disp: typing.Callable[[relativedelta.relativedelta], Color] = lambda _: Color.BLUE,
+    disp: typing.Callable[[relativedelta.relativedelta], Color] = lambda _: "blue",
 ) -> tuple[datetime.date, datetime.date, relativedelta.relativedelta]:
     col1, col2, col3 = st.columns([1, 1, 2])
 
@@ -51,9 +47,9 @@ def dates(
         age_disp = f"Age: {age.years} years, {age.months} months, {age.days} days"
         color = disp(age)
         age_comp = st.info
-        if color == Color.GREEN:
+        if color == "green":
             age_comp = st.success
-        elif color == Color.RED:
+        elif color == "red":
             age_comp = st.error
         age_comp(age_disp, icon="🎂")
         # st.color_picker(..., disabled=True, label_visibility="collapsed") is an alternative
@@ -61,30 +57,24 @@ def dates(
     return asmt, birth, age
 
 
-class RowLevel(enum.Enum):
-    OK = 0
-    CRI = 1
-    NOK = 2
-
-
-def table_style_levels(
-    df: pd.DataFrame, leveler: typing.Callable[[pd.DataFrame], RowLevel]
-) -> style.Styler:
-    levels = {
-        RowLevel.OK: "rgba(33, 195, 84, 0.1)",
-        RowLevel.CRI: "rgba(255, 193, 7, 0.1)",
-        RowLevel.NOK: "rgba(255, 43, 43, 0.09)",
-    }
+def table(df: pd.DataFrame | style.Styler, title: str | None = None):
+    if isinstance(df, pd.DataFrame):
+        df = df.style
 
     def color_row(row: pd.DataFrame) -> list[str]:
-        lvl = leveler(row)
-        color = levels[lvl]
+        levels = {
+            0: "rgba(33, 195, 84, 0.1)",
+            1: "rgba(255, 193, 7, 0.1)",
+            2: "rgba(255, 43, 43, 0.09)",
+            3: "rgba(255, 43, 43, 0.09)",
+        }
+        color = levels[row["level"]]  # type: ignore
         return [f"background-color: {color};"] * len(row)
 
-    return df.style.apply(color_row, axis=1)  # type: ignore
+    df = df.apply(color_row, axis=1)  # type: ignore
 
-
-def table(dt: pd.DataFrame | style.Styler, title: str | None = None):
     if title:
         st.text(title)
-    st.dataframe(dt, use_container_width=True)  # type: ignore
+    st.dataframe(  # type: ignore
+        df, use_container_width=True, column_config={"level": {"hidden": True}}
+    )

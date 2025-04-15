@@ -71,7 +71,7 @@ def report(asmt: datetime.date, sub: pl.DataFrame, comp: pl.DataFrame) -> str:
             "",
         ]
         + [
-            f"{n}: PR {comp.filter(pl.col('id') == i).select('%ile').item()} - {dtvp.desc_index(comp.filter(pl.col('id') == i).select('index').item(), True)}"
+            f"{n}: PR {comp.filter(pl.col('id') == i).select('%ile').item()} - {dtvp.lvl_idx(comp.filter(pl.col('id') == i).select('index').item(), True)[0]}"
             for n, i in [
                 ("Visuomotorische Integration", "Visual-Motor Integration (VMII)"),
                 (
@@ -86,7 +86,7 @@ def report(asmt: datetime.date, sub: pl.DataFrame, comp: pl.DataFrame) -> str:
             "Subtests:",
         ]
         + [
-            f"{n}: PR {sub.filter(pl.col('id') == i).select('%ile').item()} - {dtvp.desc_sca(sub.filter(pl.col('id') == i).select('standard').item(), True)}"
+            f"{n}: PR {sub.filter(pl.col('id') == i).select('%ile').item()} - {dtvp.lvl_sca(sub.filter(pl.col('id') == i).select('standard').item(), True)[0]}"
             for n, i in [
                 ("Abzeichnen", "co"),
                 ("Figur-Grund", "fg"),
@@ -118,12 +118,12 @@ def process(
         return [
             dtvp.to_pr(per),
             std,
-            dtvp.desc_sca(std),
+            *dtvp.lvl_sca(std),
         ]
 
     sub = pl.DataFrame(
         [[k, v, raw[k], *get_std(k, raw[k])] for k, v in tests.items()],
-        schema=["id", "label", "raw", "%ile", "standard", "description"],
+        schema=["id", "label", "raw", "%ile", "standard", "description", "level"],
         orient="row",
     )
 
@@ -155,12 +155,12 @@ def process(
     def get_comp(i: str, su: int):
         row = data.get_sum(i, su)
         idx = row.select("index").item()
-        return [idx, dtvp.to_pr(row.select("percentile").item()), dtvp.desc_index(idx)]
+        return [idx, dtvp.to_pr(row.select("percentile").item()), *dtvp.lvl_idx(idx)]
 
     comp = pl.DataFrame(
         [[l, su, *get_comp(i, su)] for _, l, su, i in comps],
         orient="row",
-        schema=["id", "sum_standard", "index", "%ile", "description"],
+        schema=["id", "sum_standard", "index", "%ile", "description", "level"],
     )
 
     return sub, comp, report(asmt, sub, comp)

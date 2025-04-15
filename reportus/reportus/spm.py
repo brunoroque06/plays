@@ -1,6 +1,5 @@
 import dataclasses
 import datetime
-import enum
 import itertools
 
 import polars as pl
@@ -14,7 +13,7 @@ def get_scores() -> list[tuple[str, str]]:
         ("vis", "Vision"),
         ("hea", "Hearing"),
         ("tou", "Touch"),
-        ("items", "Taste and Smell"),
+        ("t&s", "Taste and Smell"),
         ("bod", "Body Awareness"),
         ("bal", "Balance and Motion"),
         ("pla", "Planning and Ideas"),
@@ -48,7 +47,7 @@ def _load() -> Data:
 def validate():
     data = _load()
     types = ["classroom", "home"]
-    ids = ["tot" if s[0] == "items" else s[0] for s in get_scores()]
+    ids = ["tot" if s[0] == "t&s" else s[0] for s in get_scores()]
     raws = range(0, 171)
 
     for t, i, r in itertools.product(types, ids, raws):
@@ -91,35 +90,32 @@ def _report(asmt: datetime.date, form: str, person: str, res: pl.DataFrame) -> s
     )
 
 
-class Level(enum.Enum):
-    TYPICAL = "Typical"
-    SOME_PROBLEMS = "Some Problems"
-    DEFINITE_DYSFUNCTION = "Definite Dysfunction"
-
-
 def process(
-    asmt: datetime.date, form: str, person: str, raw: dict[str, int]
+    asmt: datetime.date,
+    form: str,
+    person: str,
+    raw: dict[str, int],
 ) -> tuple[pl.DataFrame, str]:
     data = _load()
 
     form = form.lower()
 
     raw["tot"] = sum(
-        [raw["vis"], raw["hea"], raw["tou"], raw["items"], raw["bod"], raw["bal"]]
+        [raw["vis"], raw["hea"], raw["tou"], raw["t&s"], raw["bod"], raw["bal"]]
     )
-    del raw["items"]
+    del raw["t&s"]
 
     def per(p: int) -> str:
         if p == 100:
             return ">99"
         return str(p)
 
-    def inter(t: int) -> str:
+    def inter(t: int) -> tuple[str, int]:
         if t < 60:
-            return Level.TYPICAL.value
+            return ("Typical", 0)
         if t < 70:
-            return Level.SOME_PROBLEMS.value
-        return Level.DEFINITE_DYSFUNCTION.value
+            return ("Moderate Difficulties", 1)
+        return ("Severe Difficulties", 2)
 
     def form_row(i: str, r: int):
         row = data.get_row(form, i, r)
@@ -128,13 +124,13 @@ def process(
             r,
             row.select("t").item(),
             per(row.select("percentile").item()),
-            inter(row.select("t").item()),
+            *inter(row.select("t").item()),
         ]
 
     res = pl.DataFrame(
         [form_row(i, r) for i, r in raw.items()],
         orient="row",
-        schema=["id", "raw", "t", "percentile", "interpretive"],
+        schema=["id", "raw", "t", "percentile", "interpretive", "level"],
     )
 
     return res, _report(asmt, form, person, res)
