@@ -114,8 +114,8 @@ def process(
         if t < 60:
             return ("Typical", 0)
         if t < 70:
-            return ("Moderate Difficulties", 1)
-        return ("Severe Difficulties", 2)
+            return ("Some Problems", 1)
+        return ("Definite Dysfunction", 2)
 
     def form_row(i: str, r: int):
         row = data.get_row(form, i, r)
