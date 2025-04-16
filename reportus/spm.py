@@ -10,30 +10,17 @@ from reportus import perf, time
 Version = Literal[1, 2]
 
 
-def get_scores(ver: Version) -> dict[str, str]:
-    return (
-        {
-            "soc": "Social",
-            "vis": "Vision",
-            "hea": "Hearing",
-            "tou": "Touch",
-            "t&s": "Taste and Smell",
-            "bod": "Body Awareness",
-            "bal": "Balance and Motion",
-            "pla": "Planning and Ideas",
-        }
-        if ver == 1
-        else {
-            "vis": "Vision",
-            "hea": "Hearing",
-            "tou": "Touch",
-            "t&s": "Taste and Smell",
-            "bod": "Body Awareness",
-            "bal": "Balance and Motion",
-            "pln": "Planning and Ideas",
-            "soc": "Social",
-        }
-    )
+def get_scores() -> dict[str, str]:
+    return {
+        "vis": "Vision",
+        "hea": "Hearing",
+        "tou": "Touch",
+        "t&s": "Taste and Smell",
+        "bod": "Body Awareness",
+        "bal": "Balance and Motion",
+        "pln": "Planning and Ideas",
+        "soc": "Social",
+    }
 
 
 @dataclasses.dataclass(frozen=True)
@@ -66,12 +53,10 @@ def _load() -> Data:
 def validate(ver: Version):
     data = _load()
     types = ["classroom", "home"] if ver == 1 else ["home"]
-    ids = list(get_scores(ver).keys())
+    ids = list(get_scores().keys())
     if ver == 1:
         ids.remove("t&s")
-        ids.append("tot")
-    else:
-        ids.append("st")
+    ids.append("st")
     raws = range(0, 171)
 
     for t, i, r in itertools.product(types, ids, raws):
@@ -104,8 +89,8 @@ def _report(
         ("tou", "Touch"),
         ("bod", "Body Awareness"),
         ("bal", "Balance and Motion"),
-        ("pla" if ver == 1 else "pln", "Planning and Ideas"),
-        ("tot" if ver == 1 else "st", "Gesamttestwert"),
+        ("pln", "Planning and Ideas"),
+        ("st", "Gesamttestwert"),
     ]
 
     return "\n".join(
@@ -131,8 +116,7 @@ def process(
     def ver1():
         return ver == 1
 
-    st = "tot" if ver1() else "st"
-    raw[st] = sum(
+    raw["st"] = sum(
         [raw["vis"], raw["hea"], raw["tou"], raw["t&s"], raw["bod"], raw["bal"]]
     )
 

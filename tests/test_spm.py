@@ -25,7 +25,7 @@ def test_data(ver: spm.Version):
                 "t&s": 4,
                 "bod": 10,
                 "bal": 24,
-                "pla": 28,
+                "pln": 28,
             },
             {
                 "soc": 64,
@@ -34,8 +34,8 @@ def test_data(ver: spm.Version):
                 "tou": 63,
                 "bod": 57,
                 "bal": 72,
-                "pla": 70,
-                "tot": 63,
+                "pln": 70,
+                "st": 63,
             },
         ),
         (
@@ -49,7 +49,7 @@ def test_data(ver: spm.Version):
                 "t&s": 8,
                 "bod": 22,
                 "bal": 18,
-                "pla": 26,
+                "pln": 26,
             },
             {
                 "soc": 66,
@@ -58,8 +58,8 @@ def test_data(ver: spm.Version):
                 "tou": 63,
                 "bod": 67,
                 "bal": 63,
-                "pla": 72,
-                "tot": 63,
+                "pln": 72,
+                "st": 63,
             },
         ),
         (
