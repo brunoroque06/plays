@@ -27,10 +27,10 @@ with cols[3]:
         ("Km", "Kv", "Ke") if form == "Home" else ("LP", "BP"),
     )
 
-scores = spm.get_scores(ver)
+scores = spm.get_scores()
 
 left = ["soc", "vis", "hea"] if ver1() else ["vis", "hea", "tou", "t&s", "bod", "bal"]
-right = ["tou", "t&s", "bod", "bal", "pla"] if ver1() else ["pln", "soc"]
+right = ["tou", "t&s", "bod", "bal", "pln"] if ver1() else ["pln", "soc"]
 
 raw: dict[str, int] = {}
 
