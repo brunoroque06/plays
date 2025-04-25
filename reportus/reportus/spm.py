@@ -97,6 +97,9 @@ def _report(
         ("soc", "Social"),
     ]
 
+    if ver == 2:
+        scores.insert(4, ("t&s", "Taste and Smell"))
+
     return "\n".join(
         header
         + [
