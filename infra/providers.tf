@@ -8,11 +8,11 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "4.26.0"
+      version = "4.27.0"
     }
     docker = {
       source  = "kreuzwerker/docker"
-      version = "3.1.2"
+      version = "3.4.0"
     }
   }
 }
