@@ -88,7 +88,7 @@ def test_data(ver: spm.Version):
         ),
     ],
 )
-def test_spm(form: str, ver: spm.Version, raw: dict[str, int], ts: dict[str, int]):
+def test_spm(form: spm.Form, ver: spm.Version, raw: dict[str, int], ts: dict[str, int]):
     today = datetime.date.today()
 
     res, rep = spm.process(today, form, ver, "t", raw)
