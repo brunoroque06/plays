@@ -1,3 +1,3 @@
 # Reportus
 
-<http://reportus.streamlit.app>
+<https://reportus.streamlit.app>
