@@ -45,7 +45,11 @@
     "brunroque06@gmail.com",
     ref: "mailto:brunoroque06@gmail.com",
   ),
-  info("website.svg", "broque.dev", ref: "https://broque.dev"),
+  info(
+    "website.svg",
+    "brunoroque06.github.io",
+    ref: "https://brunoroque06.github.io",
+  ),
 
   info(
     "github.svg",

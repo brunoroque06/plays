@@ -1,3 +1,3 @@
 # Website
 
-<https://broque.dev>
+<https://brunoroque06.github.io>

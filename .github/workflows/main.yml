@@ -12,18 +12,6 @@ jobs:
       - run: pip install zizmor
       - run: zizmor .github/workflows/main.yml
 
-  infra:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: infra
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - uses: hashicorp/setup-terraform@v3
-      - run: terraform fmt -check
-
   reportus:
     runs-on: ubuntu-latest
     defaults:
