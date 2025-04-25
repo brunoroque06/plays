@@ -7,6 +7,7 @@ import polars as pl
 
 from reportus import perf, time
 
+Form = Literal["Classroom", "Home"]
 Version = Literal[1, 2]
 
 
@@ -67,7 +68,7 @@ def validate(ver: Version):
 
 
 def _report(
-    asmt: datetime.date, form: str, person: str, ver: Version, res: pl.DataFrame
+    asmt: datetime.date, form: Form, person: str, ver: Version, res: pl.DataFrame
 ) -> str:
     asmt_fmt = time.format_date(asmt, False)
     spm = "SPM" if ver == 1 else "SPM 2"
@@ -75,7 +76,7 @@ def _report(
         f"Sensory Processing Measure ({spm}): Classroom Form",
         f"Fragebogen zur sensorischen Verarbeitung ausgefüllt von Kinders {person} ({asmt_fmt})",
     ]
-    if form == "home":
+    if form == "Home":
         header = [
             f"Sensory Processing Measure ({spm}): Home Form",
             f"Elternfragebogen zur sensorischen Verarbeitung ausgefüllt von {person} ({asmt_fmt})",
@@ -83,35 +84,38 @@ def _report(
         ]
 
     scores = [
-        ("soc", "Social"),
+        None,
         ("vis", "Vision"),
         ("hea", "Hearing"),
         ("tou", "Touch"),
         ("bod", "Body Awareness"),
         ("bal", "Balance and Motion"),
-        ("pln", "Planning and Ideas"),
+        None,
         ("st", "Gesamttestwert"),
+        None,
+        ("pln", "Planning and Ideas"),
+        ("soc", "Social"),
     ]
 
     return "\n".join(
         header
         + [
-            f'{d}: PR {res.filter(pl.col("id") == i).select("percentile").item()} - "{res.filter(pl.col("id") == i).select("interpretive").item()}"'
-            for i, d in scores
+            ""
+            if not s
+            else f'{s[1]}: PR {res.filter(pl.col("id") == s[0]).select("percentile").item()} - "{res.filter(pl.col("id") == s[0]).select("interpretive").item()}"'
+            for s in scores
         ]
     )
 
 
 def process(
     asmt: datetime.date,
-    form: str,
+    form: Form,
     ver: Version,
     person: str,
     raw: dict[str, int],
 ) -> tuple[pl.DataFrame, str]:
     data = _load()
-
-    form = f"{form.lower()}{ver}"
 
     def ver1():
         return ver == 1
@@ -135,7 +139,8 @@ def process(
     def form_row(i: str, r: int):
         if ver1() and i == "t&s":
             return ["t&s", r, None, None, None, None]
-        row = data.get_row(form, i, r)
+        key = f"{form.lower()}{ver}"
+        row = data.get_row(key, i, r)
         return [
             i,
             r,

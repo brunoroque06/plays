@@ -53,7 +53,7 @@ def validate():
         assert row.select("percentile").item() >= 0
 
 
-def get_tests():
+def get_tests() -> dict[str, str]:
     return {
         "co": "Copying",
         "fg": "Figure-Ground",
