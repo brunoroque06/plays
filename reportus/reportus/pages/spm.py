@@ -20,7 +20,7 @@ def ver1():
 
 
 with cols[2]:
-    form = st.selectbox("Form", ("Classroom", "Home") if ver1() else ("Home"))
+    form: spm.Form = st.selectbox("Form", ("Classroom", "Home") if ver1() else ("Home"))  # type: ignore
 with cols[3]:
     person = st.selectbox(
         "Filled by",
