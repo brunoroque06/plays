@@ -81,3 +81,7 @@ def table(df: pd.DataFrame | style.Styler, title: str | None = None):
     st.dataframe(  # type: ignore
         df, use_container_width=True, column_config={"level": {"hidden": True}}
     )
+
+
+def text(txt: str):
+    st.code(txt, language=None, wrap_lines=True)

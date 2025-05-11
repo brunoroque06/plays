@@ -5,7 +5,7 @@ from typing import Literal
 
 import polars as pl
 
-from reportus import perf, time
+from reportus import perf, str_builder, time
 
 Form = Literal["Classroom", "Home"]
 Version = Literal[1, 2]
@@ -67,21 +67,33 @@ def validate(ver: Version):
             assert row.select(c).item() > 0
 
 
+typical = "Typical"
+
+
 def _report(
-    asmt: datetime.date, form: Form, person: str, ver: Version, res: pl.DataFrame
+    asmt: datetime.date,
+    form: Form,
+    filled: str,
+    name: str | None,
+    ver: Version,
+    res: pl.DataFrame,
 ) -> str:
     asmt_fmt = time.format_date(asmt, False)
-    spm = "SPM" if ver == 1 else "SPM 2"
-    header = [
-        f"Sensory Processing Measure ({spm}): Classroom Form",
-        f"Fragebogen zur sensorischen Verarbeitung ausgefüllt von Kinders {person} ({asmt_fmt})",
-    ]
-    if form == "Home":
-        header = [
-            f"Sensory Processing Measure ({spm}): Home Form",
-            f"Elternfragebogen zur sensorischen Verarbeitung ausgefüllt von {person} ({asmt_fmt})",
-            "Die Fähigkeit, sensorische Reize zu verarbeiten, beeinflusst die motorischen und selbstregulativen Fähigkeiten eines Kindes sowie sein soziales Verhalten.",
-        ]
+    spm = f"SPM {ver}"
+    rep = str_builder.StrBuilder()
+    if form == "Classroom":
+        rep.append(f"Sensory Processing Measure ({spm}): Classroom Form")
+        rep.append(
+            f"Fragebogen zur sensorischen Verarbeitung ausgefüllt von Kinders {filled} ({asmt_fmt})"
+        )
+    else:
+        rep.append(f"Sensory Processing Measure ({spm}): Home Form")
+        rep.append(
+            f"Elternfragebogen zur sensorischen Verarbeitung ausgefüllt von {filled} ({asmt_fmt})"
+        )
+        rep.append(
+            "Die Fähigkeit, sensorische Reize zu verarbeiten, beeinflusst die motorischen und selbstregulativen Fähigkeiten eines Kindes sowie sein soziales Verhalten."
+        )
 
     scores = [
         None,
@@ -100,22 +112,61 @@ def _report(
     if ver == 2:
         scores.insert(4, ("t&s", "Taste and Smell"))
 
-    return "\n".join(
-        header
-        + [
-            ""
-            if not s
-            else f'{s[1]}: PR {res.filter(pl.col("id") == s[0]).select("percentile").item()} - "{res.filter(pl.col("id") == s[0]).select("interpretive").item()}"'
-            for s in scores
-        ]
-    )
+    def get_int(s: str) -> str:
+        return res.filter(pl.col("id") == s).select("interpretive").item()
+
+    for s in scores:
+        if not s:
+            rep.append()
+            continue
+        rep.append(
+            f'{s[1]}: PR {res.filter(pl.col("id") == s[0]).select("percentile").item()} - "{get_int(s[0])}"'
+        )
+
+    if ver == 2:
+        rep.append()
+        if get_int("st") == typical:
+            rep.append(
+                f'{name} sensorisches Profil liegt im Bereich "Typical" und ist somit unauffällig.'
+            )
+        else:
+            rep.append("Zusammenfassung der sensorischen Verarbeitung des Kindes:")
+            rep.append()
+            rep.append(
+                f'{name} sensorisches Profil liegt im Bereich "Moderate Difficulties" (Gesamttestwert). Es zeigen sich Auffälligkeiten in mehreren sensorischen Systemen, welche sich in folgenden beobachtbaren Verhaltensweisen widerspiegeln:',
+            )
+            rep.append()
+            scores = [
+                ("Sehen", "vis"),
+                ("Hören", "hea"),
+                ("Tasten", "tou"),
+                ("Geschmack und Geruch", "t&s"),
+                ("Körperwahrnehmung (Propriozeptive Wahrnehmung)", "bod"),
+                ("Gleichgewicht (Vestibulär Wahrnehmung)", "bal"),
+            ]
+
+            def summary_score(k: str) -> str:
+                return "unauffällig" if get_int(k) == typical else ""
+
+            for l, k in scores:
+                rep.append(f"{l}: {summary_score(k)}")
+
+            if get_int("pln") != typical or get_int("soc") != typical:
+                rep.append()
+                rep.append("Auswirkungen auf den Alltag:")
+                rep.append()
+                rep.append("Planung und Ideenfindung: " + summary_score("pln"))
+                rep.append("Soziale Teilhabe: " + summary_score("soc"))
+
+    return str(rep)
 
 
 def process(
     asmt: datetime.date,
     form: Form,
     ver: Version,
-    person: str,
+    filled: str,
+    name: str | None,
     raw: dict[str, int],
 ) -> tuple[pl.DataFrame, str]:
     data = _load()
@@ -134,7 +185,7 @@ def process(
 
     def inter(t: int) -> tuple[str, int]:
         if t < 60:
-            return ("Typical", 0)
+            return (typical, 0)
         if t < 70:
             return ("Some Problems" if ver1() else "Moderate Difficulties", 1)
         return ("Definite Dysfunction" if ver1() else "Severe Difficulties", 2)
@@ -158,4 +209,4 @@ def process(
         schema=["id", "raw", "t", "percentile", "interpretive", "level"],
     )
 
-    return res, _report(asmt, form, person, ver, res)
+    return res, _report(asmt, form, filled, name, ver, res)

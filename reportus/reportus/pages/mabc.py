@@ -50,7 +50,7 @@ for f in failed:
 
 comp, agg, rep = mabc.process(age, raw, asmt=asmt_date, hand=hand)
 
-st.code(rep, language="markdown")
+ui.text(rep)
 
 for c in [
     ("Handgeschicklichkeit", "hg"),

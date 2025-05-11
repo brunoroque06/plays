@@ -7,7 +7,7 @@ import typing
 import polars as pl
 from dateutil import relativedelta
 
-from reportus import perf, time
+from reportus import perf, str_builder, time
 
 
 @dataclasses.dataclass(frozen=True)
@@ -205,16 +205,20 @@ def report(
 
     tot = agg.filter(pl.col("id") == "total")
 
-    return "\n".join(
-        [
-            f"Movement Assessment Battery for Children 2nd Edition (M-ABC 2) - {time.format_date(asmt)}",
-            f"Protokollbogen Altersgruppe: {group} Jahre",
-            "",
-            f"Handgeschicklichkeit: PR {perc('hg')} - {level_str(std('hg'))}",
-            f"Händigkeit: {'Rechts' if hand == 'Right' else 'Links'}",
-            f"Ballfertigkeit: PR {perc('bf')} - {level_str(std('bf'))}",
-            f"Balance: PR {perc('bl')} - {level_str(std('bl'))}",
-            "",
-            f"Gesamttestwert: PR {tot.select('percentile').item()} - {level_str(tot.select('standard').item())}",
-        ]
+    rep = str_builder.StrBuilder()
+
+    rep.append(
+        f"Movement Assessment Battery for Children 2nd Edition (M-ABC 2) - {time.format_date(asmt)}"
     )
+    rep.append(f"Protokollbogen Altersgruppe: {group} Jahre")
+    rep.append()
+    rep.append(f"Handgeschicklichkeit: PR {perc('hg')} - {level_str(std('hg'))}")
+    rep.append(f"Händigkeit: {'Rechts' if hand == 'Right' else 'Links'}")
+    rep.append(f"Ballfertigkeit: PR {perc('bf')} - {level_str(std('bf'))}")
+    rep.append(f"Balance: PR {perc('bl')} - {level_str(std('bl'))}")
+    rep.append()
+    rep.append(
+        f"Gesamttestwert: PR {tot.select('percentile').item()} - {level_str(tot.select('standard').item())}"
+    )
+
+    return str(rep)

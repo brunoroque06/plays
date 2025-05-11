@@ -36,6 +36,6 @@ def page(rep: typing.Literal["dtvp3", "dtvpa"]) -> None:
     sub = sub.to_pandas().drop(columns=["id"]).set_index("label")  # type: ignore
     comp = comp.to_pandas().set_index("id")  # type: ignore
 
-    st.code(report, language="markdown")
+    ui.text(report)
     ui.table(sub, "Subtest")
     ui.table(comp, "Composite")

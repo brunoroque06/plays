@@ -5,7 +5,7 @@ import itertools
 import polars as pl
 from dateutil import relativedelta
 
-from reportus import perf, time
+from reportus import perf, str_builder, time
 
 
 @dataclasses.dataclass(frozen=True)
@@ -223,28 +223,34 @@ def process(
 
 
 def report(asmt: datetime.date, sub: pl.DataFrame, comp: pl.DataFrame) -> str:
-    return "\n".join(
-        [
-            f"Developmental Test of Visual Perception (DTVP-3) - {time.format_date(asmt)}",
-            "",
-        ]
-        + [
-            f"{n}: PR {to_pr(comp['percentile'][i])} - {lvl_idx(comp['index'][i], True)[0]}"
-            for n, i in [
-                ("Visuomotorische Integration", 0),
-                ("Visuelle Wahrnehmung mit reduzierter motorischer Reaktion", 1),
-                ("Globale visuelle Wahrnehmung", 2),
-            ]
-        ]
-        + ["", "Subtests:"]
-        + [
-            f"{n}: {to_age(sub['age_eq'][i])} J ({lvl_sca(sub['scaled'][i], True)[0]})"
-            for n, i in [
-                ("Augen-Hand-Koordination", 0),
-                ("Abzeichnen", 1),
-                ("Figur-Grund", 2),
-                ("Gesaltschliessen", 3),
-                ("Formkonstanz", 4),
-            ]
-        ]
+    rep = str_builder.StrBuilder()
+
+    rep.append(
+        f"Developmental Test of Visual Perception (DTVP-3) - {time.format_date(asmt)}"
     )
+    rep.append()
+
+    for n, i in [
+        ("Visuomotorische Integration", 0),
+        ("Visuelle Wahrnehmung mit reduzierter motorischer Reaktion", 1),
+        ("Globale visuelle Wahrnehmung", 2),
+    ]:
+        rep.append(
+            f"{n}: PR {to_pr(comp['percentile'][i])} - {lvl_idx(comp['index'][i], True)[0]}"
+        )
+
+    rep.append()
+    rep.append("Subtests:")
+
+    for n, i in [
+        ("Augen-Hand-Koordination", 0),
+        ("Abzeichnen", 1),
+        ("Figur-Grund", 2),
+        ("Gesaltschliessen", 3),
+        ("Formkonstanz", 4),
+    ]:
+        rep.append(
+            f"{n}: {to_age(sub['age_eq'][i])} J ({lvl_sca(sub['scaled'][i], True)[0]})"
+        )
+
+    return str(rep)

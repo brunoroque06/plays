@@ -1,4 +1,5 @@
 #!/usr/bin/env elvish
 
+cd ..
 git subtree push -P reportus origin reportus
-
+cd reportus

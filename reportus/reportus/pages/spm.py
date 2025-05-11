@@ -22,7 +22,7 @@ def ver1():
 with cols[2]:
     form: spm.Form = st.selectbox("Form", ("Classroom", "Home") if ver1() else ("Home"))  # type: ignore
 with cols[3]:
-    person = st.selectbox(
+    filled = st.selectbox(
         "Filled by",
         ("Km", "Kv", "Ke") if form == "Home" else ("LP", "BP"),
     )
@@ -43,9 +43,15 @@ with cols[1]:
     for s in right:
         raw[s] = st.number_input(scores[s], step=1)
 
-res, rep = spm.process(asmt, form, ver, person, raw)
+name = None
+if not ver1():
+    cols = st.columns(2)
+    with cols[0]:
+        name = st.text_input("Name")
 
-st.code(rep, language="markdown")
+res, rep = spm.process(asmt, form, ver, filled, name, raw)
+
+ui.text(rep)
 
 res = res.to_pandas().set_index("id")  # type: ignore
 
